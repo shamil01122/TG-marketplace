@@ -25,7 +25,7 @@ export default function AdminProductsPage() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-white font-bold text-xl">Productos</h1>
-        <button onClick={() => setEditing('new')} className="bg-[#c9f04a] text-[#000000] text-sm font-bold px-3 py-2 rounded-lg">+ Nuevo</button>
+        <button onClick={() => setEditing('new')} className="bg-[#bdbdbd] text-[#000000] text-sm font-bold px-3 py-2 rounded-lg">+ Nuevo</button>
       </div>
       {editing && <ProductForm product={editing === 'new' ? undefined : editing} onSave={() => { setEditing(null); load() }} onCancel={() => setEditing(null)} />}
       <div className="flex flex-col gap-2">
@@ -35,7 +35,7 @@ export default function AdminProductsPage() {
               <p className="text-white text-sm font-semibold truncate">{p.name}</p>
               <p className="text-[#888888] text-xs">{p.category} · ${Number(p.price_usd).toFixed(2)}</p>
             </div>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${p.active ? 'bg-[#c9f04a]/20 text-[#c9f04a]' : 'bg-red-400/10 text-red-400'}`}>{p.active ? 'Activo' : 'Inactivo'}</span>
+            <span className={`text-xs px-2 py-0.5 rounded-full ${p.active ? 'bg-[#bdbdbd]/20 text-[#bdbdbd]' : 'bg-red-400/10 text-red-400'}`}>{p.active ? 'Activo' : 'Inactivo'}</span>
             <button onClick={() => setEditing(p)} className="text-[#888888] text-xs hover:text-white">Editar</button>
             <button onClick={() => handleDelete(p.id)} className="text-red-400 text-xs">Borrar</button>
           </div>

@@ -3,17 +3,17 @@ import Link from 'next/link'
 import TelegramAuth from '@/components/telegram-auth'
 
 const gifts = [
-  { name: 'Plush Pepe', collection: 'PLUSH PEPE', price: '125 TON', rarity: 'RARE', emoji: '🐸', bg: 'from-[#414039] to-[#22221f]' },
+  { name: 'Plush Pepe', collection: 'PLUSH PEPE', price: '125 TON', rarity: 'RARE', emoji: '🐸', bg: 'from-[#222222] to-[#22221f]' },
   { name: 'Durov’s Cap', collection: 'CAPS', price: '48 TON', rarity: 'POPULAR', emoji: '🧢', bg: 'from-[#343a40] to-[#202124]' },
-  { name: 'Signet Ring', collection: 'JEWELRY', price: '32 TON', rarity: 'COLLECTIBLE', emoji: '💍', bg: 'from-[#494034] to-[#25211d]' },
-  { name: 'Magic Potion', collection: 'POTIONS', price: '19 TON', rarity: 'NEW', emoji: '🧪', bg: 'from-[#393044] to-[#211e27]' },
+  { name: 'Signet Ring', collection: 'JEWELRY', price: '32 TON', rarity: 'COLLECTIBLE', emoji: '💍', bg: 'from-[#202020] to-[#25211d]' },
+  { name: 'Magic Potion', collection: 'POTIONS', price: '19 TON', rarity: 'NEW', emoji: '🧪', bg: 'from-[#222222] to-[#171717]' },
 ]
 
 const categories = ['ALL GIFTS', 'RARE', 'NEW', 'COLLECTIONS']
 
 export default function HomePage() {
   return (
-    <main className="mx-auto min-h-screen max-w-[520px] overflow-hidden bg-[#080808] pb-24 text-[#f2eee5]">
+    <main className="mx-auto min-h-screen max-w-[520px] overflow-hidden bg-[#080808] pb-24 text-[#f2f2f2]">
       <TelegramAuth />
 
       <header className="flex items-center justify-between px-5 pb-6 pt-7">
@@ -21,18 +21,18 @@ export default function HomePage() {
           <div className="text-[36px] font-black leading-none tracking-[-0.09em]">
             RUM
           </div>
-          <div className="mt-2 text-[9px] font-bold tracking-[0.28em] text-[#8b8578]">
+          <div className="mt-2 text-[9px] font-bold tracking-[0.28em] text-[#888888]">
             GIFTS CULTURE
           </div>
         </div>
         <div className="rounded-xl border border-[#333333] bg-[#1b1b1b] px-4 py-2.5">
-          <div className="text-[9px] tracking-widest text-[#8b8578]">YOUR BALANCE</div>
+          <div className="text-[9px] tracking-widest text-[#888888]">YOUR BALANCE</div>
           <div className="mt-1 text-sm font-bold">— <span className="text-[#bdbdbd]">TON</span></div>
         </div>
       </header>
 
       <section className="px-4">
-        <div className="relative overflow-hidden rounded-[26px] border border-[#444444] bg-gradient-to-br from-[#202020] via-[#1d1c18] to-[#151512] p-6">
+        <div className="relative overflow-hidden rounded-[26px] border border-[#444444] bg-gradient-to-br from-[#202020] via-[#1b1b1b] to-[#111111] p-6">
           <div className="absolute -right-8 -top-8 h-48 w-48 rounded-full bg-[#383838]/10 blur-3xl" />
           <div className="relative">
             <div className="text-[10px] font-bold tracking-[0.22em] text-[#bdbdbd]">
@@ -59,7 +59,7 @@ export default function HomePage() {
       </section>
 
       <section className="px-5 pt-7">
-        <Link href="/catalog" className="flex items-center gap-3 rounded-xl border border-[#343129] bg-[#1a1916] px-4 py-4 text-sm text-[#8f897d]">
+        <Link href="/catalog" className="flex items-center gap-3 rounded-xl border border-[#333333] bg-[#1a1916] px-4 py-4 text-sm text-[#8f897d]">
           <span className="text-xl text-[#bdbdbd]">⌕</span>
           Search gifts & collections
           <span className="ml-auto text-lg">→</span>
@@ -69,7 +69,7 @@ export default function HomePage() {
       <section className="pt-8">
         <div className="mb-4 flex items-center justify-between px-5">
           <h2 className="text-xs font-black tracking-[0.2em]">DISCOVER</h2>
-          <span className="text-[9px] tracking-widest text-[#827b6e]">01 / CATEGORIES</span>
+          <span className="text-[9px] tracking-widest text-[#888888]">01 / CATEGORIES</span>
         </div>
         <div className="flex gap-2 overflow-x-auto px-5 pb-1">
           {categories.map((category, index) => (
@@ -91,7 +91,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-2 gap-3">
           {gifts.map((gift, index) => (
-            <Link href="/catalog" key={gift.name} className="overflow-hidden rounded-2xl border border-[#343129] bg-[#1a1916]">
+            <Link href="/catalog" key={gift.name} className="overflow-hidden rounded-2xl border border-[#333333] bg-[#1a1916]">
               <div className={`relative flex aspect-[1/1.05] items-center justify-center bg-gradient-to-br ${gift.bg}`}>
                 <span className="text-[76px] drop-shadow-2xl">{gift.emoji}</span>
                 <span className="absolute left-2.5 top-2.5 rounded-md border border-[#bdbdbd]/30 bg-[#202020]/80 px-2 py-1 text-[8px] font-bold tracking-wider text-[#d0d0d0]">
@@ -103,7 +103,7 @@ export default function HomePage() {
               </div>
               <div className="p-3">
                 <div className="truncate text-sm font-extrabold">{gift.name}</div>
-                <div className="mt-1 text-[9px] font-semibold tracking-[0.15em] text-[#827b6e]">{gift.collection}</div>
+                <div className="mt-1 text-[9px] font-semibold tracking-[0.15em] text-[#888888]">{gift.collection}</div>
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-sm font-black text-[#d0d0d0]">{gift.price}</span>
                   <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#383838] text-sm text-[#f2f2f2]">↗</span>

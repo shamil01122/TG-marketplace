@@ -28,13 +28,13 @@ function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-[#1a1a1a] border-b border-[#2a2a2a] px-4 py-3 flex items-center justify-between">
-        <span className="text-[#c9f04a] font-bold">🌿 GreenStore CMS</span>
+        <span className="text-[#bdbdbd] font-bold">🌿 GreenStore CMS</span>
         <button onClick={() => signOut({ callbackUrl: '/admin/login' })} className="text-[#888888] text-sm">Salir</button>
       </header>
       <div className="flex flex-1">
         <nav className="bg-[#1a1a1a] w-40 p-3 flex flex-col gap-1 border-r border-[#2a2a2a] shrink-0">
           {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className={`text-xs px-3 py-2 rounded-lg transition-colors ${pathname === n.href ? 'bg-[#c9f04a] text-[#000000] font-bold' : 'text-[#888888] hover:text-white'}`}>
+            <Link key={n.href} href={n.href} className={`text-xs px-3 py-2 rounded-lg transition-colors ${pathname === n.href ? 'bg-[#bdbdbd] text-[#000000] font-bold' : 'text-[#888888] hover:text-white'}`}>
               {n.label}
             </Link>
           ))}

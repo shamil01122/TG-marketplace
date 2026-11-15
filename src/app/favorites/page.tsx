@@ -13,7 +13,7 @@ export default function FavoritesPage() {
     <main style={{
       minHeight: '100vh',
       background: '#080808',
-      color: '#f2eee5',
+      color: '#f2f2f2',
       padding: '22px 18px 40px',
     }}>
       <div style={{ maxWidth: 520, margin: '0 auto' }}>
@@ -24,7 +24,7 @@ export default function FavoritesPage() {
           marginBottom: 32,
         }}>
           <Link href="/" style={{
-            color: '#f2eee5',
+            color: '#f2f2f2',
             textDecoration: 'none',
             fontSize: 25,
             fontWeight: 900,
@@ -33,7 +33,7 @@ export default function FavoritesPage() {
             RUM
           </Link>
           <Link href="/catalog" style={{
-            color: '#f2eee5',
+            color: '#f2f2f2',
             textDecoration: 'none',
             fontSize: 13,
             fontWeight: 700,
@@ -84,7 +84,7 @@ export default function FavoritesPage() {
             <Link href="/catalog" style={{
               display: 'inline-block',
               background: '#383838',
-              color: '#f2eee5',
+              color: '#f2f2f2',
               borderRadius: 13,
               padding: '13px 22px',
               textDecoration: 'none',
@@ -129,7 +129,7 @@ export default function FavoritesPage() {
                 }}>
                   <div style={{
                     height: 135,
-                    background: `linear-gradient(145deg, #494034, #201e19)`,
+                    background: `linear-gradient(145deg, #202020, #171717)`,
                     display: 'grid',
                     placeItems: 'center',
                     fontSize: 65,

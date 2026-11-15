@@ -102,7 +102,7 @@ const cartCount = useRumCart((state) => state.itemCount())
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 14 }}>
           <h2 style={{ fontSize: 22, margin: 0, letterSpacing: -0.6 }}>Каталог подарков</h2>
-          <span style={{ color: '#827b6e', fontSize: 12 }}>{filtered.length} предметов</span>
+          <span style={{ color: '#888888', fontSize: 12 }}>{filtered.length} предметов</span>
         </div>
 
         <div style={{ position: 'relative', marginBottom: 16 }}>
@@ -129,12 +129,12 @@ const cartCount = useRumCart((state) => state.itemCount())
         </div>
 
         <div style={{ display: 'flex', gap: 9, marginBottom: 19 }}>
-          <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Сортировка" style={{ ...panelStyle, flex: 1, minWidth: 0, padding: '11px 9px', color: '#d4cbb9', fontSize: 12 }}>
+          <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="Сортировка" style={{ ...panelStyle, flex: 1, minWidth: 0, padding: '11px 9px', color: '#f2f2f2', fontSize: 12 }}>
             <option value="recommended">Сначала интересные</option>
             <option value="cheap">Сначала дешевле</option>
             <option value="expensive">Сначала дороже</option>
           </select>
-          <select value={priceFilter} onChange={(event) => setPriceFilter(event.target.value)} aria-label="Фильтр по цене" style={{ ...panelStyle, flex: 1, minWidth: 0, padding: '11px 9px', color: '#d4cbb9', fontSize: 12 }}>
+          <select value={priceFilter} onChange={(event) => setPriceFilter(event.target.value)} aria-label="Фильтр по цене" style={{ ...panelStyle, flex: 1, minWidth: 0, padding: '11px 9px', color: '#f2f2f2', fontSize: 12 }}>
             <option value="all">Любая цена</option>
             <option value="under50">До 50 TON</option>
             <option value="50to100">50–100 TON</option>
@@ -153,14 +153,14 @@ const cartCount = useRumCart((state) => state.itemCount())
                 {favorites.some((item) => item.id === gift.id) ? '♥' : '♡'}
               </button>
               <button onClick={() => setSelected(gift)} style={{ width: '100%', border: 0, padding: 0, background: 'transparent', textAlign: 'left', cursor: 'pointer', color: 'inherit' }}>
-                <div style={{ height: 175, background: `linear-gradient(145deg, #494034, #201e19)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                <div style={{ height: 175, background: `linear-gradient(145deg, #202020, #171717)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                   <span style={{ fontSize: 82, filter: 'drop-shadow(0 12px 10px #00000018)' }}>{gift.emoji}</span>
                   <span style={{ position: 'absolute', left: 11, bottom: 10, background: '#252525', borderRadius: 20, padding: '5px 9px', color: '#d0d0d0', fontSize: 10, fontWeight: 800 }}>{gift.rarity}</span>
                   <span style={{ position: 'absolute', right: 11, bottom: 10, color: '#bdbdbd', fontSize: 10 }}>{gift.number}</span>
                 </div>
                 <div style={{ padding: '14px 14px 15px' }}>
                   <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 4 }}>{gift.name}</div>
-                  <div style={{ color: '#827b6e', fontSize: 11, marginBottom: 14 }}>{gift.model}</div>
+                  <div style={{ color: '#888888', fontSize: 11, marginBottom: 14 }}>{gift.model}</div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ color: '#bdbdbd', fontSize: 10 }}>ДЕМО-ЦЕНА</span>
                     <strong style={{ fontSize: 16 }}>{gift.price} TON</strong>
@@ -177,7 +177,7 @@ const cartCount = useRumCart((state) => state.itemCount())
           </div>
         )}
 
-        <p style={{ textAlign: 'center', color: '#827b6e', fontSize: 11, lineHeight: 1.6, marginTop: 25 }}>
+        <p style={{ textAlign: 'center', color: '#888888', fontSize: 11, lineHeight: 1.6, marginTop: 25 }}>
           Демонстрационный каталог RUM. Подарки, номера и цены условные — это не реальные объявления и не предложения о продаже.
         </p>
       </div>
@@ -208,18 +208,18 @@ const cartCount = useRumCart((state) => state.itemCount())
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ color: '#879080', fontSize: 11, fontWeight: 800 }}>
+              <span style={{ color: '#999999', fontSize: 11, fontWeight: 800 }}>
                 КАРТОЧКА ПОДАРКА
               </span>
               <button
                 onClick={() => setSelected(null)}
-                style={{ border: 0, background: '#343129', borderRadius: 30, width: 32, height: 32, fontSize: 18, cursor: 'pointer' }}
+                style={{ border: 0, background: '#333333', borderRadius: 30, width: 32, height: 32, fontSize: 18, cursor: 'pointer' }}
               >
                 ×
               </button>
             </div>
 
-            <div style={{ height: 180, borderRadius: 18, background: `linear-gradient(145deg, #494034, #201e19)`, display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 92, margin: '14px 0' }}>
+            <div style={{ height: 180, borderRadius: 18, background: `linear-gradient(145deg, #202020, #171717)`, display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 92, margin: '14px 0' }}>
               {selected.emoji}
             </div>
 

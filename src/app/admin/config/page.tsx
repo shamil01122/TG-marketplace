@@ -34,7 +34,7 @@ export default function AdminConfigPage() {
           <input type={f.type} value={values[f.key] ?? ''} onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))} className="bg-[#1a1a1a] text-white rounded-[8px] p-3 text-sm outline-none" />
         </div>
       ))}
-      <button onClick={handleSave} className="bg-[#c9f04a] text-[#000000] font-bold rounded-[8px] py-3">
+      <button onClick={handleSave} className="bg-[#bdbdbd] text-[#000000] font-bold rounded-[8px] py-3">
         {saved ? '✓ Guardado' : 'Guardar cambios'}
       </button>
     </div>

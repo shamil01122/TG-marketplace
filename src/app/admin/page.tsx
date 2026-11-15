@@ -26,7 +26,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-3 gap-3">
         {items.map((s) => (
           <div key={s.label} className="bg-[#1a1a1a] rounded-[8px] p-4 text-center">
-            <p className="text-[#c9f04a] text-2xl font-bold">{s.value}</p>
+            <p className="text-[#bdbdbd] text-2xl font-bold">{s.value}</p>
             <p className="text-[#888888] text-xs mt-1">{s.label}</p>
           </div>
         ))}

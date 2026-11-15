@@ -59,7 +59,7 @@ export function OrderCard({ order, onUpdate }: { order: Order; onUpdate: () => v
         </div>
       </div>
       {nextStatus && (
-        <button onClick={() => handleStatus(nextStatus)} className="bg-[#c9f04a] text-[#000000] text-sm font-bold rounded-lg py-2">
+        <button onClick={() => handleStatus(nextStatus)} className="bg-[#bdbdbd] text-[#000000] text-sm font-bold rounded-lg py-2">
           Marcar: {STATUS_LABEL[nextStatus]}
         </button>
       )}

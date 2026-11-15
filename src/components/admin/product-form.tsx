@@ -46,7 +46,7 @@ export function ProductForm({ product, onSave, onCancel }: { product?: Product; 
         <input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} /> Activo
       </label>
       <div className="flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="flex-1 bg-[#c9f04a] text-[#000000] font-bold rounded-lg py-2 text-sm disabled:opacity-50">{saving ? 'Guardando...' : 'Guardar'}</button>
+        <button onClick={handleSave} disabled={saving} className="flex-1 bg-[#bdbdbd] text-[#000000] font-bold rounded-lg py-2 text-sm disabled:opacity-50">{saving ? 'Guardando...' : 'Guardar'}</button>
         <button onClick={onCancel} className="flex-1 bg-[#222222] text-[#888888] rounded-lg py-2 text-sm">Cancelar</button>
       </div>
     </div>
