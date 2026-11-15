@@ -62,24 +62,24 @@ const cartCount = useRumCart((state) => state.itemCount())
   }, [search, category, sort, priceFilter])
 
   const panelStyle = {
-    background: '#1b1a17',
-    border: '1px solid #39352c',
+    background: '#1b1b1b',
+    border: '1px solid #333333',
     borderRadius: 18,
   } as const
 
   return (
-    <main style={{ minHeight: '100vh', background: '#11110f', color: '#17140e', paddingBottom: 100 }}>
+    <main style={{ minHeight: '100vh', background: '#080808', color: '#f2f2f2', paddingBottom: 100 }}>
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '22px 18px 40px' }}>
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
-          <a href="/" style={{ color: '#17140e', textDecoration: 'none', fontSize: 25, fontWeight: 900, letterSpacing: 2 }}>
+          <a href="/" style={{ color: '#f2f2f2', textDecoration: 'none', fontSize: 25, fontWeight: 900, letterSpacing: 2 }}>
             RUM
           </a>
                       <a
               href="/rum-cart"
               style={{
                 fontSize: 13,
-                color: '#17140e',
-                background: '#c6a363',
+                color: '#f2f2f2',
+                background: '#383838',
                 borderRadius: 30,
                 padding: '10px 16px',
                 textDecoration: 'none',
@@ -90,12 +90,12 @@ const cartCount = useRumCart((state) => state.itemCount())
             </a>
         </header>
 
-        <section style={{ ...panelStyle, padding: '25px 22px', marginBottom: 22, background: 'linear-gradient(120deg, #29251d, #171613)' }}>
-          <div style={{ color: '#c6a363', fontSize: 11, fontWeight: 800, letterSpacing: 2, marginBottom: 10 }}>МИР TELEGRAM-ПОДАРКОВ</div>
+        <section style={{ ...panelStyle, padding: '25px 22px', marginBottom: 22, background: 'linear-gradient(120deg, #202020, #202020)' }}>
+          <div style={{ color: '#bdbdbd', fontSize: 11, fontWeight: 800, letterSpacing: 2, marginBottom: 10 }}>МИР TELEGRAM-ПОДАРКОВ</div>
           <h1 style={{ fontSize: 'clamp(30px, 6vw, 46px)', lineHeight: 1.05, margin: '0 0 12px', letterSpacing: -1.5 }}>
             Найди свой<br />редкий экземпляр.
           </h1>
-          <p style={{ color: '#aaa397', fontSize: 14, margin: 0, maxWidth: 420, lineHeight: 1.6 }}>
+          <p style={{ color: '#bdbdbd', fontSize: 14, margin: 0, maxWidth: 420, lineHeight: 1.6 }}>
             Исследуй коллекции, открывай необычные подарки и собирай свою коллекцию.
           </p>
         </section>
@@ -112,7 +112,7 @@ const cartCount = useRumCart((state) => state.itemCount())
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Поиск подарков..."
             aria-label="Поиск подарков"
-            style={{ width: '100%', boxSizing: 'border-box', padding: '14px 15px 14px 43px', border: '1px solid #39352c', borderRadius: 14, background: '#1b1a17', fontSize: 14, outline: 'none' }}
+            style={{ width: '100%', boxSizing: 'border-box', padding: '14px 15px 14px 43px', border: '1px solid #333333', borderRadius: 14, background: '#1b1b1b', fontSize: 14, outline: 'none' }}
           />
         </div>
 
@@ -121,7 +121,7 @@ const cartCount = useRumCart((state) => state.itemCount())
             <button
               key={item.id}
               onClick={() => setCategory(item.id)}
-              style={{ whiteSpace: 'nowrap', border: '1px solid', borderColor: category === item.id ? '#c6a363' : '#39352c', background: category === item.id ? '#c6a363' : '#1b1a17', color: category === item.id ? '#17140e' : '#b8b0a1', padding: '10px 15px', borderRadius: 30, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
+              style={{ whiteSpace: 'nowrap', border: '1px solid', borderColor: category === item.id ? '#bdbdbd' : '#333333', background: category === item.id ? '#bdbdbd' : '#1b1b1b', color: category === item.id ? '#f2f2f2' : '#bdbdbd', padding: '10px 15px', borderRadius: 30, fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
             >
               {item.label}
             </button>
@@ -148,21 +148,21 @@ const cartCount = useRumCart((state) => state.itemCount())
               <button
                 onClick={() => toggleFavorite(gift)}
                 aria-label="Добавить в избранное"
-                style={{ position: 'absolute', zIndex: 1, right: 11, top: 11, width: 34, height: 34, borderRadius: 50, border: '1px solid #51432d', background: '#29251f', fontSize: 18, cursor: 'pointer' }}
+                style={{ position: 'absolute', zIndex: 1, right: 11, top: 11, width: 34, height: 34, borderRadius: 50, border: '1px solid #444444', background: '#252525', fontSize: 18, cursor: 'pointer' }}
               >
                 {favorites.some((item) => item.id === gift.id) ? '♥' : '♡'}
               </button>
               <button onClick={() => setSelected(gift)} style={{ width: '100%', border: 0, padding: 0, background: 'transparent', textAlign: 'left', cursor: 'pointer', color: 'inherit' }}>
                 <div style={{ height: 175, background: `linear-gradient(145deg, #494034, #201e19)`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                   <span style={{ fontSize: 82, filter: 'drop-shadow(0 12px 10px #00000018)' }}>{gift.emoji}</span>
-                  <span style={{ position: 'absolute', left: 11, bottom: 10, background: '#29251f', borderRadius: 20, padding: '5px 9px', color: '#d2b77f', fontSize: 10, fontWeight: 800 }}>{gift.rarity}</span>
-                  <span style={{ position: 'absolute', right: 11, bottom: 10, color: '#a69a83', fontSize: 10 }}>{gift.number}</span>
+                  <span style={{ position: 'absolute', left: 11, bottom: 10, background: '#252525', borderRadius: 20, padding: '5px 9px', color: '#d0d0d0', fontSize: 10, fontWeight: 800 }}>{gift.rarity}</span>
+                  <span style={{ position: 'absolute', right: 11, bottom: 10, color: '#bdbdbd', fontSize: 10 }}>{gift.number}</span>
                 </div>
                 <div style={{ padding: '14px 14px 15px' }}>
                   <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 4 }}>{gift.name}</div>
                   <div style={{ color: '#827b6e', fontSize: 11, marginBottom: 14 }}>{gift.model}</div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ color: '#c6a363', fontSize: 10 }}>ДЕМО-ЦЕНА</span>
+                    <span style={{ color: '#bdbdbd', fontSize: 10 }}>ДЕМО-ЦЕНА</span>
                     <strong style={{ fontSize: 16 }}>{gift.price} TON</strong>
                   </div>
                 </div>
@@ -172,7 +172,7 @@ const cartCount = useRumCart((state) => state.itemCount())
         </div>
 
         {filtered.length === 0 && (
-          <div style={{ ...panelStyle, textAlign: 'center', padding: 35, color: '#b8b0a1' }}>
+          <div style={{ ...panelStyle, textAlign: 'center', padding: 35, color: '#bdbdbd' }}>
             Ничего не найдено. Попробуй изменить поиск или фильтры.
           </div>
         )}
@@ -201,7 +201,7 @@ const cartCount = useRumCart((state) => state.itemCount())
             style={{
               width: '100%',
               maxWidth: 480,
-              background: '#1b1a17',
+              background: '#1b1b1b',
               borderRadius: 24,
               padding: 22,
               marginBottom: 10,
@@ -224,16 +224,16 @@ const cartCount = useRumCart((state) => state.itemCount())
             </div>
 
             <h2 style={{ margin: '0 0 5px', fontSize: 25 }}>{selected.name}</h2>
-            <p style={{ color: '#a69a83', margin: '0 0 17px', fontSize: 13 }}>
+            <p style={{ color: '#bdbdbd', margin: '0 0 17px', fontSize: 13 }}>
               {selected.model} · {selected.number}
             </p>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
-              <span style={{ color: '#b8b0a1' }}>Редкость: {selected.rarity}</span>
+              <span style={{ color: '#bdbdbd' }}>Редкость: {selected.rarity}</span>
               <strong style={{ fontSize: 19 }}>{selected.price} TON</strong>
             </div>
 
-            <div style={{ background: '#29251f', borderRadius: 12, padding: 13, color: '#aaa397', fontSize: 12, lineHeight: 1.5 }}>
+            <div style={{ background: '#252525', borderRadius: 12, padding: 13, color: '#bdbdbd', fontSize: 12, lineHeight: 1.5 }}>
               Демонстрационный предмет. Покупка и реальные платежи пока не подключены.
             </div>
 
@@ -256,8 +256,8 @@ const cartCount = useRumCart((state) => state.itemCount())
                 padding: 15,
                 border: 0,
                 borderRadius: 14,
-                background: '#c6a363',
-                color: '#17140e',
+                background: '#383838',
+                color: '#f2f2f2',
                 fontWeight: 800,
                 fontSize: 15,
                 cursor: 'pointer',

@@ -12,7 +12,7 @@ export default function FavoritesPage() {
   return (
     <main style={{
       minHeight: '100vh',
-      background: '#11110f',
+      background: '#080808',
       color: '#f2eee5',
       padding: '22px 18px 40px',
     }}>
@@ -47,10 +47,10 @@ export default function FavoritesPage() {
           fontWeight: 900,
           margin: '0 0 8px',
         }}>
-          Избранное <span style={{ color: '#c6a363' }}>♥</span>
+          Избранное <span style={{ color: '#bdbdbd' }}>♥</span>
         </h1>
         <p style={{
-          color: '#a69a83',
+          color: '#bdbdbd',
           fontSize: 14,
           marginBottom: 25,
         }}>
@@ -59,11 +59,11 @@ export default function FavoritesPage() {
 
         {items.length === 0 ? (
           <section style={{
-            background: '#1b1a17',
+            background: '#1b1b1b',
             borderRadius: 22,
             padding: '55px 20px',
             textAlign: 'center',
-            border: '1px solid #39352c',
+            border: '1px solid #333333',
           }}>
             <div style={{ fontSize: 55 }}>♡</div>
             <h2 style={{
@@ -74,7 +74,7 @@ export default function FavoritesPage() {
               Пока здесь пусто
             </h2>
             <p style={{
-              color: '#a69a83',
+              color: '#bdbdbd',
               fontSize: 13,
               lineHeight: 1.6,
               marginBottom: 22,
@@ -83,7 +83,7 @@ export default function FavoritesPage() {
             </p>
             <Link href="/catalog" style={{
               display: 'inline-block',
-              background: '#c6a363',
+              background: '#383838',
               color: '#f2eee5',
               borderRadius: 13,
               padding: '13px 22px',
@@ -101,7 +101,7 @@ export default function FavoritesPage() {
               alignItems: 'center',
               marginBottom: 15,
             }}>
-              <strong style={{ fontSize: 13, color: '#c6a363' }}>
+              <strong style={{ fontSize: 13, color: '#bdbdbd' }}>
                 Сохранено подарков: {items.length}
               </strong>
               <button onClick={clear} style={{
@@ -122,8 +122,8 @@ export default function FavoritesPage() {
             }}>
               {items.map((gift) => (
                 <article key={gift.id} style={{
-                  background: '#1b1a17',
-                  border: '1px solid #39352c',
+                  background: '#1b1b1b',
+                  border: '1px solid #333333',
                   borderRadius: 18,
                   overflow: 'hidden',
                 }}>
@@ -145,7 +145,7 @@ export default function FavoritesPage() {
                       {gift.name}
                     </strong>
                     <p style={{
-                      color: '#a69a83',
+                      color: '#bdbdbd',
                       fontSize: 11,
                       margin: '0 0 9px',
                     }}>
@@ -161,9 +161,9 @@ export default function FavoritesPage() {
                         width: '100%',
                         marginTop: 12,
                         padding: 9,
-                        border: '1px solid #39352c',
+                        border: '1px solid #333333',
                         borderRadius: 10,
-                        background: '#1b1a17',
+                        background: '#1b1b1b',
                         color: '#d2a18e',
                         cursor: 'pointer',
                         fontWeight: 700,
@@ -180,7 +180,7 @@ export default function FavoritesPage() {
         )}
 
         <p style={{
-          color: '#a69a83',
+          color: '#bdbdbd',
           fontSize: 11,
           textAlign: 'center',
           marginTop: 25,

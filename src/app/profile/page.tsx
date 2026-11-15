@@ -23,14 +23,14 @@ export default function ProfilePage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-[#101114] text-white px-5 py-8 pb-28">
+    <main className="min-h-screen bg-[#080808] text-white px-5 py-8 pb-28">
       <header className="flex items-center justify-between mb-8">
         <a href="/" className="text-xl font-black tracking-widest">RUM</a>
         <span className="text-sm text-gray-400">Профиль</span>
       </header>
 
-      <section className="rounded-3xl bg-[#1b1d22] p-6 text-center">
-        <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-[#30333b] text-4xl">
+      <section className="rounded-3xl bg-[#1b1b1b] p-6 text-center">
+        <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-[#383838] text-4xl">
           {profile?.avatarUrl ? (
             <img
               src={profile.avatarUrl}
@@ -50,7 +50,7 @@ export default function ProfilePage() {
           {profile?.username ? `@${profile.username}` : 'Telegram-профиль'}
         </p>
 
-        <div className="mt-6 rounded-2xl bg-[#252830] p-4">
+        <div className="mt-6 rounded-2xl bg-[#292929] p-4">
           <p className="text-sm text-gray-400">Баланс</p>
           <p className="mt-1 text-2xl font-bold">— TON</p>
           <p className="mt-1 text-xs text-gray-500">
@@ -73,7 +73,7 @@ export default function ProfilePage() {
           ].map(([icon, title]) => (
             <div
               key={title}
-              className="flex items-center justify-between rounded-2xl bg-[#1b1d22] p-4"
+              className="flex items-center justify-between rounded-2xl bg-[#1b1b1b] p-4"
             >
               <span>{icon} {title}</span>
               <span className="text-gray-500">›</span>
