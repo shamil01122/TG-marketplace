@@ -19,7 +19,7 @@ export default function HomePage() {
       <header className="flex items-center justify-between px-5 pb-6 pt-7">
         <div>
           <div className="text-[36px] font-black leading-none tracking-[-0.09em]">
-            RUM<span className="text-[#c6a363]">®</span>
+            RUM
           </div>
           <div className="mt-2 text-[9px] font-bold tracking-[0.28em] text-[#8b8578]">
             GIFTS CULTURE
@@ -53,7 +53,7 @@ export default function HomePage() {
             🎁
           </div>
           <div className="absolute bottom-4 right-5 text-[8px] font-bold tracking-[0.2em] text-[#c6a363]/60">
-            RUM® 2026
+            RUM 2026
           </div>
         </div>
       </section>
