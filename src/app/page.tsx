@@ -2,101 +2,130 @@ import RumBottomNav from '@/components/rum/bottom-nav'
 import Link from 'next/link'
 import TelegramAuth from '@/components/telegram-auth'
 
-const categories = [
-  { name: 'Все подарки', icon: '✳' },
-  { name: 'Редкие', icon: '💎' },
-  { name: 'Новые', icon: '✨' },
-  { name: 'Коллекции', icon: '🎁' },
+const gifts = [
+  { name: 'Plush Pepe', collection: 'PLUSH PEPE', price: '125 TON', rarity: 'RARE', emoji: '🐸', bg: 'from-[#414039] to-[#22221f]' },
+  { name: 'Durov’s Cap', collection: 'CAPS', price: '48 TON', rarity: 'POPULAR', emoji: '🧢', bg: 'from-[#343a40] to-[#202124]' },
+  { name: 'Signet Ring', collection: 'JEWELRY', price: '32 TON', rarity: 'COLLECTIBLE', emoji: '💍', bg: 'from-[#494034] to-[#25211d]' },
+  { name: 'Magic Potion', collection: 'POTIONS', price: '19 TON', rarity: 'NEW', emoji: '🧪', bg: 'from-[#393044] to-[#211e27]' },
 ]
 
-const gifts = [
-  { name: 'Plush Pepe', collection: 'Plush Pepe', price: '125 TON', rarity: 'Редкий', emoji: '🐸', bg: 'bg-[#d8edbd]' },
-  { name: 'Durov’s Cap', collection: 'Caps', price: '48 TON', rarity: 'Популярный', emoji: '🧢', bg: 'bg-[#d9e5f7]' },
-  { name: 'Signet Ring', collection: 'Jewelry', price: '32 TON', rarity: 'Коллекционный', emoji: '💍', bg: 'bg-[#f4dfbd]' },
-  { name: 'Magic Potion', collection: 'Potions', price: '19 TON', rarity: 'Новый', emoji: '🧪', bg: 'bg-[#e8d9f5]' },
-]
+const categories = ['ALL GIFTS', 'RARE', 'NEW', 'COLLECTIONS']
 
 export default function HomePage() {
   return (
-    <main className="mx-auto min-h-screen max-w-[520px] bg-[#f7f8f5] pb-24 text-[#171914]">
+    <main className="mx-auto min-h-screen max-w-[520px] overflow-hidden bg-[#11110f] pb-24 text-[#f2eee5]">
       <TelegramAuth />
-      <header className="flex items-center justify-between px-5 pb-5 pt-7">
+
+      <header className="flex items-center justify-between px-5 pb-6 pt-7">
         <div>
-          <div className="text-[32px] font-black tracking-[-0.09em]">RUM<span className="text-[#a4ce37]">.</span></div>
-          <div className="text-[10px] font-semibold tracking-[0.18em] text-[#85877f]">GIFTS MARKETPLACE</div>
+          <div className="text-[36px] font-black leading-none tracking-[-0.09em]">
+            RUM<span className="text-[#c6a363]">®</span>
+          </div>
+          <div className="mt-2 text-[9px] font-bold tracking-[0.28em] text-[#8b8578]">
+            GIFTS CULTURE
+          </div>
         </div>
-        <div className="rounded-2xl border border-[#e8eae3] bg-white px-4 py-2.5">
-          <div className="text-[10px] text-[#85877f]">Мой баланс</div>
-          <div className="text-sm font-bold">— TON</div>
+        <div className="rounded-xl border border-[#39352c] bg-[#1b1a17] px-4 py-2.5">
+          <div className="text-[9px] tracking-widest text-[#8b8578]">YOUR BALANCE</div>
+          <div className="mt-1 text-sm font-bold">— <span className="text-[#c6a363]">TON</span></div>
         </div>
       </header>
 
-      <section className="px-5">
-        <div className="rounded-[26px] bg-[#1b1d18] p-5 text-white">
-          <div className="text-xs font-semibold tracking-[0.16em] text-[#b8c0a9]">ТВОЯ КОЛЛЕКЦИЯ НАЧИНАЕТСЯ ЗДЕСЬ</div>
-          <h1 className="mt-3 text-[30px] font-black leading-[1.05] tracking-[-0.05em]">
-            Найди подарок.<br />Поймай редкость.
-          </h1>
-          <p className="mt-3 max-w-[260px] text-sm leading-5 text-[#b8bdb1]">
-            Исследуй мир коллекционных подарков Telegram.
-          </p>
-          <Link href="/catalog" className="mt-5 inline-flex rounded-xl bg-[#c9ef62] px-5 py-3 text-sm font-bold text-[#20251a]">
-            Открыть каталог <span className="ml-2">↗</span>
-          </Link>
-          <div className="pointer-events-none float-right -mt-20 mr-1 text-[76px]">🎁</div>
+      <section className="px-4">
+        <div className="relative overflow-hidden rounded-[26px] border border-[#4b402d] bg-gradient-to-br from-[#29251d] via-[#1d1c18] to-[#151512] p-6">
+          <div className="absolute -right-8 -top-8 h-48 w-48 rounded-full bg-[#c6a363]/10 blur-3xl" />
+          <div className="relative">
+            <div className="text-[10px] font-bold tracking-[0.22em] text-[#c6a363]">
+              THE TELEGRAM GIFTS MARKET
+            </div>
+            <h1 className="mt-7 text-[43px] font-black uppercase leading-[0.94] tracking-[-0.065em]">
+              YOUR GIFTS.<br />
+              <span className="text-[#c6a363]">YOUR RULES.</span>
+            </h1>
+            <p className="mt-5 max-w-[250px] text-sm leading-6 text-[#aaa397]">
+              Находи редкие подарки. Собирай свою коллекцию. Будь частью культуры.
+            </p>
+            <Link href="/catalog" className="mt-7 inline-flex items-center gap-4 rounded-xl bg-[#c6a363] px-5 py-3.5 text-xs font-black tracking-wider text-[#17140e] transition hover:bg-[#d8b879]">
+              EXPLORE MARKET <span className="text-base">↗</span>
+            </Link>
+          </div>
+          <div className="pointer-events-none absolute bottom-5 right-3 rotate-[-12deg] text-[86px] opacity-80">
+            🎁
+          </div>
+          <div className="absolute bottom-4 right-5 text-[8px] font-bold tracking-[0.2em] text-[#c6a363]/60">
+            RUM® 2026
+          </div>
         </div>
       </section>
 
-      <section className="px-5 pt-6">
-        <Link href="/catalog" className="flex items-center gap-3 rounded-2xl border border-[#e8eae3] bg-white px-4 py-3.5 text-sm text-[#85877f]">
-          <span className="text-lg">⌕</span>
-          Поиск подарков и коллекций
-          <span className="ml-auto text-xs">→</span>
+      <section className="px-5 pt-7">
+        <Link href="/catalog" className="flex items-center gap-3 rounded-xl border border-[#343129] bg-[#1a1916] px-4 py-4 text-sm text-[#8f897d]">
+          <span className="text-xl text-[#c6a363]">⌕</span>
+          Search gifts & collections
+          <span className="ml-auto text-lg">→</span>
         </Link>
       </section>
 
-      <section className="pt-6">
-        <div className="mb-3 flex items-center justify-between px-5">
-          <h2 className="text-lg font-extrabold tracking-tight">Категории</h2>
-          <Link href="/catalog" className="text-xs font-semibold text-[#7e9e2b]">Все →</Link>
+      <section className="pt-8">
+        <div className="mb-4 flex items-center justify-between px-5">
+          <h2 className="text-xs font-black tracking-[0.2em]">DISCOVER</h2>
+          <span className="text-[9px] tracking-widest text-[#827b6e]">01 / CATEGORIES</span>
         </div>
         <div className="flex gap-2 overflow-x-auto px-5 pb-1">
           {categories.map((category, index) => (
-            <Link key={category.name} href="/catalog" className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-3 text-xs font-bold ${index === 0 ? 'bg-[#c9ef62] text-[#20251a]' : 'border border-[#e8eae3] bg-white'}`}>
-              <span>{category.icon}</span>{category.name}
+            <Link key={category} href="/catalog" className={`shrink-0 rounded-lg px-4 py-3 text-[9px] font-black tracking-widest ${index === 0 ? 'bg-[#c6a363] text-[#17140e]' : 'border border-[#39352c] bg-[#1b1a17] text-[#b8b0a1]'}`}>
+              {category}
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="px-5 pt-7">
-        <div className="mb-3 flex items-center justify-between">
+      <section className="px-5 pt-8">
+        <div className="mb-4 flex items-end justify-between">
           <div>
-            <h2 className="text-lg font-extrabold tracking-tight">Популярные подарки</h2>
-            <p className="mt-0.5 text-xs text-[#85877f]">Знакомство с коллекциями</p>
+            <div className="mb-2 text-[9px] font-bold tracking-[0.2em] text-[#c6a363]">CURATED SELECTION</div>
+            <h2 className="text-2xl font-black tracking-[-0.05em]">Trending gifts<span className="text-[#c6a363]">.</span></h2>
           </div>
-          <Link href="/catalog" className="text-xs font-semibold text-[#7e9e2b]">Каталог →</Link>
+          <Link href="/catalog" className="pb-1 text-[10px] font-bold tracking-wider text-[#c6a363]">VIEW ALL ↗</Link>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          {gifts.map((gift) => (
-            <Link href="/catalog" key={gift.name} className="overflow-hidden rounded-[20px] border border-[#e8eae3] bg-white">
-              <div className={`relative flex aspect-[1.12/1] items-center justify-center ${gift.bg}`}>
-                <span className="text-[76px] drop-shadow-sm">{gift.emoji}</span>
-                <span className="absolute left-2.5 top-2.5 rounded-lg bg-white/80 px-2 py-1 text-[9px] font-bold">{gift.rarity}</span>
+          {gifts.map((gift, index) => (
+            <Link href="/catalog" key={gift.name} className="overflow-hidden rounded-2xl border border-[#343129] bg-[#1a1916]">
+              <div className={`relative flex aspect-[1/1.05] items-center justify-center bg-gradient-to-br ${gift.bg}`}>
+                <span className="text-[76px] drop-shadow-2xl">{gift.emoji}</span>
+                <span className="absolute left-2.5 top-2.5 rounded-md border border-[#c6a363]/30 bg-[#171613]/80 px-2 py-1 text-[8px] font-bold tracking-wider text-[#d2b77f]">
+                  {gift.rarity}
+                </span>
+                <span className="absolute bottom-2.5 right-2.5 text-[9px] text-white/40">
+                  0{index + 1}
+                </span>
               </div>
               <div className="p-3">
                 <div className="truncate text-sm font-extrabold">{gift.name}</div>
-                <div className="mt-0.5 text-[11px] text-[#85877f]">{gift.collection}</div>
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="text-sm font-black">{gift.price}</span>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#c9ef62] text-sm">↗</span>
+                <div className="mt-1 text-[9px] font-semibold tracking-[0.15em] text-[#827b6e]">{gift.collection}</div>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="text-sm font-black text-[#d2b77f]">{gift.price}</span>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#c6a363] text-sm text-[#17140e]">↗</span>
                 </div>
               </div>
             </Link>
           ))}
         </div>
-        <p className="mt-3 text-center text-[10px] text-[#999b92]">Демонстрационные карточки · Не реальные объявления</p>
+        <p className="mt-4 text-center text-[9px] tracking-wider text-[#706b60]">
+          DEMO ITEMS · NOT REAL LISTINGS
+        </p>
+      </section>
+
+      <section className="px-5 pb-5 pt-9">
+        <Link href="/sell" className="flex items-center justify-between rounded-2xl border border-[#51432d] bg-[#201d17] p-5">
+          <div>
+            <div className="text-[9px] font-bold tracking-[0.2em] text-[#c6a363]">GOT SOMETHING RARE?</div>
+            <div className="mt-2 text-xl font-black">Make it yours.</div>
+            <div className="mt-1 text-xs text-[#999183]">List your gift on RUM</div>
+          </div>
+          <span className="text-3xl text-[#c6a363]">↗</span>
+        </Link>
       </section>
 
       <RumBottomNav />
