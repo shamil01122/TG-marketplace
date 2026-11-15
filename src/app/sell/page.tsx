@@ -94,8 +94,8 @@ export default function SellPage() {
   return (
     <main style={{
       minHeight: '100vh',
-      background: '#f7f8f5',
-      color: '#20251f',
+      background: '#11110f',
+      color: '#f2eee5',
       padding: '22px 18px 105px',
     }}>
       <div style={{ maxWidth: 520, margin: '0 auto' }}>
@@ -106,16 +106,16 @@ export default function SellPage() {
           marginBottom: 35,
         }}>
           <Link href="/" style={{
-            color: '#20251f',
+            color: '#f2eee5',
             textDecoration: 'none',
             fontSize: 25,
             fontWeight: 900,
             letterSpacing: 2,
           }}>
-            RUM<span style={{ color: '#83a879' }}>.</span>
+            RUM
           </Link>
           <Link href="/rum-cart" style={{
-            color: '#20251f',
+            color: '#f2eee5',
             textDecoration: 'none',
             fontSize: 13,
           }}>
@@ -124,8 +124,8 @@ export default function SellPage() {
         </header>
 
         <div style={{
-          background: '#20251f',
-          color: '#fff',
+          background: '#29251d',
+          color: '#f2eee5',
           borderRadius: 24,
           padding: 25,
           marginBottom: 25,
@@ -139,7 +139,7 @@ export default function SellPage() {
             Продай свой подарок
           </h1>
           <p style={{
-            color: '#c2c9bc',
+            color: '#b8b0a1',
             fontSize: 14,
             lineHeight: 1.6,
             margin: 0,
@@ -150,8 +150,8 @@ export default function SellPage() {
         </div>
 
         <section style={{
-          background: '#fff',
-          border: '1px solid #eceeea',
+          background: '#1b1a17',
+          border: '1px solid #39352c',
           borderRadius: 20,
           padding: 22,
           marginBottom: 18,
@@ -169,7 +169,7 @@ export default function SellPage() {
                 Пока нет доступных подарков
               </h3>
               <p style={{
-                color: '#858d7e',
+                color: '#a69a83',
                 fontSize: 13,
                 lineHeight: 1.6,
               }}>
@@ -194,21 +194,21 @@ export default function SellPage() {
                     padding: 12,
                     borderRadius: 14,
                     border: selectedGift === gift.id
-                      ? '2px solid #83a879'
-                      : '1px solid #eceeea',
+                      ? '2px solid #c6a363'
+                      : '1px solid #39352c',
                     background: selectedGift === gift.id
                       ? '#f3f8ee'
                       : '#fff',
                     textAlign: 'left',
                     cursor: 'pointer',
-                    color: '#20251f',
+                    color: '#f2eee5',
                   }}
                 >
                   <div style={{
                     width: 58,
                     height: 58,
                     borderRadius: 12,
-                    background: '#f0f2ec',
+                    background: '#29251f',
                     display: 'grid',
                     placeItems: 'center',
                     overflow: 'hidden',
@@ -230,7 +230,7 @@ export default function SellPage() {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <strong>{gift.name}</strong>
                     <p style={{
-                      color: '#858d7e',
+                      color: '#a69a83',
                       fontSize: 12,
                       margin: '5px 0 0',
                     }}>
@@ -266,7 +266,7 @@ export default function SellPage() {
                   width: '100%',
                   padding: 14,
                   borderRadius: 12,
-                  border: '1px solid #dfe3d9',
+                  border: '1px solid #51432d',
                   fontSize: 16,
                   boxSizing: 'border-box',
                 }}
@@ -281,8 +281,8 @@ export default function SellPage() {
                   padding: 15,
                   border: 0,
                   borderRadius: 13,
-                  background: '#c9f04a',
-                  color: '#20251f',
+                  background: '#c6a363',
+                  color: '#f2eee5',
                   fontWeight: 800,
                   fontSize: 15,
                   cursor: submitting ? 'wait' : 'pointer',
@@ -296,7 +296,7 @@ export default function SellPage() {
 
           {error && (
             <p style={{
-              color: '#b33b32',
+              color: '#e18b7e',
               fontSize: 13,
               lineHeight: 1.5,
               marginTop: 15,
@@ -307,7 +307,7 @@ export default function SellPage() {
 
           {message && (
             <p style={{
-              color: '#477a35',
+              color: '#b7c98b',
               fontSize: 13,
               marginTop: 15,
             }}>
@@ -317,8 +317,8 @@ export default function SellPage() {
         </section>
 
         <section style={{
-          background: '#fff',
-          border: '1px solid #eceeea',
+          background: '#1b1a17',
+          border: '1px solid #39352c',
           borderRadius: 20,
           padding: 22,
         }}>
@@ -334,17 +334,17 @@ export default function SellPage() {
               display: 'flex',
               gap: 14,
               padding: '13px 0',
-              borderBottom: number === '03' ? 0 : '1px solid #f0f1ed',
+              borderBottom: number === '03' ? 0 : '1px solid #39352c',
             }}>
               <span style={{
-                color: '#8ca34c',
+                color: '#c6a363',
                 fontSize: 14,
                 fontWeight: 900,
               }}>{number}</span>
               <div>
                 <strong style={{ fontSize: 14 }}>{title}</strong>
                 <p style={{
-                  color: '#858d7e',
+                  color: '#a69a83',
                   fontSize: 12,
                   margin: '5px 0 0',
                 }}>{description}</p>
@@ -354,7 +354,7 @@ export default function SellPage() {
         </section>
 
         <p style={{
-          color: '#858d7e',
+          color: '#a69a83',
           fontSize: 11,
           textAlign: 'center',
           lineHeight: 1.5,
@@ -367,8 +367,8 @@ export default function SellPage() {
         <Link href="/catalog" style={{
           display: 'block',
           textAlign: 'center',
-          background: '#c9f04a',
-          color: '#20251f',
+          background: '#c6a363',
+          color: '#f2eee5',
           borderRadius: 14,
           padding: 15,
           marginTop: 18,
