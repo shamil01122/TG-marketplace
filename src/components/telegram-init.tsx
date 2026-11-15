@@ -33,8 +33,8 @@ export default function TelegramInit() {
 
     webApp.ready()
     webApp.expand()
-    webApp.setHeaderColor('#f7f8f5')
-    webApp.setBackgroundColor('#f7f8f5')
+    webApp.setHeaderColor('#080808')
+    webApp.setBackgroundColor('#080808')
 
     const backButton = webApp.BackButton
 
