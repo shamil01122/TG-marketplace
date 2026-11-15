@@ -26,8 +26,8 @@ export default function RumBottomNav() {
       width: '100%',
       maxWidth: 520,
       padding: '10px 8px max(12px, env(safe-area-inset-bottom))',
-      background: '#ffffffed',
-      borderTop: '1px solid #e8eae3',
+      background: '#111111ed',
+      borderTop: '1px solid #333333',
       backdropFilter: 'blur(12px)',
     }}>
       {items.map((item) => {
@@ -42,7 +42,7 @@ export default function RumBottomNav() {
               flexDirection: 'column',
               alignItems: 'center',
               gap: 4,
-              color: active ? '#789b24' : '#85877f',
+              color: active ? '#ffffff' : '#999999',
               textDecoration: 'none',
               fontWeight: active ? 800 : 600,
             }}
