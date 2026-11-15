@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/lib/cart'
 
-declare global { interface Window { Telegram?: { WebApp?: { initData: string } } } }
 
 const DELIVERY_FEE = 3
 
