@@ -29,7 +29,12 @@ export async function GET() {
       .from(rumListings)
       .innerJoin(rumGifts, eq(rumListings.giftId, rumGifts.id))
       .innerJoin(rumProfiles, eq(rumListings.sellerId, rumProfiles.id))
-      .where(eq(rumListings.status, 'active'))
+      .where(
+  and(
+    eq(rumListings.status, 'active'),
+    eq(rumGifts.status, 'listed'),
+  ),
+)
       .orderBy(desc(rumListings.createdAt))
       .limit(100)
 

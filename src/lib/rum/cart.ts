@@ -2,21 +2,19 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export interface RumCartItem {
-  giftId: string
+  listingId: string
   name: string
   priceTon: number
-  image: string
+  imageUrl: string
   collection: string
   model: string
-  rarity: string
-  qty: number
+  qty: 1
 }
 
 interface RumCartStore {
   items: RumCartItem[]
   addGift: (gift: Omit<RumCartItem, 'qty'>) => void
-  removeGift: (giftId: string) => void
-  updateQty: (giftId: string, qty: number) => void
+  removeGift: (listingId: string) => void
   clear: () => void
   totalTon: () => number
   itemCount: () => number
@@ -29,43 +27,27 @@ export const useRumCart = create<RumCartStore>()(
 
       addGift: (gift) =>
         set((state) => {
-          const existing = state.items.find((item) => item.giftId === gift.giftId)
-
-          if (existing) {
-            return {
-              items: state.items.map((item) =>
-                item.giftId === gift.giftId
-                  ? { ...item, qty: item.qty + 1 }
-                  : item,
-              ),
-            }
+          if (state.items.some((item) => item.listingId === gift.listingId)) {
+            return state
           }
 
-          return { items: [...state.items, { ...gift, qty: 1 }] }
+          return {
+            items: [...state.items, { ...gift, qty: 1 }],
+          }
         }),
 
-      removeGift: (giftId) =>
+      removeGift: (listingId) =>
         set((state) => ({
-          items: state.items.filter((item) => item.giftId !== giftId),
-        })),
-
-      updateQty: (giftId, qty) =>
-        set((state) => ({
-          items: qty <= 0
-            ? state.items.filter((item) => item.giftId !== giftId)
-            : state.items.map((item) =>
-                item.giftId === giftId ? { ...item, qty } : item,
-              ),
+          items: state.items.filter((item) => item.listingId !== listingId),
         })),
 
       clear: () => set({ items: [] }),
 
       totalTon: () =>
-        get().items.reduce((sum, item) => sum + item.priceTon * item.qty, 0),
+        get().items.reduce((sum, item) => sum + item.priceTon, 0),
 
-      itemCount: () =>
-        get().items.reduce((sum, item) => sum + item.qty, 0),
+      itemCount: () => get().items.length,
     }),
-    { name: 'rum-cart' },
+    { name: 'rum-cart-v2' },
   ),
-)
+) 

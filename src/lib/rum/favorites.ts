@@ -2,21 +2,13 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export interface RumFavorite {
-  id: number
-  name: string
-  model: string
-  emoji: string
-  price: number
-  rarity: string
-  category: 'rare' | 'limited' | 'popular'
-  color: string
-  number: string
+  listingId: string
 }
 
 interface FavoritesStore {
   items: RumFavorite[]
-  toggleFavorite: (gift: RumFavorite) => void
-  isFavorite: (id: number) => boolean
+  toggleFavorite: (listingId: string) => void
+  isFavorite: (listingId: string) => boolean
   clear: () => void
 }
 
@@ -24,15 +16,19 @@ export const useRumFavorites = create<FavoritesStore>()(
   persist(
     (set, get) => ({
       items: [],
-      toggleFavorite: (gift) =>
+
+      toggleFavorite: (listingId) =>
         set((state) => ({
-          items: state.items.some((item) => item.id === gift.id)
-            ? state.items.filter((item) => item.id !== gift.id)
-            : [...state.items, gift],
+          items: state.items.some((item) => item.listingId === listingId)
+            ? state.items.filter((item) => item.listingId !== listingId)
+            : [...state.items, { listingId }],
         })),
-      isFavorite: (id) => get().items.some((item) => item.id === id),
+
+      isFavorite: (listingId) =>
+        get().items.some((item) => item.listingId === listingId),
+
       clear: () => set({ items: [] }),
     }),
-    { name: 'rum-favorites' },
+    { name: 'rum-favorites-v2' },
   ),
 )

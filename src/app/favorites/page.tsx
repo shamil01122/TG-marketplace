@@ -1,20 +1,102 @@
-'use client'
-import RumBottomNav from '@/components/rum/bottom-nav'
 
+'use client'
+
+import RumBottomNav from '@/components/rum/bottom-nav'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { useRumFavorites } from '@/lib/rum/favorites'
 
+type Listing = {
+  id: string
+  priceTon: string
+  gift: {
+    name: string
+    collection: string
+    model: string
+    imageUrl: string
+  }
+  seller: {
+    username: string
+    displayName: string
+  }
+}
+
 export default function FavoritesPage() {
-  const items = useRumFavorites((state) => state.items)
+  const favoriteItems = useRumFavorites((state) => state.items)
   const toggleFavorite = useRumFavorites((state) => state.toggleFavorite)
   const clear = useRumFavorites((state) => state.clear)
+
+  const [listings, setListings] = useState<Listing[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadListings() {
+      try {
+        const response = await fetch('/api/rum/listings', {
+          cache: 'no-store',
+        })
+
+        if (!response.ok) {
+          throw new Error('Не удалось загрузить объявления')
+        }
+
+        const data = await response.json()
+
+        if (!Array.isArray(data)) {
+          throw new Error('Сервер вернул неверный формат данных')
+        }
+
+        if (!cancelled) {
+          setListings(data)
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err instanceof Error ? err.message : 'Ошибка загрузки',
+          )
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    }
+
+    loadListings()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const favoriteIds = new Set(
+    favoriteItems.map((item) => item.listingId),
+  )
+
+  const favorites = listings.filter((listing) =>
+    favoriteIds.has(listing.id),
+  )
+
+  const panelStyle = {
+    background: '#1b1b1b',
+    border: '1px solid #333333',
+    borderRadius: 18,
+  } as const
+
+  const formatPrice = (price: string) =>
+    Number(price).toLocaleString('ru-RU', {
+      maximumFractionDigits: 4,
+    })
 
   return (
     <main style={{
       minHeight: '100vh',
       background: '#080808',
       color: '#f2f2f2',
-      padding: '22px 18px 40px',
+      padding: '22px 18px 110px',
     }}>
       <div style={{ maxWidth: 520, margin: '0 auto' }}>
         <header style={{
@@ -32,6 +114,7 @@ export default function FavoritesPage() {
           }}>
             RUM
           </Link>
+
           <Link href="/catalog" style={{
             color: '#f2f2f2',
             textDecoration: 'none',
@@ -49,23 +132,41 @@ export default function FavoritesPage() {
         }}>
           Избранное <span style={{ color: '#bdbdbd' }}>♥</span>
         </h1>
+
         <p style={{
           color: '#bdbdbd',
           fontSize: 14,
           marginBottom: 25,
         }}>
-          Твои любимые коллекционные подарки
+          Сохранённые объявления RUM
         </p>
 
-        {items.length === 0 ? (
+        {loading ? (
           <section style={{
-            background: '#1b1b1b',
-            borderRadius: 22,
+            ...panelStyle,
+            padding: 35,
+            textAlign: 'center',
+            color: '#bdbdbd',
+          }}>
+            Загружаем избранное…
+          </section>
+        ) : error ? (
+          <section style={{
+            ...panelStyle,
+            padding: 30,
+            textAlign: 'center',
+            color: '#e0a0a0',
+          }}>
+            {error}
+          </section>
+        ) : favorites.length === 0 ? (
+          <section style={{
+            ...panelStyle,
             padding: '55px 20px',
             textAlign: 'center',
-            border: '1px solid #333333',
           }}>
             <div style={{ fontSize: 55 }}>♡</div>
+
             <h2 style={{
               fontSize: 19,
               fontWeight: 800,
@@ -73,14 +174,16 @@ export default function FavoritesPage() {
             }}>
               Пока здесь пусто
             </h2>
+
             <p style={{
               color: '#bdbdbd',
               fontSize: 13,
               lineHeight: 1.6,
               marginBottom: 22,
             }}>
-              Нажимай на сердечко у понравившихся подарков в каталоге.
+              Добавляй объявления в избранное с помощью сердечка в каталоге.
             </p>
+
             <Link href="/catalog" style={{
               display: 'inline-block',
               background: '#383838',
@@ -102,15 +205,19 @@ export default function FavoritesPage() {
               marginBottom: 15,
             }}>
               <strong style={{ fontSize: 13, color: '#bdbdbd' }}>
-                Сохранено подарков: {items.length}
+                Сохранено: {favorites.length}
               </strong>
-              <button onClick={clear} style={{
-                border: 0,
-                background: 'transparent',
-                color: '#d2a18e',
-                fontSize: 12,
-                cursor: 'pointer',
-              }}>
+
+              <button
+                onClick={clear}
+                style={{
+                  border: 0,
+                  background: 'transparent',
+                  color: '#d2a18e',
+                  fontSize: 12,
+                  cursor: 'pointer',
+                }}
+              >
                 Очистить всё
               </button>
             </div>
@@ -120,42 +227,58 @@ export default function FavoritesPage() {
               gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
               gap: 13,
             }}>
-              {items.map((gift) => (
-                <article key={gift.id} style={{
-                  background: '#1b1b1b',
-                  border: '1px solid #333333',
-                  borderRadius: 18,
+              {favorites.map((listing) => (
+                <article key={listing.id} style={{
+                  ...panelStyle,
                   overflow: 'hidden',
                 }}>
                   <div style={{
                     height: 135,
-                    background: `linear-gradient(145deg, #202020, #171717)`,
+                    background: '#202020',
                     display: 'grid',
                     placeItems: 'center',
-                    fontSize: 65,
+                    padding: 10,
                   }}>
-                    {gift.emoji}
+                    {listing.gift.imageUrl ? (
+                      <img
+                        src={listing.gift.imageUrl}
+                        alt={listing.gift.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                        }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: 55 }}>🎁</span>
+                    )}
                   </div>
+
                   <div style={{ padding: 12 }}>
                     <strong style={{
                       display: 'block',
                       fontSize: 14,
                       marginBottom: 5,
                     }}>
-                      {gift.name}
+                      {listing.gift.name}
                     </strong>
+
                     <p style={{
                       color: '#bdbdbd',
                       fontSize: 11,
                       margin: '0 0 9px',
                     }}>
-                      {gift.rarity}
+                      {[listing.gift.collection, listing.gift.model]
+                        .filter(Boolean)
+                        .join(' · ') || 'Telegram-подарок'}
                     </p>
+
                     <strong style={{ fontSize: 15 }}>
-                      {gift.price} TON
+                      {formatPrice(listing.priceTon)} TON
                     </strong>
+
                     <button
-                      onClick={() => toggleFavorite(gift)}
+                      onClick={() => toggleFavorite(listing.id)}
                       style={{
                         display: 'block',
                         width: '100%',
@@ -176,18 +299,21 @@ export default function FavoritesPage() {
                 </article>
               ))}
             </div>
+
+            {favoriteItems.length > favorites.length && (
+              <p style={{
+                color: '#999999',
+                fontSize: 11,
+                lineHeight: 1.6,
+                marginTop: 18,
+              }}>
+                Некоторые сохранённые объявления больше не активны и не отображаются.
+              </p>
+            )}
           </>
         )}
-
-        <p style={{
-          color: '#bdbdbd',
-          fontSize: 11,
-          textAlign: 'center',
-          marginTop: 25,
-        }}>
-          Цены и карточки пока демонстрационные.
-        </p>
       </div>
+
       <RumBottomNav />
     </main>
   )

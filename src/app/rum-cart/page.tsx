@@ -1,4 +1,3 @@
-
 'use client'
 
 import Link from 'next/link'
@@ -8,13 +7,9 @@ import { useRumCart } from '@/lib/rum/cart'
 export default function RumCartPage() {
   const items = useRumCart((state) => state.items)
   const removeGift = useRumCart((state) => state.removeGift)
-  const updateQty = useRumCart((state) => state.updateQty)
   const clear = useRumCart((state) => state.clear)
 
-  const total = items.reduce(
-    (sum, item) => sum + item.priceTon * item.qty,
-    0,
-  )
+  const total = items.reduce((sum, item) => sum + item.priceTon, 0)
 
   return (
     <main style={{ minHeight: '100vh', background: '#080808', padding: 20, paddingBottom: 110, color: '#f2f2f2' }}>
@@ -24,14 +19,14 @@ export default function RumCartPage() {
       </header>
 
       <h1 style={{ fontSize: 29, fontWeight: 800, marginBottom: 8 }}>Корзина</h1>
-      <p style={{ color: '#858d7e', marginBottom: 24 }}>Твои выбранные подарки</p>
+      <p style={{ color: '#858d7e', marginBottom: 24 }}>Твои выбранные объявления</p>
 
       {items.length === 0 ? (
         <section style={{ textAlign: 'center', padding: '65px 15px', background: '#1b1b1b', borderRadius: 22 }}>
           <div style={{ fontSize: 55 }}>🎁</div>
           <h2 style={{ fontSize: 20, fontWeight: 700, margin: '15px 0 8px' }}>Корзина пока пуста</h2>
           <p style={{ color: '#858d7e', marginBottom: 22 }}>Выбери подарок в каталоге RUM</p>
-          <Link href="/catalog" style={{ display: 'inline-block', background: '#f2f2f2', padding: '13px 22px', borderRadius: 13, color: '#f2f2f2', textDecoration: 'none', fontWeight: 800 }}>
+          <Link href="/catalog" style={{ display: 'inline-block', background: '#f2f2f2', padding: '13px 22px', borderRadius: 13, color: '#080808', textDecoration: 'none', fontWeight: 800 }}>
             Перейти в каталог
           </Link>
         </section>
@@ -39,19 +34,29 @@ export default function RumCartPage() {
         <>
           <div style={{ display: 'grid', gap: 13 }}>
             {items.map((item) => (
-              <article key={item.giftId} style={{ display: 'flex', gap: 14, padding: 15, background: '#1b1b1b', borderRadius: 18, alignItems: 'center' }}>
-                <div style={{ width: 75, height: 75, flexShrink: 0, borderRadius: 15, background: '#eef0e9', display: 'grid', placeItems: 'center', fontSize: 38 }}>
-                  {item.image}
-                </div>
+              <article key={item.listingId} style={{ display: 'flex', gap: 14, padding: 15, background: '#1b1b1b', borderRadius: 18, alignItems: 'center' }}>
+                {item.imageUrl ? (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.name}
+                    style={{ width: 75, height: 75, flexShrink: 0, borderRadius: 15, objectFit: 'contain', background: '#252525' }}
+                  />
+                ) : (
+                  <div style={{ width: 75, height: 75, flexShrink: 0, borderRadius: 15, background: '#252525', display: 'grid', placeItems: 'center', fontSize: 35 }}>
+                    🎁
+                  </div>
+                )}
+
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <strong>{item.name}</strong>
-                  <p style={{ color: '#858d7e', fontSize: 12, margin: '5px 0' }}>{item.rarity}</p>
+                  <p style={{ color: '#858d7e', fontSize: 12, margin: '5px 0' }}>
+                    {[item.collection, item.model].filter(Boolean).join(' · ') || 'Telegram-подарок'}
+                  </p>
                   <strong>{item.priceTon} TON</strong>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 13, marginTop: 9 }}>
-                    <button onClick={() => updateQty(item.giftId, item.qty - 1)}>−</button>
-                    <span>{item.qty}</span>
-                    <button onClick={() => updateQty(item.giftId, item.qty + 1)}>+</button>
-                    <button onClick={() => removeGift(item.giftId)} style={{ marginLeft: 8, color: '#999999' }}>Удалить</button>
+                  <div style={{ marginTop: 9 }}>
+                    <button onClick={() => removeGift(item.listingId)} style={{ color: '#999999', background: 'none', border: 0, cursor: 'pointer', padding: 0 }}>
+                      Удалить
+                    </button>
                   </div>
                 </div>
               </article>
@@ -64,7 +69,7 @@ export default function RumCartPage() {
               <span>{total.toFixed(2)} TON</span>
             </div>
             <p style={{ color: '#858d7e', fontSize: 12, lineHeight: 1.5, marginTop: 12 }}>
-              Демонстрационная корзина. Реальные покупки и платежи пока не подключены.
+              Корзина пока служит списком выбранных объявлений. Проверка цены, покупка и TON-платежи ещё не подключены.
             </p>
             <button onClick={clear} style={{ marginTop: 12, color: '#999999', background: 'none', border: 0, cursor: 'pointer' }}>
               Очистить корзину
@@ -72,6 +77,7 @@ export default function RumCartPage() {
           </section>
         </>
       )}
+
       <RumBottomNav />
     </main>
   )
