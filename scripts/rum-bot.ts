@@ -11,20 +11,16 @@ if (!token) {
 
 const bot = new Bot(token)
 
+const appUrl = 'https://rum-production.up.railway.app'
+
 bot.command('start', async (ctx) => {
   const keyboard = new InlineKeyboard()
-    .text('🎁 Открыть RUM', 'open_rum')
+    .webApp('🎁 Открыть RUM', appUrl)
 
   await ctx.reply(
     'Добро пожаловать в RUM! 🎁\n\nТвой мир Telegram-подарков.',
     { reply_markup: keyboard },
   )
-})
-
-bot.callbackQuery('open_rum', async (ctx) => {
-  await ctx.answerCallbackQuery({
-    text: 'RUM скоро откроется!',
-  })
 })
 
 bot.catch((error) => {
