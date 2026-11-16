@@ -15,4 +15,4 @@ name = "app"
 [[services]]
 name = "bot"
 dockerfilePath = "docker/Dockerfile.bot"
-startCommand = "npx tsx scripts/run-bot.ts"
+startCommand = "npx tsx scripts/rum-bot.ts"
