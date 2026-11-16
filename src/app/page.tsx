@@ -1,17 +1,80 @@
+
+'use client'
+
 import RumBottomNav from '@/components/rum/bottom-nav'
 import Link from 'next/link'
 import TelegramAuth from '@/components/telegram-auth'
+import { useEffect, useState } from 'react'
 
-const gifts = [
-  { name: 'Plush Pepe', collection: 'PLUSH PEPE', price: '125 TON', rarity: 'RARE', emoji: '🐸', bg: 'from-[#222222] to-[#22221f]' },
-  { name: 'Durov’s Cap', collection: 'CAPS', price: '48 TON', rarity: 'POPULAR', emoji: '🧢', bg: 'from-[#343a40] to-[#202124]' },
-  { name: 'Signet Ring', collection: 'JEWELRY', price: '32 TON', rarity: 'COLLECTIBLE', emoji: '💍', bg: 'from-[#202020] to-[#25211d]' },
-  { name: 'Magic Potion', collection: 'POTIONS', price: '19 TON', rarity: 'NEW', emoji: '🧪', bg: 'from-[#222222] to-[#171717]' },
-]
+type Listing = {
+  id: string
+  priceTon: string
+  gift: {
+    name: string
+    collection: string
+    model: string
+    imageUrl: string
+  }
+  seller: {
+    username: string
+    displayName: string
+  }
+}
 
 const categories = ['ALL GIFTS', 'RARE', 'NEW', 'COLLECTIONS']
 
 export default function HomePage() {
+  const [listings, setListings] = useState<Listing[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadListings() {
+      try {
+        const response = await fetch('/api/rum/listings', {
+          cache: 'no-store',
+        })
+
+        if (!response.ok) {
+          throw new Error('Не удалось загрузить объявления')
+        }
+
+        const data = await response.json()
+
+        if (!Array.isArray(data)) {
+          throw new Error('Неверный формат данных')
+        }
+
+        if (!cancelled) {
+          setListings(data)
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err instanceof Error ? err.message : 'Ошибка загрузки',
+          )
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    }
+
+    loadListings()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const formatPrice = (price: string) =>
+    Number(price).toLocaleString('ru-RU', {
+      maximumFractionDigits: 4,
+    })
+
   return (
     <main className="mx-auto min-h-screen max-w-[520px] overflow-hidden bg-[#080808] pb-24 text-[#f2f2f2]">
       <TelegramAuth />
@@ -83,38 +146,88 @@ export default function HomePage() {
       <section className="px-5 pt-8">
         <div className="mb-4 flex items-end justify-between">
           <div>
-            <div className="mb-2 text-[9px] font-bold tracking-[0.2em] text-[#bdbdbd]">CURATED SELECTION</div>
+            <div className="mb-2 text-[9px] font-bold tracking-[0.2em] text-[#bdbdbd]">LIVE MARKETPLACE</div>
             <h2 className="text-2xl font-black tracking-[-0.05em]">Trending gifts<span className="text-[#bdbdbd]">.</span></h2>
           </div>
           <Link href="/catalog" className="pb-1 text-[10px] font-bold tracking-wider text-[#bdbdbd]">VIEW ALL ↗</Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          {gifts.map((gift, index) => (
-            <Link href="/catalog" key={gift.name} className="overflow-hidden rounded-2xl border border-[#333333] bg-[#1a1916]">
-              <div className={`relative flex aspect-[1/1.05] items-center justify-center bg-gradient-to-br ${gift.bg}`}>
-                <span className="text-[76px] drop-shadow-2xl">{gift.emoji}</span>
-                <span className="absolute left-2.5 top-2.5 rounded-md border border-[#bdbdbd]/30 bg-[#202020]/80 px-2 py-1 text-[8px] font-bold tracking-wider text-[#d0d0d0]">
-                  {gift.rarity}
-                </span>
-                <span className="absolute bottom-2.5 right-2.5 text-[9px] text-white/40">
-                  0{index + 1}
-                </span>
-              </div>
-              <div className="p-3">
-                <div className="truncate text-sm font-extrabold">{gift.name}</div>
-                <div className="mt-1 text-[9px] font-semibold tracking-[0.15em] text-[#888888]">{gift.collection}</div>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-sm font-black text-[#d0d0d0]">{gift.price}</span>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#383838] text-sm text-[#f2f2f2]">↗</span>
-                </div>
-              </div>
+        {loading && (
+          <div className="rounded-2xl border border-[#333333] bg-[#1a1916] p-8 text-center text-sm text-[#bdbdbd]">
+            Загружаем объявления…
+          </div>
+        )}
+
+        {!loading && error && (
+          <div className="rounded-2xl border border-[#333333] bg-[#1a1916] p-8 text-center text-sm text-[#d2a18e]">
+            {error}
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-4 block w-full text-xs text-[#bdbdbd]"
+            >
+              Повторить
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && listings.length === 0 && (
+          <div className="rounded-2xl border border-[#333333] bg-[#1a1916] p-8 text-center">
+            <div className="mb-3 text-4xl">🎁</div>
+            <p className="text-sm font-bold">Пока нет активных объявлений</p>
+            <p className="mt-2 text-xs leading-5 text-[#888888]">
+              Здесь появятся подарки, которые пользователи выставят на продажу.
+            </p>
+            <Link href="/sell" className="mt-5 inline-block rounded-xl bg-[#383838] px-5 py-3 text-xs font-bold">
+              Выставить подарок
             </Link>
-          ))}
-        </div>
-        <p className="mt-4 text-center text-[9px] tracking-wider text-[#706b60]">
-          DEMO ITEMS · NOT REAL LISTINGS
-        </p>
+          </div>
+        )}
+
+        {!loading && !error && listings.length > 0 && (
+          <div className="grid grid-cols-2 gap-3">
+            {listings.slice(0, 4).map((listing, index) => (
+              <Link
+                href="/catalog"
+                key={listing.id}
+                className="overflow-hidden rounded-2xl border border-[#333333] bg-[#1a1916]"
+              >
+                <div className="relative flex aspect-[1/1.05] items-center justify-center bg-gradient-to-br from-[#222222] to-[#171717] p-4">
+                  {listing.gift.imageUrl ? (
+                    <img
+                      src={listing.gift.imageUrl}
+                      alt={listing.gift.name}
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <span className="text-[76px]">🎁</span>
+                  )}
+                  {listing.gift.collection && (
+                    <span className="absolute left-2.5 top-2.5 max-w-[80%] truncate rounded-md border border-[#bdbdbd]/30 bg-[#202020]/80 px-2 py-1 text-[8px] font-bold tracking-wider text-[#d0d0d0]">
+                      {listing.gift.collection}
+                    </span>
+                  )}
+                  <span className="absolute bottom-2.5 right-2.5 text-[9px] text-white/40">
+                    0{index + 1}
+                  </span>
+                </div>
+                <div className="p-3">
+                  <div className="truncate text-sm font-extrabold">
+                    {listing.gift.name}
+                  </div>
+                  <div className="mt-1 truncate text-[9px] font-semibold tracking-[0.15em] text-[#888888]">
+                    {listing.gift.model || 'Telegram Gift'}
+                  </div>
+                  <div className="mt-4 flex items-center justify-between gap-2">
+                    <span className="text-sm font-black text-[#d0d0d0]">
+                      {formatPrice(listing.priceTon)} TON
+                    </span>
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#383838] text-sm text-[#f2f2f2]">↗</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="px-5 pb-5 pt-9">
