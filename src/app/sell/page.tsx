@@ -26,7 +26,7 @@ const [checkingTelegram, setCheckingTelegram] = useState(false)
 const [telegramError, setTelegramError] = useState('')
  async function checkTelegramGifts() {
   setCheckingTelegram(true)
-  setTelegramError('Проверка: кнопка работает')
+setTelegramError('')
   setTelegramGifts([])
     try {
       const response = await fetch('/api/rum/my-gifts/sync', {
