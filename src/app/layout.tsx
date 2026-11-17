@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
 import TelegramInit from '@/components/telegram-init'
+import TelegramAuth from '@/components/telegram-auth'
 
 export const metadata: Metadata = {
   title: 'RUM — Telegram Gifts Marketplace',
@@ -36,8 +37,9 @@ export default function RootLayout({
           src="https://telegram.org/js/telegram-web-app.js"
           strategy="beforeInteractive"
         />
-        <TelegramInit />
-        {children}
+<TelegramInit />
+<TelegramAuth />
+{children}
       </body>
     </html>
   )
