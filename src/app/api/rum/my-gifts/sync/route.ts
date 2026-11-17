@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic'
 export async function POST() {
   try {console.log('RUM NFT SYNC: request received')
     const session = await getRumSession()
+console.log('RUM NFT SYNC: session found:', Boolean(session))
 
     if (!session) {
       return NextResponse.json(
