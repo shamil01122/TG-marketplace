@@ -1,17 +1,14 @@
-
 import 'server-only'
-
 import { Bot } from 'grammy'
 
-const token = process.env.TELEGRAM_BOT_TOKEN
-
-if (!token) {
-  throw new Error('TELEGRAM_BOT_TOKEN не настроен')
-}
-
-const bot = new Bot(token)
-
 export async function getTelegramNftGifts(telegramUserId: number) {
+  const token = process.env.TELEGRAM_BOT_TOKEN
+
+  if (!token) {
+    throw new Error('TELEGRAM_BOT_TOKEN не настроен')
+  }
+
+  const bot = new Bot(token)
   const allGifts = []
   let offset: string | undefined
 
