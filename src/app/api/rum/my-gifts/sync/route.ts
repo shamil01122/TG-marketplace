@@ -6,7 +6,7 @@ import { getTelegramNftGifts } from '@/lib/telegram-gifts'
 export const dynamic = 'force-dynamic'
 
 export async function POST() {
-  try {
+  try {console.log('RUM NFT SYNC: request received')
     const session = await getRumSession()
 
     if (!session) {
