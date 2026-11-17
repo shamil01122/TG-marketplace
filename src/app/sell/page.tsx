@@ -21,6 +21,35 @@ export default function SellPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+const [telegramGifts, setTelegramGifts] = useState<any[]>([])
+const [checkingTelegram, setCheckingTelegram] = useState(false)
+const [telegramError, setTelegramError] = useState('')
+  async function checkTelegramGifts() {
+    setCheckingTelegram(true)
+    setTelegramError('')
+    setTelegramGifts([])
+
+    try {
+      const response = await fetch('/api/rum/my-gifts/sync', {
+        method: 'POST',
+        cache: 'no-store',
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Не удалось получить подарки')
+      }
+
+      setTelegramGifts(data.gifts || [])
+    } catch (err) {
+      setTelegramError(
+        err instanceof Error ? err.message : 'Ошибка проверки Telegram',
+      )
+    } finally {
+      setCheckingTelegram(false)
+    }
+  }
 
   async function loadGifts() {
     try {
@@ -159,6 +188,59 @@ export default function SellPage() {
           <h2 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 15px' }}>
             Мои подарки
           </h2>
+<button
+  type="button"
+  onClick={checkTelegramGifts}
+  disabled={checkingTelegram}
+  style={{
+    width: '100%',
+    padding: 14,
+    marginBottom: 15,
+    border: '1px solid #555',
+    borderRadius: 12,
+    background: '#303030',
+    color: '#fff',
+    fontWeight: 700,
+    cursor: 'pointer',
+    opacity: checkingTelegram ? 0.6 : 1,
+  }}
+>
+  {checkingTelegram ? 'Проверяем Telegram...' : '🔄 Проверить мои NFT в Telegram'}
+</button>
+
+{telegramError && (
+  <p style={{ color: '#e18b7e', fontSize: 13 }}>
+    {telegramError}
+  </p>
+)}
+
+{telegramGifts.length > 0 && (
+  <div style={{ marginBottom: 18 }}>
+    <strong>Найдено уникальных подарков: {telegramGifts.length}</strong>
+    {telegramGifts.map((gift, index) => (
+      <div
+        key={`${gift.name}-${gift.number}-${index}`}
+        style={{
+          padding: 12,
+          marginTop: 8,
+          borderRadius: 12,
+          background: '#252525',
+        }}
+      >
+        <strong>{gift.name}</strong>
+        <p style={{ fontSize: 12, color: '#bdbdbd', margin: '5px 0' }}>
+          Коллекция: {gift.baseName} · №{gift.number}
+        </p>
+        <p style={{ fontSize: 12, color: '#bdbdbd', margin: 0 }}>
+          {gift.isFromBlockchain
+            ? 'Получен из блокчейна'
+            : 'Обычный уникальный подарок'}
+          {gift.isBurned ? ' · Использован для создания другого подарка' : ''}
+        </p>
+      </div>
+    ))}
+  </div>
+)}
 
           {loading && <p>Загружаем подарки...</p>}
 
