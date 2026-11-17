@@ -24,12 +24,10 @@ export default function SellPage() {
 const [telegramGifts, setTelegramGifts] = useState<any[]>([])
 const [checkingTelegram, setCheckingTelegram] = useState(false)
 const [telegramError, setTelegramError] = useState('')
-  async function checkTelegramGifts() {
-   setTelegramError('Проверка: кнопка работает')
- setCheckingTelegram(true)
-    setTelegramError('')
-    setTelegramGifts([])
-
+ async function checkTelegramGifts() {
+  setCheckingTelegram(true)
+  setTelegramError('Проверка: кнопка работает')
+  setTelegramGifts([])
     try {
       const response = await fetch('/api/rum/my-gifts/sync', {
         method: 'POST',
