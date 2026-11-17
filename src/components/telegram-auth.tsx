@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useEffect } from 'react'
@@ -7,33 +8,44 @@ export default function TelegramAuth() {
     let cancelled = false
 
     async function authenticate() {
-      const initData = window.Telegram?.WebApp?.initData
+      for (let attempt = 0; attempt < 20; attempt++) {
+        if (cancelled) return
 
-      if (!initData) return
+        const initData = window.Telegram?.WebApp?.initData
 
-      try {
-        const response = await fetch('/api/auth/telegram', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ initData }),
-        })
+        if (initData) {
+          try {
+            const response = await fetch('/api/auth/telegram', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ initData }),
+            })
 
-        if (!response.ok) {
-          console.error('RUM: Telegram authentication failed')
-          return
+            if (!response.ok) {
+              console.error('RUM: Telegram authentication failed:', response.status)
+              return
+            }
+
+            const data = await response.json()
+
+            if (!cancelled) {
+              localStorage.setItem('rum_profile', JSON.stringify(data.profile))
+              console.info('RUM: Profile authenticated')
+            }
+
+            return
+          } catch (error) {
+            console.error('RUM: Authentication connection error:', error)
+            return
+          }
         }
 
-        const data = await response.json()
-
-        if (!cancelled) {
-          localStorage.setItem('rum_profile', JSON.stringify(data.profile))
-console.info('RUM: Profile authenticated')
-        }
-      } catch {
-        console.error('RUM: Could not connect to authentication server')
+        await new Promise(resolve => setTimeout(resolve, 500))
       }
+
+      console.error('RUM: Telegram initData not available')
     }
 
     authenticate()
