@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const initData = body?.initData
+console.log('RUM AUTH: request received, initData present:', typeof initData === 'string' && initData.length > 0)
 
     if (typeof initData !== 'string' || initData.length > 16000) {
       return NextResponse.json(
