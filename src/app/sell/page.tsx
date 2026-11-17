@@ -25,7 +25,8 @@ const [telegramGifts, setTelegramGifts] = useState<any[]>([])
 const [checkingTelegram, setCheckingTelegram] = useState(false)
 const [telegramError, setTelegramError] = useState('')
   async function checkTelegramGifts() {
-    setCheckingTelegram(true)
+   setTelegramError('Проверка: кнопка работает')
+ setCheckingTelegram(true)
     setTelegramError('')
     setTelegramGifts([])
 
