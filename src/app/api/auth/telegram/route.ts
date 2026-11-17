@@ -57,6 +57,7 @@ console.log('RUM AUTH: Telegram signature valid:', Boolean(user))
     }
 
     await createRumSession(profile.id, user.id)
+console.log('RUM AUTH: session created')
 
     return NextResponse.json({ profile })
   } catch (error) {
