@@ -17,6 +17,7 @@ console.log('RUM AUTH: request received, initData present:', typeof initData ===
     }
 
     const user = parseTelegramUser(initData)
+console.log('RUM AUTH: Telegram signature valid:', Boolean(user))
 
     if (!user) {
       return NextResponse.json(
