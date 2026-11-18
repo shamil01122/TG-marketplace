@@ -227,7 +227,7 @@ setTelegramError('')
         }}
       >
         <img
-  src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelStickerFileId)}`}
+src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFileId || gift.modelStickerFileId)}`}
   alt={gift.name}
   style={{
     width: 100,
