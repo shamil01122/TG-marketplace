@@ -22,15 +22,16 @@ export async function getTelegramNftGifts(telegramUserId: number) {
       ...result.gifts
         .filter((item) => item.type === 'unique')
         .map((item) => ({
+          telegramGiftId: `${item.gift.name}:${item.gift.number}`,
           name: item.gift.name,
           baseName: item.gift.base_name,
           number: item.gift.number,
           model: item.gift.model.name,
           symbol: item.gift.symbol.name,
-modelStickerFileId: item.gift.model.sticker.file_id,
-modelThumbnailFileId: item.gift.model.sticker.thumbnail?.file_id,
-symbolStickerFileId: item.gift.symbol.sticker.file_id,
-symbolThumbnailFileId: item.gift.symbol.sticker.thumbnail?.file_id,
+          modelStickerFileId: item.gift.model.sticker.file_id,
+          modelThumbnailFileId: item.gift.model.sticker.thumbnail?.file_id,
+          symbolStickerFileId: item.gift.symbol.sticker.file_id,
+          symbolThumbnailFileId: item.gift.symbol.sticker.thumbnail?.file_id,
           backdrop: item.gift.backdrop.name,
           sendDate: item.send_date,
           isFromBlockchain: item.gift.is_from_blockchain === true,

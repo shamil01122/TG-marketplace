@@ -15,6 +15,13 @@
       "when": 1794702220046,
       "tag": "0001_lovely_captain_midlands",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795035288556,
+      "tag": "0002_add-gift-blockchain-flags",
+      "breakpoints": true
     }
   ]
 }

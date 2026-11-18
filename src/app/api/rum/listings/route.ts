@@ -1,7 +1,9 @@
+
 import { NextRequest, NextResponse } from 'next/server'
 import { and, desc, eq } from 'drizzle-orm'
 import { db, rumListings, rumGifts, rumProfiles } from '@/lib/db'
 import { getRumSession } from '@/lib/rum/session'
+import { getTelegramNftGifts } from '@/lib/telegram-gifts'
 
 export const dynamic = 'force-dynamic'
 
@@ -30,11 +32,13 @@ export async function GET() {
       .innerJoin(rumGifts, eq(rumListings.giftId, rumGifts.id))
       .innerJoin(rumProfiles, eq(rumListings.sellerId, rumProfiles.id))
       .where(
-  and(
-    eq(rumListings.status, 'active'),
-    eq(rumGifts.status, 'listed'),
-  ),
-)
+        and(
+          eq(rumListings.status, 'active'),
+          eq(rumGifts.status, 'listed'),
+          eq(rumGifts.isBurned, false),
+          eq(rumGifts.isFromBlockchain, false),
+        ),
+      )
       .orderBy(desc(rumListings.createdAt))
       .limit(100)
 
@@ -86,6 +90,41 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Проверяем, что подарок всё ещё принадлежит пользователю в Telegram.
+    const telegramGifts = await getTelegramNftGifts(session.telegramUserId)
+
+    const [storedGift] = await db
+      .select({
+        telegramGiftId: rumGifts.telegramGiftId,
+      })
+      .from(rumGifts)
+      .where(
+        and(
+          eq(rumGifts.id, giftId),
+          eq(rumGifts.ownerId, session.profileId),
+          eq(rumGifts.status, 'available'),
+          eq(rumGifts.isBurned, false),
+          eq(rumGifts.isFromBlockchain, false),
+        ),
+      )
+      .limit(1)
+
+    const isStillOwned = storedGift && telegramGifts.some(
+      (gift) =>
+        gift.telegramGiftId === storedGift.telegramGiftId &&
+        !gift.isBurned &&
+        !gift.isFromBlockchain,
+    )
+
+    if (!isStillOwned) {
+      return NextResponse.json(
+        {
+          error: 'Подарок не найден в актуальном списке Telegram или недоступен для продажи',
+        },
+        { status: 409 },
+      )
+    }
+
     const listing = await db.transaction(async (tx) => {
       const [gift] = await tx
         .update(rumGifts)
@@ -95,6 +134,8 @@ export async function POST(req: NextRequest) {
             eq(rumGifts.id, giftId),
             eq(rumGifts.ownerId, session.profileId),
             eq(rumGifts.status, 'available'),
+            eq(rumGifts.isBurned, false),
+            eq(rumGifts.isFromBlockchain, false),
           ),
         )
         .returning({ id: rumGifts.id })
@@ -119,7 +160,7 @@ export async function POST(req: NextRequest) {
 
     if (!listing) {
       return NextResponse.json(
-        { error: 'Подарок не найден, не принадлежит вам или уже выставлен' },
+        { error: 'Подарок уже недоступен или выставлен' },
         { status: 409 },
       )
     }

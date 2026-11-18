@@ -1,3 +1,4 @@
+
 import {
   pgTable,
   pgEnum,
@@ -5,6 +6,7 @@ import {
   text,
   numeric,
   bigint,
+  boolean,
   timestamp,
 } from 'drizzle-orm/pg-core'
 
@@ -50,6 +52,8 @@ export const rumGifts = pgTable('rum_gifts', {
   backdrop: text('backdrop').notNull().default(''),
   symbol: text('symbol').notNull().default(''),
   imageUrl: text('image_url').notNull().default(''),
+  isBurned: boolean('is_burned').notNull().default(false),
+  isFromBlockchain: boolean('is_from_blockchain').notNull().default(false),
   ownerId: uuid('owner_id').references(() => rumProfiles.id),
   status: giftStatusEnum('status').notNull().default('available'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
