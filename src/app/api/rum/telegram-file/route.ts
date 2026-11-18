@@ -40,6 +40,8 @@ console.log('RUM IMAGE: request received')
 
     const url = `https://api.telegram.org/file/bot${token}/${file.file_path}`
     const imageResponse = await fetch(url)
+console.log('RUM IMAGE: Telegram file response:', imageResponse.status)
+console.log('RUM IMAGE: content type:', imageResponse.headers.get('content-type'))
 
     if (!imageResponse.ok) {
       throw new Error('Не удалось загрузить файл из Telegram')
