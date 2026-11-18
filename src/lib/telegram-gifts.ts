@@ -27,6 +27,8 @@ export async function getTelegramNftGifts(telegramUserId: number) {
           number: item.gift.number,
           model: item.gift.model.name,
           symbol: item.gift.symbol.name,
+modelStickerFileId: item.gift.model.sticker.file_id,
+symbolStickerFileId: item.gift.symbol.sticker.file_id,
           backdrop: item.gift.backdrop.name,
           sendDate: item.send_date,
           isFromBlockchain: item.gift.is_from_blockchain === true,

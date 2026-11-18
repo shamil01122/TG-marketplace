@@ -226,7 +226,18 @@ setTelegramError('')
           background: '#252525',
         }}
       >
-        <strong>{gift.name}</strong>
+        <img
+  src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelStickerFileId)}`}
+  alt={gift.name}
+  style={{
+    width: 100,
+    height: 100,
+    objectFit: 'contain',
+    display: 'block',
+    marginBottom: 10,
+  }}
+/>
+<strong>{gift.name}</strong>
         <p style={{ fontSize: 12, color: '#bdbdbd', margin: '5px 0' }}>
           Коллекция: {gift.baseName} · №{gift.number}
         </p>
