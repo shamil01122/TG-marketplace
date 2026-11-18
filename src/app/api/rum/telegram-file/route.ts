@@ -8,8 +8,9 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   try {
     const session = await getRumSession()
-console.log('RUM IMAGE: session found:', Boolean(session))
-console.log('RUM IMAGE: request received')
+
+    console.log('RUM IMAGE: request received')
+    console.log('RUM IMAGE: session found:', Boolean(session))
 
     if (!session) {
       return NextResponse.json(
@@ -19,6 +20,7 @@ console.log('RUM IMAGE: request received')
     }
 
     const fileId = request.nextUrl.searchParams.get('file_id')
+
     if (!fileId || fileId.length > 2048) {
       return NextResponse.json(
         { error: 'Некорректный file_id' },
@@ -27,6 +29,7 @@ console.log('RUM IMAGE: request received')
     }
 
     const token = process.env.TELEGRAM_BOT_TOKEN
+
     if (!token) {
       throw new Error('TELEGRAM_BOT_TOKEN не настроен')
     }
@@ -40,8 +43,9 @@ console.log('RUM IMAGE: request received')
 
     const url = `https://api.telegram.org/file/bot${token}/${file.file_path}`
     const imageResponse = await fetch(url)
-console.log('RUM IMAGE: Telegram file response:', imageResponse.status)
-console.log('RUM IMAGE: content type:', imageResponse.headers.get('content-type'))
+
+    console.log('RUM IMAGE: Telegram file response:', imageResponse.status)
+    console.log('RUM IMAGE: content type:', imageResponse.headers.get('content-type'))
 
     if (!imageResponse.ok) {
       throw new Error('Не удалось загрузить файл из Telegram')
@@ -50,7 +54,15 @@ console.log('RUM IMAGE: content type:', imageResponse.headers.get('content-type'
     const contentType =
       imageResponse.headers.get('content-type') || 'application/octet-stream'
 
-    return new Response(await imageResponse.arrayBuffer(), {
+    const fileBuffer = await imageResponse.arrayBuffer()
+    const fileBytes = new Uint8Array(fileBuffer)
+
+    console.log(
+      'RUM IMAGE: file signature:',
+      Array.from(fileBytes.slice(0, 12)),
+    )
+
+    return new Response(fileBuffer, {
       headers: {
         'Content-Type': contentType,
         'Cache-Control': 'private, max-age=3600',
