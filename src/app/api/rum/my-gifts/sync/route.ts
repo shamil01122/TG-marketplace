@@ -28,8 +28,6 @@ export async function POST() {
     )
 
     await db.transaction(async (tx) => {
-      // Находим подарки, которые раньше принадлежали пользователю,
-      // но больше не присутствуют в его списке Telegram.
       const previousGifts = await tx
         .select({
           id: rumGifts.id,
@@ -60,7 +58,6 @@ export async function POST() {
         }
       }
 
-      // Сохраняем актуальные подарки.
       for (const gift of gifts) {
         const [existing] = await tx
           .select({
@@ -100,6 +97,7 @@ export async function POST() {
               model: gift.model,
               backdrop: gift.backdrop,
               symbol: gift.symbol,
+              imageUrl: gift.imageUrl,
               isBurned: gift.isBurned,
               isFromBlockchain: gift.isFromBlockchain,
               ownerId: session.profileId,
@@ -116,6 +114,7 @@ export async function POST() {
             model: gift.model,
             backdrop: gift.backdrop,
             symbol: gift.symbol,
+            imageUrl: gift.imageUrl,
             isBurned: gift.isBurned,
             isFromBlockchain: gift.isFromBlockchain,
             ownerId: session.profileId,
