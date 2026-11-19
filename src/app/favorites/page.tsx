@@ -21,6 +21,12 @@ type Listing = {
   }
 }
 
+const panelStyle = {
+  background: '#101010',
+  border: '1px solid #292929',
+  borderRadius: 19,
+} as const
+
 export default function FavoritesPage() {
   const favoriteItems = useRumFavorites((state) => state.items)
   const toggleFavorite = useRumFavorites((state) => state.toggleFavorite)
@@ -35,6 +41,9 @@ export default function FavoritesPage() {
 
     async function loadListings() {
       try {
+        setLoading(true)
+        setError('')
+
         const response = await fetch('/api/rum/listings', {
           cache: 'no-store',
         })
@@ -80,141 +89,247 @@ export default function FavoritesPage() {
     favoriteIds.has(listing.id),
   )
 
-  const panelStyle = {
-    background: '#1b1b1b',
-    border: '1px solid #333333',
-    borderRadius: 18,
-  } as const
-
   const formatPrice = (price: string) =>
     Number(price).toLocaleString('ru-RU', {
       maximumFractionDigits: 4,
     })
 
   return (
-    <main style={{
-      minHeight: '100vh',
-      background: '#080808',
-      color: '#f2f2f2',
-      padding: '22px 18px 110px',
-    }}>
-      <div style={{ maxWidth: 520, margin: '0 auto' }}>
-        <header style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 32,
-        }}>
-          <Link href="/" style={{
-            color: '#f2f2f2',
-            textDecoration: 'none',
-            fontSize: 25,
-            fontWeight: 900,
-            letterSpacing: 2,
-          }}>
+    <main
+      style={{
+        minHeight: '100vh',
+        background: '#000000',
+        color: '#f5f5f5',
+        padding: '22px 17px 115px',
+      }}
+    >
+      <div style={{ maxWidth: 560, margin: '0 auto' }}>
+        <header
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 35,
+          }}
+        >
+          <Link
+            href="/"
+            style={{
+              color: '#ffffff',
+              textDecoration: 'none',
+              fontSize: 26,
+              fontWeight: 950,
+              letterSpacing: 3,
+            }}
+          >
             RUM
           </Link>
 
-          <Link href="/catalog" style={{
-            color: '#f2f2f2',
-            textDecoration: 'none',
-            fontSize: 13,
-            fontWeight: 700,
-          }}>
+          <Link
+            href="/catalog"
+            style={{
+              color: '#cccccc',
+              textDecoration: 'none',
+              fontSize: 12,
+              fontWeight: 800,
+              background: '#151515',
+              border: '1px solid #303030',
+              borderRadius: 30,
+              padding: '10px 15px',
+            }}
+          >
             Каталог →
           </Link>
         </header>
 
-        <h1 style={{
-          fontSize: 29,
-          fontWeight: 900,
-          margin: '0 0 8px',
-        }}>
-          Избранное <span style={{ color: '#bdbdbd' }}>♥</span>
-        </h1>
+        <section
+          style={{
+            ...panelStyle,
+            padding: '23px 21px',
+            marginBottom: 28,
+            background:
+              'linear-gradient(145deg, #191919, #0b0b0b 75%)',
+          }}
+        >
+          <div
+            style={{
+              color: '#888888',
+              fontSize: 10,
+              fontWeight: 800,
+              letterSpacing: 2.5,
+              marginBottom: 12,
+            }}
+          >
+            YOUR COLLECTION
+          </div>
 
-        <p style={{
-          color: '#bdbdbd',
-          fontSize: 14,
-          marginBottom: 25,
-        }}>
-          Сохранённые объявления RUM
-        </p>
+          <h1
+            style={{
+              fontSize: 32,
+              fontWeight: 950,
+              letterSpacing: -1.2,
+              margin: '0 0 9px',
+            }}
+          >
+            Избранное <span style={{ color: '#ffffff' }}>♥</span>
+          </h1>
+
+          <p
+            style={{
+              color: '#999999',
+              fontSize: 13,
+              lineHeight: 1.6,
+              margin: 0,
+            }}
+          >
+            Твоя подборка интересных подарков и редких экземпляров.
+          </p>
+        </section>
 
         {loading ? (
-          <section style={{
-            ...panelStyle,
-            padding: 35,
-            textAlign: 'center',
-            color: '#bdbdbd',
-          }}>
+          <section
+            style={{
+              ...panelStyle,
+              padding: 38,
+              textAlign: 'center',
+              color: '#999999',
+              fontSize: 13,
+            }}
+          >
             Загружаем избранное…
           </section>
         ) : error ? (
-          <section style={{
-            ...panelStyle,
-            padding: 30,
-            textAlign: 'center',
-            color: '#e0a0a0',
-          }}>
+          <section
+            style={{
+              ...panelStyle,
+              padding: 30,
+              textAlign: 'center',
+              color: '#cccccc',
+              fontSize: 13,
+            }}
+          >
             {error}
+
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                display: 'block',
+                margin: '16px auto 0',
+                padding: '11px 18px',
+                border: 0,
+                borderRadius: 12,
+                background: '#ffffff',
+                color: '#000000',
+                fontWeight: 800,
+                cursor: 'pointer',
+              }}
+            >
+              Повторить
+            </button>
           </section>
         ) : favorites.length === 0 ? (
-          <section style={{
-            ...panelStyle,
-            padding: '55px 20px',
-            textAlign: 'center',
-          }}>
-            <div style={{ fontSize: 55 }}>♡</div>
+          <section
+            style={{
+              ...panelStyle,
+              padding: '48px 22px',
+              textAlign: 'center',
+            }}
+          >
+            <div
+              style={{
+                width: 76,
+                height: 76,
+                display: 'grid',
+                placeItems: 'center',
+                margin: '0 auto 18px',
+                borderRadius: 24,
+                background: '#1b1b1b',
+                border: '1px solid #333333',
+                fontSize: 37,
+                color: '#ffffff',
+              }}
+            >
+              ♡
+            </div>
 
-            <h2 style={{
-              fontSize: 19,
-              fontWeight: 800,
-              margin: '15px 0 8px',
-            }}>
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 900,
+                margin: '0 0 9px',
+              }}
+            >
               Пока здесь пусто
             </h2>
 
-            <p style={{
-              color: '#bdbdbd',
-              fontSize: 13,
-              lineHeight: 1.6,
-              marginBottom: 22,
-            }}>
-              Добавляй объявления в избранное с помощью сердечка в каталоге.
+            <p
+              style={{
+                color: '#999999',
+                fontSize: 12,
+                lineHeight: 1.7,
+                margin: '0 auto 23px',
+                maxWidth: 280,
+              }}
+            >
+              Сохраняй понравившиеся объявления с помощью сердечка в каталоге.
+              Они появятся здесь.
             </p>
 
-            <Link href="/catalog" style={{
-              display: 'inline-block',
-              background: '#383838',
-              color: '#f2f2f2',
-              borderRadius: 13,
-              padding: '13px 22px',
-              textDecoration: 'none',
-              fontWeight: 800,
-            }}>
+            <Link
+              href="/catalog"
+              style={{
+                display: 'inline-block',
+                background: '#ffffff',
+                color: '#000000',
+                borderRadius: 13,
+                padding: '14px 23px',
+                textDecoration: 'none',
+                fontWeight: 900,
+                fontSize: 13,
+              }}
+            >
               Открыть каталог
             </Link>
           </section>
         ) : (
           <>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 15,
-            }}>
-              <strong style={{ fontSize: 13, color: '#bdbdbd' }}>
-                Сохранено: {favorites.length}
-              </strong>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 10,
+                marginBottom: 16,
+              }}
+            >
+              <div>
+                <div
+                  style={{
+                    color: '#777777',
+                    fontSize: 9,
+                    fontWeight: 800,
+                    letterSpacing: 2,
+                    marginBottom: 5,
+                  }}
+                >
+                  SAVED ITEMS
+                </div>
+
+                <strong style={{ fontSize: 15 }}>
+                  Сохранено: {favorites.length}
+                </strong>
+              </div>
 
               <button
                 onClick={clear}
                 style={{
-                  border: 0,
-                  background: 'transparent',
-                  color: '#d2a18e',
-                  fontSize: 12,
+                  border: '1px solid #303030',
+                  background: '#151515',
+                  color: '#aaaaaa',
+                  borderRadius: 30,
+                  padding: '9px 13px',
+                  fontSize: 11,
+                  fontWeight: 700,
                   cursor: 'pointer',
                 }}
               >
@@ -222,78 +337,130 @@ export default function FavoritesPage() {
               </button>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-              gap: 13,
-            }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns:
+                  'repeat(auto-fill, minmax(min(100%, 215px), 1fr))',
+                gap: 13,
+              }}
+            >
               {favorites.map((listing) => (
-                <article key={listing.id} style={{
-                  ...panelStyle,
-                  overflow: 'hidden',
-                }}>
-                  <div style={{
-                    height: 135,
-                    background: '#202020',
-                    display: 'grid',
-                    placeItems: 'center',
-                    padding: 10,
-                  }}>
-                    {listing.gift.imageUrl ? (
-                      <img
-                        src={listing.gift.imageUrl}
-                        alt={listing.gift.name}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'contain',
-                        }}
-                      />
-                    ) : (
-                      <span style={{ fontSize: 55 }}>🎁</span>
-                    )}
-                  </div>
-
-                  <div style={{ padding: 12 }}>
-                    <strong style={{
+                <article
+                  key={listing.id}
+                  style={{
+                    ...panelStyle,
+                    overflow: 'hidden',
+                    background: '#0d0d0d',
+                  }}
+                >
+                  <Link
+                    href="/catalog"
+                    style={{
                       display: 'block',
-                      fontSize: 14,
-                      marginBottom: 5,
-                    }}>
+                      color: 'inherit',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: 175,
+                        background:
+                          'radial-gradient(circle, #242424 0%, #141414 60%, #0b0b0b 100%)',
+                        display: 'grid',
+                        placeItems: 'center',
+                        padding: 15,
+                      }}
+                    >
+                      {listing.gift.imageUrl ? (
+                        <img
+                          src={listing.gift.imageUrl}
+                          alt={listing.gift.name}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain',
+                          }}
+                        />
+                      ) : (
+                        <span style={{ fontSize: 65 }}>🎁</span>
+                      )}
+                    </div>
+                  </Link>
+
+                  <div style={{ padding: '14px 13px 13px' }}>
+                    <strong
+                      style={{
+                        display: 'block',
+                        fontSize: 14,
+                        fontWeight: 850,
+                        marginBottom: 6,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       {listing.gift.name}
                     </strong>
 
-                    <p style={{
-                      color: '#bdbdbd',
-                      fontSize: 11,
-                      margin: '0 0 9px',
-                    }}>
+                    <p
+                      style={{
+                        color: '#888888',
+                        fontSize: 10,
+                        margin: '0 0 13px',
+                        minHeight: 15,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       {[listing.gift.collection, listing.gift.model]
                         .filter(Boolean)
                         .join(' · ') || 'Telegram-подарок'}
                     </p>
 
-                    <strong style={{ fontSize: 15 }}>
-                      {formatPrice(listing.priceTon)} TON
-                    </strong>
+                    <div
+                      style={{
+                        borderTop: '1px solid #282828',
+                        paddingTop: 11,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        gap: 5,
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: '#777777',
+                          fontSize: 9,
+                          fontWeight: 800,
+                        }}
+                      >
+                        ЦЕНА
+                      </span>
+
+                      <strong style={{ fontSize: 14 }}>
+                        {formatPrice(listing.priceTon)} TON
+                      </strong>
+                    </div>
 
                     <button
                       onClick={() => toggleFavorite(listing.id)}
                       style={{
                         display: 'block',
                         width: '100%',
-                        marginTop: 12,
-                        padding: 9,
-                        border: '1px solid #333333',
-                        borderRadius: 10,
-                        background: '#1b1b1b',
-                        color: '#d2a18e',
+                        marginTop: 13,
+                        padding: 11,
+                        border: '1px solid #353535',
+                        borderRadius: 11,
+                        background: '#191919',
+                        color: '#dddddd',
                         cursor: 'pointer',
-                        fontWeight: 700,
-                        fontSize: 12,
+                        fontWeight: 800,
+                        fontSize: 11,
                       }}
                     >
-                      ♥ Убрать
+                      ♥ Убрать из избранного
                     </button>
                   </div>
                 </article>
@@ -301,13 +468,17 @@ export default function FavoritesPage() {
             </div>
 
             {favoriteItems.length > favorites.length && (
-              <p style={{
-                color: '#999999',
-                fontSize: 11,
-                lineHeight: 1.6,
-                marginTop: 18,
-              }}>
-                Некоторые сохранённые объявления больше не активны и не отображаются.
+              <p
+                style={{
+                  color: '#777777',
+                  fontSize: 11,
+                  lineHeight: 1.7,
+                  marginTop: 19,
+                  textAlign: 'center',
+                }}
+              >
+                Некоторые сохранённые объявления больше не активны и не
+                отображаются.
               </p>
             )}
           </>
