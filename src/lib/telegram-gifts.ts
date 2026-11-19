@@ -39,7 +39,7 @@ export async function getTelegramNftGifts(telegramUserId: number) {
             symbolStickerFileId: item.gift.symbol.sticker.file_id,
             symbolThumbnailFileId: item.gift.symbol.sticker.thumbnail?.file_id,
             imageUrl: fileId
-              ? `/api/rum/gift-image?fileId=${encodeURIComponent(fileId)}`
+              ? `/api/rum/telegram-file?file_id=${encodeURIComponent(fileId)}`
               : '',
             backdrop: item.gift.backdrop.name,
             sendDate: item.send_date,
