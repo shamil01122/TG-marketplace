@@ -2,6 +2,7 @@
 'use client'
 
 import RumBottomNav from '@/components/rum/bottom-nav'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { useRumCart } from '@/lib/rum/cart'
 import { useRumFavorites } from '@/lib/rum/favorites'
@@ -34,6 +35,8 @@ const panelStyle = {
 const mutedText = '#858585'
 
 export default function CatalogPage() {
+  const router = useRouter()
+
   const [listings, setListings] = useState<Listing[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -41,11 +44,9 @@ export default function CatalogPage() {
   const [category, setCategory] = useState('all')
   const [sort, setSort] = useState('recommended')
   const [priceFilter, setPriceFilter] = useState('all')
-  const [selected, setSelected] = useState<Listing | null>(null)
 
   const favorites = useRumFavorites((state) => state.items)
   const toggleFavorite = useRumFavorites((state) => state.toggleFavorite)
-  const addGift = useRumCart((state) => state.addGift)
   const cartCount = useRumCart((state) => state.itemCount())
 
   useEffect(() => {
@@ -543,7 +544,9 @@ export default function CatalogPage() {
                     </button>
 
                     <button
-                      onClick={() => setSelected(listing)}
+                      onClick={() =>
+                        router.push(`/rum/gift/${listing.id}`)
+                      }
                       style={{
                         width: '100%',
                         border: 0,
@@ -715,211 +718,6 @@ export default function CatalogPage() {
           покупкой. Оплата и передача подарков ещё не подключены.
         </div>
       </div>
-
-      {selected && (
-        <div
-          onClick={() => setSelected(null)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 20,
-            background: 'rgba(0,0,0,0.88)',
-            display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            padding: 12,
-          }}
-        >
-          <section
-            onClick={(event) => event.stopPropagation()}
-            style={{
-              width: '100%',
-              maxWidth: 480,
-              maxHeight: '88vh',
-              overflowY: 'auto',
-              background: '#101010',
-              border: '1px solid #303030',
-              borderRadius: 25,
-              padding: 21,
-              marginBottom: 10,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <span
-                style={{
-                  color: '#888888',
-                  fontSize: 10,
-                  fontWeight: 800,
-                  letterSpacing: 1.5,
-                }}
-              >
-                ДЕТАЛИ ПОДАРКА
-              </span>
-
-              <button
-                onClick={() => setSelected(null)}
-                aria-label="Закрыть"
-                style={{
-                  border: '1px solid #383838',
-                  background: '#202020',
-                  color: '#ffffff',
-                  borderRadius: 30,
-                  width: 34,
-                  height: 34,
-                  fontSize: 20,
-                  cursor: 'pointer',
-                }}
-              >
-                ×
-              </button>
-            </div>
-
-            <div
-              style={{
-                height: 205,
-                borderRadius: 19,
-                background:
-                  'radial-gradient(circle, #252525 0%, #151515 65%, #0b0b0b 100%)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 17,
-                margin: '16px 0 19px',
-              }}
-            >
-              {selected.gift.imageUrl ? (
-                <img
-                  src={selected.gift.imageUrl}
-                  alt={selected.gift.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                />
-              ) : (
-                <span style={{ fontSize: 80 }}>🎁</span>
-              )}
-            </div>
-
-            <h2
-              style={{
-                margin: '0 0 7px',
-                fontSize: 25,
-                letterSpacing: -0.7,
-                fontWeight: 900,
-              }}
-            >
-              {selected.gift.name}
-            </h2>
-
-            <p
-              style={{
-                color: '#999999',
-                margin: '0 0 21px',
-                fontSize: 12,
-                lineHeight: 1.6,
-              }}
-            >
-              {[selected.gift.collection, selected.gift.model]
-                .filter(Boolean)
-                .join(' · ')}
-            </p>
-
-            <div
-              style={{
-                background: '#181818',
-                border: '1px solid #292929',
-                borderRadius: 15,
-                padding: 15,
-                marginBottom: 16,
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: 10,
-                  marginBottom: 13,
-                  fontSize: 12,
-                }}
-              >
-                <span style={{ color: '#888888' }}>Продавец</span>
-                <strong style={{ textAlign: 'right' }}>
-                  {selected.seller.displayName ||
-                    (selected.seller.username
-                      ? `@${selected.seller.username}`
-                      : 'Не указан')}
-                </strong>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  gap: 10,
-                  fontSize: 12,
-                }}
-              >
-                <span style={{ color: '#888888' }}>Цена продавца</span>
-                <strong style={{ fontSize: 19 }}>
-                  {formatPrice(selected.priceTon)} TON
-                </strong>
-              </div>
-            </div>
-
-            <div
-              style={{
-                background: '#191919',
-                border: '1px solid #292929',
-                borderRadius: 13,
-                padding: 13,
-                color: '#999999',
-                fontSize: 11,
-                lineHeight: 1.65,
-              }}
-            >
-              Это объявление из базы RUM. Добавление в корзину не резервирует
-              подарок и не выполняет покупку.
-            </div>
-
-            <button
-              onClick={() => {
-                addGift({
-                  listingId: selected.id,
-                  name: selected.gift.name,
-                  priceTon: Number(selected.priceTon),
-                  imageUrl: selected.gift.imageUrl,
-                  collection: selected.gift.collection,
-                  model: selected.gift.model,
-                })
-                setSelected(null)
-              }}
-              style={{
-                width: '100%',
-                marginTop: 16,
-                padding: 16,
-                border: 0,
-                borderRadius: 15,
-                background: '#ffffff',
-                color: '#000000',
-                fontWeight: 900,
-                fontSize: 14,
-                cursor: 'pointer',
-              }}
-            >
-              Добавить в корзину · {formatPrice(selected.priceTon)} TON
-            </button>
-          </section>
-        </div>
-      )}
 
       <RumBottomNav />
     </main>
