@@ -25,8 +25,7 @@ export async function getTelegramNftGifts(telegramUserId: number) {
         .map((item) => {
           const fileId =
             item.gift.model.sticker.thumbnail?.file_id ||
-            item.gift.symbol.sticker.thumbnail?.file_id ||
-            item.gift.model.sticker.file_id
+            item.gift.symbol.sticker.thumbnail?.file_id
 
           return {
             telegramGiftId: `${item.gift.name}:${item.gift.number}`,
