@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -21,35 +22,8 @@ export default function SellPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
-const [telegramGifts, setTelegramGifts] = useState<any[]>([])
-const [checkingTelegram, setCheckingTelegram] = useState(false)
-const [telegramError, setTelegramError] = useState('')
- async function checkTelegramGifts() {
-  setCheckingTelegram(true)
-setTelegramError('')
-  setTelegramGifts([])
-    try {
-      const response = await fetch('/api/rum/my-gifts/sync', {
-        method: 'POST',
-        cache: 'no-store',
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Не удалось получить подарки')
-      }
-
-      setTelegramGifts(data.gifts || [])
-await loadGifts()
-    } catch (err) {
-      setTelegramError(
-        err instanceof Error ? err.message : 'Ошибка проверки Telegram',
-      )
-    } finally {
-      setCheckingTelegram(false)
-    }
-  }
+  const [checkingTelegram, setCheckingTelegram] = useState(false)
+  const [telegramError, setTelegramError] = useState('')
 
   async function loadGifts() {
     try {
@@ -68,10 +42,40 @@ await loadGifts()
 
       const data: Gift[] = await response.json()
       setGifts(data)
+      setError('')
     } catch {
       setError('Не удалось загрузить подарки. Попробуй ещё раз.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function checkTelegramGifts() {
+    setCheckingTelegram(true)
+    setTelegramError('')
+    setError('')
+    setMessage('')
+
+    try {
+      const response = await fetch('/api/rum/my-gifts/sync', {
+        method: 'POST',
+        cache: 'no-store',
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Не удалось получить подарки')
+      }
+
+      await loadGifts()
+      setMessage('Инвентарь успешно обновлён!')
+    } catch (err) {
+      setTelegramError(
+        err instanceof Error ? err.message : 'Ошибка проверки Telegram',
+      )
+    } finally {
+      setCheckingTelegram(false)
     }
   }
 
@@ -143,6 +147,7 @@ await loadGifts()
           }}>
             RUM
           </Link>
+
           <Link href="/rum-cart" style={{
             color: '#f2f2f2',
             textDecoration: 'none',
@@ -160,6 +165,7 @@ await loadGifts()
           marginBottom: 25,
         }}>
           <div style={{ fontSize: 36, marginBottom: 15 }}>💎</div>
+
           <h1 style={{
             fontSize: 29,
             fontWeight: 900,
@@ -167,6 +173,7 @@ await loadGifts()
           }}>
             Продай свой подарок
           </h1>
+
           <p style={{
             color: '#bdbdbd',
             fontSize: 14,
@@ -185,82 +192,52 @@ await loadGifts()
           padding: 22,
           marginBottom: 18,
         }}>
-          <h2 style={{ fontSize: 19, fontWeight: 800, margin: '0 0 15px' }}>
+          <h2 style={{
+            fontSize: 19,
+            fontWeight: 800,
+            margin: '0 0 15px',
+          }}>
             Мои подарки
           </h2>
-<button
-  type="button"
-  onClick={checkTelegramGifts}
-  disabled={checkingTelegram}
-  style={{
-    width: '100%',
-    padding: 14,
-    marginBottom: 15,
-    border: '1px solid #555',
-    borderRadius: 12,
-    background: '#303030',
-    color: '#fff',
-    fontWeight: 700,
-    cursor: 'pointer',
-    opacity: checkingTelegram ? 0.6 : 1,
-  }}
->
-  {checkingTelegram ? 'Проверяем Telegram...' : '🔄 Проверить мои NFT в Telegram'}
-</button>
 
-{telegramError && (
-  <p style={{ color: '#e18b7e', fontSize: 13 }}>
-    {telegramError}
-  </p>
-)}
+          <button
+            type="button"
+            onClick={checkTelegramGifts}
+            disabled={checkingTelegram}
+            style={{
+              width: '100%',
+              padding: 14,
+              marginBottom: 15,
+              border: '1px solid #555',
+              borderRadius: 12,
+              background: '#303030',
+              color: '#fff',
+              fontWeight: 700,
+              cursor: 'pointer',
+              opacity: checkingTelegram ? 0.6 : 1,
+            }}
+          >
+            {checkingTelegram
+              ? 'Проверяем Telegram...'
+              : '🔄 Проверить мои NFT в Telegram'}
+          </button>
 
-{telegramGifts.length > 0 && (
-  <div style={{ marginBottom: 18 }}>
-    <strong>Найдено уникальных подарков: {telegramGifts.length}</strong>
-    {telegramGifts.map((gift, index) => (
-      <div
-        key={`${gift.name}-${gift.number}-${index}`}
-        style={{
-          padding: 12,
-          marginTop: 8,
-          borderRadius: 12,
-          background: '#252525',
-        }}
-      >
-        <img
-src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFileId || gift.modelStickerFileId)}`}
-  alt={gift.name}
-  style={{
-    width: 100,
-    height: 100,
-    objectFit: 'contain',
-    display: 'block',
-    marginBottom: 10,
-  }}
-/>
-<strong>{gift.name}</strong>
-        <p style={{ fontSize: 12, color: '#bdbdbd', margin: '5px 0' }}>
-          Коллекция: {gift.baseName} · №{gift.number}
-        </p>
-        <p style={{ fontSize: 12, color: '#bdbdbd', margin: 0 }}>
-          {gift.isFromBlockchain
-            ? 'Получен из блокчейна'
-            : 'Обычный уникальный подарок'}
-          {gift.isBurned ? ' · Использован для создания другого подарка' : ''}
-        </p>
-      </div>
-    ))}
-  </div>
-)}
+          {telegramError && (
+            <p style={{ color: '#e18b7e', fontSize: 13 }}>
+              {telegramError}
+            </p>
+          )}
 
           {loading && <p>Загружаем подарки...</p>}
 
           {!loading && !error && gifts.length === 0 && (
             <div style={{ textAlign: 'center', padding: '20px 5px' }}>
               <div style={{ fontSize: 45 }}>🎁</div>
+
               <h3 style={{ fontSize: 16, fontWeight: 700 }}>
                 Пока нет доступных подарков
               </h3>
+
               <p style={{
                 color: '#bdbdbd',
                 fontSize: 13,
@@ -309,7 +286,8 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
                     fontSize: 27,
                   }}>
                     {gift.imageUrl
-                      ? <img
+                      ? (
+                        <img
                           src={gift.imageUrl}
                           alt={gift.name}
                           style={{
@@ -318,10 +296,13 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
                             objectFit: 'cover',
                           }}
                         />
+                      )
                       : '🎁'}
                   </div>
+
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <strong>{gift.name}</strong>
+
                     <p style={{
                       color: '#bdbdbd',
                       fontSize: 12,
@@ -330,6 +311,7 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
                       {gift.collection || gift.model || 'Коллекционный подарок'}
                     </p>
                   </div>
+
                   <span style={{ fontSize: 19 }}>
                     {selectedGift === gift.id ? '✓' : '○'}
                   </span>
@@ -348,6 +330,7 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
               }}>
                 Цена в TON
               </label>
+
               <input
                 type="number"
                 min="0.000000001"
@@ -364,6 +347,7 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
                   boxSizing: 'border-box',
                 }}
               />
+
               <button
                 type="button"
                 disabled={submitting}
@@ -415,9 +399,14 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
           borderRadius: 20,
           padding: 22,
         }}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, margin: '0 0 12px' }}>
+          <h2 style={{
+            fontSize: 18,
+            fontWeight: 800,
+            margin: '0 0 12px',
+          }}>
             Как это работает
           </h2>
+
           {[
             ['01', 'Подключи Telegram', 'Войди через Telegram в RUM.'],
             ['02', 'Выбери подарок', 'Выбери доступный подарок из своего профиля RUM.'],
@@ -433,14 +422,20 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
                 color: '#bdbdbd',
                 fontSize: 14,
                 fontWeight: 900,
-              }}>{number}</span>
+              }}>
+                {number}
+              </span>
+
               <div>
                 <strong style={{ fontSize: 14 }}>{title}</strong>
+
                 <p style={{
                   color: '#bdbdbd',
                   fontSize: 12,
                   margin: '5px 0 0',
-                }}>{description}</p>
+                }}>
+                  {description}
+                </p>
               </div>
             </div>
           ))}
@@ -454,7 +449,7 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
           marginTop: 20,
         }}>
           Создание объявления пока не означает передачу подарка.
-          Проверка владения в Telegram и оплата TON ещё не подключены.
+          Передача подарка покупателю и оплата TON пока не реализованы.
         </p>
 
         <Link href="/catalog" style={{
@@ -471,6 +466,7 @@ src={`/api/rum/telegram-file?file_id=${encodeURIComponent(gift.modelThumbnailFil
           Перейти в каталог
         </Link>
       </div>
+
       <RumBottomNav />
     </main>
   )
