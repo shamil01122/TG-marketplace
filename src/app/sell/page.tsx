@@ -41,6 +41,7 @@ setTelegramError('')
       }
 
       setTelegramGifts(data.gifts || [])
+await loadGifts()
     } catch (err) {
       setTelegramError(
         err instanceof Error ? err.message : 'Ошибка проверки Telegram',

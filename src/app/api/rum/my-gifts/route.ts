@@ -29,12 +29,13 @@ export async function GET() {
       })
       .from(rumGifts)
       .where(
-        and(
-          eq(rumGifts.ownerId, session.profileId),
-          eq(rumGifts.status, 'available'),
-        ),
-      )
-
+  and(
+    eq(rumGifts.ownerId, session.profileId),
+    eq(rumGifts.status, 'available'),
+    eq(rumGifts.isBurned, false),
+    eq(rumGifts.isFromBlockchain, false),
+  ),
+)
     return NextResponse.json(gifts, {
       headers: { 'Cache-Control': 'no-store' },
     })
