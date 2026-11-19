@@ -364,12 +364,13 @@ export default function FavoritesPage() {
                   >
                     <div
                       style={{
-                        height: 175,
+                        height: 135,
                         background:
                           'radial-gradient(circle, #242424 0%, #141414 60%, #0b0b0b 100%)',
                         display: 'grid',
                         placeItems: 'center',
-                        padding: 15,
+                        padding: 10,
+                        boxSizing: 'border-box',
                       }}
                     >
                       {listing.gift.imageUrl ? (
@@ -377,13 +378,16 @@ export default function FavoritesPage() {
                           src={listing.gift.imageUrl}
                           alt={listing.gift.name}
                           style={{
-                            width: '100%',
-                            height: '100%',
+                            display: 'block',
+                            width: 105,
+                            height: 105,
+                            maxWidth: '100%',
+                            maxHeight: '100%',
                             objectFit: 'contain',
                           }}
                         />
                       ) : (
-                        <span style={{ fontSize: 65 }}>🎁</span>
+                        <span style={{ fontSize: 45 }}>🎁</span>
                       )}
                     </div>
                   </Link>
