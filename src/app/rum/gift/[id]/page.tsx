@@ -48,8 +48,11 @@ function colorHex(value: number | null) {
 }
 
 function rarityLabel(value: number | null) {
-  if (value === null) return 'Не указана'
-  return `${value}‰`
+  if (value === null) return null
+
+  return `${(value / 10).toLocaleString('ru-RU', {
+    maximumFractionDigits: 1,
+  })}%`
 }
 
 export default function RumGiftPage() {
@@ -147,7 +150,6 @@ export default function RumGiftPage() {
 
   const centerColor = colorHex(gift?.backdropCenterColor ?? null)
   const edgeColor = colorHex(gift?.backdropEdgeColor ?? null)
-  const symbolColor = colorHex(gift?.backdropSymbolColor ?? null)
   const textColor = colorHex(gift?.backdropTextColor ?? null)
 
   const giftBackground = centerColor && edgeColor
@@ -158,25 +160,29 @@ export default function RumGiftPage() {
     label: string,
     value: string | number | null | undefined,
     last = false,
-  ) => (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: 12,
-        fontSize: 12,
-        marginBottom: last ? 0 : 15,
-      }}
-    >
-      <span style={{ color: '#888888' }}>{label}</span>
-      <strong style={{ textAlign: 'right', color: '#eeeeee' }}>
-        {value === null || value === undefined || value === ''
-          ? 'Не указана'
-          : value}
-      </strong>
-    </div>
-  )
+  ) => {
+    if (value === null || value === undefined || value === '') {
+      return null
+    }
+
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 12,
+          fontSize: 12,
+          marginBottom: last ? 0 : 15,
+        }}
+      >
+        <span style={{ color: '#888888' }}>{label}</span>
+        <strong style={{ textAlign: 'right', color: '#eeeeee' }}>
+          {value}
+        </strong>
+      </div>
+    )
+  }
 
   return (
     <main
@@ -497,94 +503,13 @@ export default function RumGiftPage() {
               </div>
 
               {infoRow('Коллекция', listing.gift.collection)}
-              {infoRow('Номер подарка', `#${listing.gift.number ?? '—'}`)}
+              {infoRow('Номер подарка', listing.gift.number !== null ? `#${listing.gift.number}` : null)}
               {infoRow('Модель', listing.gift.model)}
-              {infoRow('Редкость модели', listing.gift.modelRarity || 'Не указана')}
               {infoRow('Редкость модели', rarityLabel(listing.gift.modelRarityPerMille))}
               {infoRow('Символ', listing.gift.symbol)}
               {infoRow('Редкость символа', rarityLabel(listing.gift.symbolRarityPerMille))}
               {infoRow('Фон', listing.gift.backdrop)}
               {infoRow('Редкость фона', rarityLabel(listing.gift.backdropRarityPerMille), true)}
-            </section>
-
-            <section
-              style={{
-                ...panelStyle,
-                padding: 19,
-                marginBottom: 17,
-              }}
-            >
-              <div
-                style={{
-                  color: '#888888',
-                  fontSize: 10,
-                  fontWeight: 800,
-                  letterSpacing: 1.5,
-                  marginBottom: 16,
-                }}
-              >
-                ОРИГИНАЛЬНЫЕ ЦВЕТА TELEGRAM
-              </div>
-
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                  gap: 12,
-                }}
-              >
-                {[
-                  { name: 'Центральный', color: centerColor },
-                  { name: 'Край фона', color: edgeColor },
-                  { name: 'Цвет символа', color: symbolColor },
-                  { name: 'Цвет текста', color: textColor },
-                ].map((item) => (
-                  <div
-                    key={item.name}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 9,
-                      padding: 10,
-                      background: '#191919',
-                      border: '1px solid #303030',
-                      borderRadius: 12,
-                      minWidth: 0,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 30,
-                        height: 30,
-                        flexShrink: 0,
-                        borderRadius: 9,
-                        background: item.color || '#333333',
-                        border: '1px solid #ffffff30',
-                      }}
-                    />
-                    <div style={{ minWidth: 0 }}>
-                      <div
-                        style={{
-                          fontSize: 10,
-                          color: '#aaaaaa',
-                          marginBottom: 4,
-                        }}
-                      >
-                        {item.name}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 800,
-                          color: '#ffffff',
-                        }}
-                      >
-                        {item.color || 'Нет данных'}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </section>
 
             <section
