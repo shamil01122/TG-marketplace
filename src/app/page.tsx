@@ -1,4 +1,3 @@
-
 'use client'
 
 import RumBottomNav from '@/components/rum/bottom-nav'
@@ -14,6 +13,8 @@ type Listing = {
     collection: string
     model: string
     imageUrl: string
+    backdropCenterColor: string | null
+    backdropEdgeColor: string | null
   }
   seller: {
     username: string
@@ -22,6 +23,10 @@ type Listing = {
 }
 
 const categories = ['ALL GIFTS', 'RARE', 'NEW', 'COLLECTIONS']
+
+function getSafeColor(color: string | null | undefined, fallback: string) {
+  return color && /^#[0-9a-fA-F]{6}$/.test(color) ? color : fallback
+}
 
 export default function HomePage() {
   const [listings, setListings] = useState<Listing[]>([])
@@ -202,11 +207,11 @@ export default function HomePage() {
             <Link
               key={category}
               href="/catalog"
-              className={`shrink-0 rounded-xl px-4 py-3 text-[9px] font-black tracking-[0.13em] transition ${
+              className={
                 index === 0
-                  ? 'bg-white text-black'
-                  : 'border border-white/[0.09] bg-[#101010] text-[#aaaaaa] hover:border-white/30'
-              }`}
+                  ? 'shrink-0 rounded-xl bg-white px-4 py-3 text-[9px] font-black tracking-[0.13em] text-black transition'
+                  : 'shrink-0 rounded-xl border border-white/[0.09] bg-[#101010] px-4 py-3 text-[9px] font-black tracking-[0.13em] text-[#aaaaaa] transition hover:border-white/30'
+              }
             >
               {category}
             </Link>
@@ -282,101 +287,93 @@ export default function HomePage() {
 
         {!loading && !error && listings.length > 0 && (
           <div className="grid grid-cols-2 gap-3">
-            {listings.slice(0, 4).map((listing, index) => (
-              <Link
-                href="/catalog"
-                key={listing.id}
-                className="group overflow-hidden rounded-2xl border border-white/[0.08] bg-[#101010] transition hover:border-white/30"
-              >
-                <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-gradient-to-br from-[#202020] to-[#080808] p-4">
-                  {listing.gift.imageUrl && !brokenImages.includes(listing.id) ? (
-                    <img
-                      src={listing.gift.imageUrl}
-                      alt={listing.gift.name}
-                      onError={() =>
-                        setBrokenImages((prev) =>
-                          prev.includes(listing.id)
-                            ? prev
-                            : [...prev, listing.id],
-                        )
-                      }
-                      className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <span className="text-[70px]">🎁</span>
-                  )}
+            {listings.slice(0, 4).map((listing) => {
+              const centerColor = getSafeColor(
+                listing.gift.backdropCenterColor,
+                '#202020',
+              )
+              const edgeColor = getSafeColor(
+                listing.gift.backdropEdgeColor,
+                '#080808',
+              )
 
-                  {listing.gift.collection && (
-                    <span className="absolute left-2 top-2 max-w-[85%] truncate rounded-md border border-white/15 bg-black/70 px-2 py-1 text-[7px] font-bold tracking-wider text-[#dddddd]">
-                      {listing.gift.collection}
-                    </span>
-                  )}
+              return (
+                <Link
+                  href="/catalog"
+                  key={listing.id}
+                  className="group overflow-hidden rounded-2xl border border-white/[0.08] bg-[#101010] transition hover:border-white/30"
+                >
+                  <div
+                    className="relative flex aspect-square items-center justify-center overflow-hidden p-4"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(135deg, ' +
+                        centerColor +
+                        ', ' +
+                        edgeColor +
+                        ')',
+                    }}
+                  >
+                    {listing.gift.imageUrl && !brokenImages.includes(listing.id) ? (
+                      <img
+                        src={listing.gift.imageUrl}
+                        alt={listing.gift.name}
+                        onError={() =>
+                          setBrokenImages((prev) =>
+                            prev.includes(listing.id)
+                              ? prev
+                              : [...prev, listing.id],
+                          )
+                        }
+                        className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <span className="text-[70px]">🎁</span>
+                    )}
 
-                  <span className="absolute bottom-2 right-2 text-[8px] font-bold tracking-widest text-white/30">
-                    0{index + 1}
-                  </span>
-                </div>
-
-                <div className="p-3">
-                  <div className="truncate text-[13px] font-extrabold">
-                    {listing.gift.name}
+                    {listing.gift.collection && (
+                      <span className="absolute left-2 top-2 max-w-[85%] truncate rounded-md border border-white/15 bg-black/70 px-2 py-1 text-[7px] font-bold tracking-wider text-[#dddddd]">
+                        {listing.gift.collection}
+                      </span>
+                    )}
                   </div>
 
-                  <div className="mt-1 truncate text-[8px] font-semibold tracking-[0.13em] text-[#777777]">
-                    {listing.gift.model || 'TELEGRAM GIFT'}
-                  </div>
+                  <div className="p-3">
+                    <h3 className="truncate text-xs font-bold text-white">
+                      {listing.gift.name}
+                    </h3>
 
-                  <div className="mt-4 flex items-center justify-between gap-1 border-t border-white/[0.07] pt-3">
-                    <div>
-                      <div className="text-[7px] font-bold tracking-widest text-[#777777]">
-                        PRICE
+                    {listing.gift.model && (
+                      <p className="mt-1 truncate text-[9px] text-[#888888]">
+                        {listing.gift.model}
+                      </p>
+                    )}
+
+                    <div className="mt-3 flex items-end justify-between gap-2">
+                      <div>
+                        <p className="text-[8px] font-bold tracking-wider text-[#777777]">
+                          PRICE
+                        </p>
+                        <p className="mt-1 text-sm font-black text-white">
+                          {formatPrice(listing.priceTon)} TON
+                        </p>
                       </div>
-                      <div className="mt-1 text-[13px] font-black text-white">
-                        {formatPrice(listing.priceTon)} TON
-                      </div>
+                      <span className="text-[9px] text-[#888888]">↗</span>
                     </div>
 
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/[0.06] text-sm text-white transition group-hover:bg-white group-hover:text-black">
-                      ↗
-                    </span>
+                    <p className="mt-2 truncate text-[8px] text-[#666666]">
+                      {listing.seller.displayName ||
+                        (listing.seller.username
+                          ? '@' + listing.seller.username
+                          : 'RUM seller')}
+                    </p>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              )
+            })}
           </div>
         )}
       </section>
-
-      <section className="px-5 pb-6 pt-10">
-        <Link
-          href="/sell"
-          className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-[#191919] to-[#0b0b0b] p-5 transition hover:border-white/30"
-        >
-          <div className="pointer-events-none absolute -right-8 -top-12 h-36 w-36 rounded-full bg-white/[0.04] blur-3xl" />
-
-          <div className="relative">
-            <div className="text-[8px] font-bold tracking-[0.22em] text-[#999999]">
-              GOT SOMETHING RARE?
-            </div>
-            <div className="mt-2 text-xl font-black tracking-[-0.04em]">
-              Make it yours.
-            </div>
-            <div className="mt-1 text-[10px] text-[#888888]">
-              List your gift on RUM
-            </div>
-          </div>
-
-          <span className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/15 bg-white/[0.06] text-xl text-white transition group-hover:bg-white group-hover:text-black">
-            ↗
-          </span>
-        </Link>
-      </section>
-
-      <div className="px-5 pb-5 text-center">
-        <span className="text-[8px] font-bold tracking-[0.3em] text-[#555555]">
-          RUM — DIGITAL COLLECTIBLES
-        </span>
-      </div>
 
       <RumBottomNav />
     </main>
