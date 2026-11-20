@@ -1,3 +1,4 @@
+
 'use client'
 
 import RumBottomNav from '@/components/rum/bottom-nav'
@@ -13,8 +14,8 @@ type Listing = {
     collection: string
     model: string
     imageUrl: string
-    backdropCenterColor: string | null
-    backdropEdgeColor: string | null
+    backdropCenterColor: number | string | null
+    backdropEdgeColor: number | string | null
   }
   seller: {
     username: string
@@ -24,8 +25,31 @@ type Listing = {
 
 const categories = ['ALL GIFTS', 'RARE', 'NEW', 'COLLECTIONS']
 
-function getSafeColor(color: string | null | undefined, fallback: string) {
-  return color && /^#[0-9a-fA-F]{6}$/.test(color) ? color : fallback
+function getSafeColor(
+  color: number | string | null | undefined,
+  fallback: string,
+) {
+  if (typeof color === 'number') {
+    if (Number.isInteger(color) && color >= 0 && color <= 0xffffff) {
+      return '#' + color.toString(16).padStart(6, '0')
+    }
+    return fallback
+  }
+
+  if (typeof color === 'string') {
+    if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+      return color
+    }
+
+    if (/^\d+$/.test(color)) {
+      const numericColor = Number(color)
+      if (numericColor >= 0 && numericColor <= 0xffffff) {
+        return '#' + numericColor.toString(16).padStart(6, '0')
+      }
+    }
+  }
+
+  return fallback
 }
 
 export default function HomePage() {
