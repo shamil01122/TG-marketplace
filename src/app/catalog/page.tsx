@@ -49,6 +49,14 @@ function colorHex(value: number | null) {
   return `#${(value >>> 0).toString(16).padStart(6, '0').slice(-6)}`
 }
 
+function formatRarity(value: number | null) {
+  if (value === null || !Number.isFinite(value)) return null
+
+  return `${(value / 10).toLocaleString('ru-RU', {
+    maximumFractionDigits: 2,
+  })}%`
+}
+
 export default function CatalogPage() {
   const router = useRouter()
 
@@ -202,6 +210,41 @@ export default function CatalogPage() {
         paddingBottom: 110,
       }}
     >
+      <style jsx>{`
+        .gift-card {
+          transition:
+            transform 220ms ease,
+            border-color 220ms ease,
+            box-shadow 220ms ease;
+        }
+
+        .gift-card:hover {
+          transform: translateY(-4px);
+          border-color: #555555;
+        }
+
+        .gift-image img {
+          transition: transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
+          filter: drop-shadow(0 9px 18px #00000055);
+        }
+
+        .gift-card:hover .gift-image img {
+          transform: scale(1.07);
+        }
+
+        .rarity-badge {
+          background: linear-gradient(135deg, #292929, #151515);
+          box-shadow: inset 0 1px 0 #ffffff12;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .gift-card,
+          .gift-image img {
+            transition: none;
+          }
+        }
+      `}</style>
+
       <div
         style={{
           maxWidth: 560,
@@ -528,6 +571,9 @@ export default function CatalogPage() {
 
                 const centerColor = colorHex(gift.backdropCenterColor)
                 const edgeColor = colorHex(gift.backdropEdgeColor)
+                const modelRarity = formatRarity(
+                  gift.modelRarityPerMille,
+                )
 
                 const giftBackground = centerColor && edgeColor
                   ? `radial-gradient(circle at 50% 42%, ${centerColor} 0%, ${edgeColor} 100%)`
@@ -536,11 +582,16 @@ export default function CatalogPage() {
                 return (
                   <article
                     key={listing.id}
+                    className="gift-card"
                     style={{
                       ...panelStyle,
                       overflow: 'hidden',
                       position: 'relative',
-                      background: '#0d0d0d',
+                      background: 'linear-gradient(160deg, #151515, #090909)',
+                      borderColor: '#303030',
+                      boxShadow: centerColor
+                        ? `0 10px 32px ${centerColor}18`
+                        : '0 10px 28px #00000055',
                     }}
                   >
                     <button
@@ -555,14 +606,16 @@ export default function CatalogPage() {
                         zIndex: 2,
                         right: 11,
                         top: 11,
-                        width: 36,
-                        height: 36,
+                        width: 38,
+                        height: 38,
                         borderRadius: 50,
-                        border: '1px solid #383838',
-                        background: '#171717',
-                        color: isFavorite ? '#ffffff' : '#aaaaaa',
-                        fontSize: 19,
+                        border: '1px solid #ffffff35',
+                        background: '#101010bb',
+                        backdropFilter: 'blur(10px)',
+                        color: isFavorite ? '#ffffff' : '#cccccc',
+                        fontSize: 20,
                         cursor: 'pointer',
+                        boxShadow: '0 4px 14px #00000035',
                       }}
                     >
                       {isFavorite ? '♥' : '♡'}
@@ -583,21 +636,38 @@ export default function CatalogPage() {
                       }}
                     >
                       <div
+                        className="gift-image"
                         style={{
-                          height: 185,
+                          height: 195,
                           background: giftBackground,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           position: 'relative',
                           padding: 17,
+                          overflow: 'hidden',
+                          boxShadow: centerColor
+                            ? `inset 0 0 45px ${centerColor}35`
+                            : 'inset 0 0 35px #ffffff08',
                         }}
                       >
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background:
+                              'linear-gradient(180deg, #ffffff0b 0%, transparent 45%, #00000022 100%)',
+                            pointerEvents: 'none',
+                          }}
+                        />
+
                         {gift.imageUrl ? (
                           <img
                             src={gift.imageUrl}
                             alt={gift.name}
                             style={{
+                              position: 'relative',
+                              zIndex: 1,
                               width: '100%',
                               height: '100%',
                               objectFit: 'contain',
@@ -613,16 +683,19 @@ export default function CatalogPage() {
                               position: 'absolute',
                               right: 10,
                               bottom: 10,
-                              background: '#00000080',
-                              border: '1px solid #ffffff30',
+                              zIndex: 2,
+                              background: '#00000099',
+                              border: '1px solid #ffffff45',
+                              backdropFilter: 'blur(8px)',
                               borderRadius: 20,
-                              padding: '5px 9px',
+                              padding: '6px 10px',
                               color: '#ffffff',
-                              fontSize: 9,
-                              fontWeight: 800,
+                              fontSize: 10,
+                              fontWeight: 850,
+                              letterSpacing: 0.3,
                             }}
                           >
-                            #{gift.number}
+                            № {gift.number}
                           </span>
                         )}
 
@@ -632,11 +705,13 @@ export default function CatalogPage() {
                               position: 'absolute',
                               left: 11,
                               bottom: 10,
-                              background: '#222222',
-                              border: '1px solid #393939',
+                              zIndex: 2,
+                              background: '#111111bb',
+                              border: '1px solid #ffffff35',
+                              backdropFilter: 'blur(8px)',
                               borderRadius: 20,
                               padding: '6px 10px',
-                              color: '#cccccc',
+                              color: '#ffffff',
                               fontSize: 9,
                               fontWeight: 800,
                               maxWidth: '65%',
@@ -655,7 +730,7 @@ export default function CatalogPage() {
                           style={{
                             fontWeight: 850,
                             fontSize: 15,
-                            marginBottom: 5,
+                            marginBottom: 6,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
@@ -668,7 +743,7 @@ export default function CatalogPage() {
                           style={{
                             color: mutedText,
                             fontSize: 11,
-                            marginBottom: 9,
+                            marginBottom: 11,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
@@ -677,27 +752,40 @@ export default function CatalogPage() {
                           {gift.model || 'Модель не указана'}
                         </div>
 
-                        {gift.modelRarity && (
+                        {(gift.modelRarity || modelRarity) && (
                           <div
+                            className="rarity-badge"
                             style={{
                               display: 'inline-flex',
-                              padding: '5px 8px',
-                              marginBottom: 12,
+                              alignItems: 'center',
+                              gap: 7,
+                              padding: '7px 10px',
+                              marginBottom: 13,
                               borderRadius: 20,
-                              background: '#202020',
-                              border: '1px solid #333333',
-                              color: '#cccccc',
+                              border: '1px solid #ffffff20',
+                              color: '#e5e5e5',
                               fontSize: 9,
                               fontWeight: 800,
                             }}
                           >
-                            {gift.modelRarity}
+                            <span style={{ color: '#ffffff' }}>✧</span>
+                            <span>
+                              {gift.modelRarity || 'Редкая модель'}
+                            </span>
+                            {modelRarity && (
+                              <>
+                                <span style={{ color: '#666666' }}>·</span>
+                                <span style={{ color: '#ffffff' }}>
+                                  {modelRarity}
+                                </span>
+                              </>
+                            )}
                           </div>
                         )}
 
                         <div
                           style={{
-                            borderTop: '1px solid #252525',
+                            borderTop: '1px solid #292929',
                             paddingTop: 12,
                             display: 'flex',
                             justifyContent: 'space-between',
