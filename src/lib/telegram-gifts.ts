@@ -23,28 +23,44 @@ export async function getTelegramNftGifts(telegramUserId: number) {
       ...result.gifts
         .filter((item) => item.type === 'unique')
         .map((item) => {
+          const gift = item.gift
+
           const fileId =
-            item.gift.model.sticker.thumbnail?.file_id ||
-            item.gift.symbol.sticker.thumbnail?.file_id
+            gift.model.sticker.thumbnail?.file_id ||
+            gift.symbol.sticker.thumbnail?.file_id
 
           return {
-            telegramGiftId: `${item.gift.name}:${item.gift.number}`,
-            name: item.gift.name,
-            baseName: item.gift.base_name,
-            number: item.gift.number,
-            model: item.gift.model.name,
-            symbol: item.gift.symbol.name,
-            modelStickerFileId: item.gift.model.sticker.file_id,
-            modelThumbnailFileId: item.gift.model.sticker.thumbnail?.file_id,
-            symbolStickerFileId: item.gift.symbol.sticker.file_id,
-            symbolThumbnailFileId: item.gift.symbol.sticker.thumbnail?.file_id,
+            telegramGiftId: `${gift.name}:${gift.number}`,
+            name: gift.name,
+            baseName: gift.base_name,
+            number: gift.number,
+
+            model: gift.model.name,
+            modelRarity: gift.model.rarity ?? null,
+            modelRarityPerMille: gift.model.rarity_per_mille,
+
+            symbol: gift.symbol.name,
+            symbolRarityPerMille: gift.symbol.rarity_per_mille,
+
+            backdrop: gift.backdrop.name,
+            backdropCenterColor: gift.backdrop.colors.center_color,
+            backdropEdgeColor: gift.backdrop.colors.edge_color,
+            backdropSymbolColor: gift.backdrop.colors.symbol_color,
+            backdropTextColor: gift.backdrop.colors.text_color,
+            backdropRarityPerMille: gift.backdrop.rarity_per_mille,
+
+            modelStickerFileId: gift.model.sticker.file_id,
+            modelThumbnailFileId: gift.model.sticker.thumbnail?.file_id,
+            symbolStickerFileId: gift.symbol.sticker.file_id,
+            symbolThumbnailFileId: gift.symbol.sticker.thumbnail?.file_id,
+
             imageUrl: fileId
               ? `/api/rum/telegram-file?file_id=${encodeURIComponent(fileId)}`
               : '',
-            backdrop: item.gift.backdrop.name,
+
             sendDate: item.send_date,
-            isFromBlockchain: item.gift.is_from_blockchain === true,
-            isBurned: item.gift.is_burned === true,
+            isFromBlockchain: gift.is_from_blockchain === true,
+            isBurned: gift.is_burned === true,
           }
         }),
     )

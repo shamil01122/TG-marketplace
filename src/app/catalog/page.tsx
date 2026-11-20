@@ -15,9 +15,18 @@ type Listing = {
     id: string
     name: string
     collection: string
+    number: number | null
     model: string
+    modelRarity: string | null
+    modelRarityPerMille: number | null
     backdrop: string
+    backdropCenterColor: number | null
+    backdropEdgeColor: number | null
+    backdropSymbolColor: number | null
+    backdropTextColor: number | null
+    backdropRarityPerMille: number | null
     symbol: string
+    symbolRarityPerMille: number | null
     imageUrl: string
   }
   seller: {
@@ -33,6 +42,12 @@ const panelStyle = {
 } as const
 
 const mutedText = '#858585'
+
+function colorHex(value: number | null) {
+  if (value === null || !Number.isFinite(value)) return null
+
+  return `#${(value >>> 0).toString(16).padStart(6, '0').slice(-6)}`
+}
 
 export default function CatalogPage() {
   const router = useRouter()
@@ -120,6 +135,9 @@ export default function CatalogPage() {
         gift.name,
         gift.collection,
         gift.model,
+        gift.backdrop,
+        gift.symbol,
+        gift.number,
         seller.username,
         seller.displayName,
       ]
@@ -508,6 +526,13 @@ export default function CatalogPage() {
                   (item) => item.listingId === listing.id,
                 )
 
+                const centerColor = colorHex(gift.backdropCenterColor)
+                const edgeColor = colorHex(gift.backdropEdgeColor)
+
+                const giftBackground = centerColor && edgeColor
+                  ? `radial-gradient(circle at 50% 42%, ${centerColor} 0%, ${edgeColor} 100%)`
+                  : 'radial-gradient(circle, #242424 0%, #141414 58%, #0c0c0c 100%)'
+
                 return (
                   <article
                     key={listing.id}
@@ -527,7 +552,7 @@ export default function CatalogPage() {
                       }
                       style={{
                         position: 'absolute',
-                        zIndex: 1,
+                        zIndex: 2,
                         right: 11,
                         top: 11,
                         width: 36,
@@ -560,8 +585,7 @@ export default function CatalogPage() {
                       <div
                         style={{
                           height: 185,
-                          background:
-                            'radial-gradient(circle, #242424 0%, #141414 58%, #0c0c0c 100%)',
+                          background: giftBackground,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -583,6 +607,25 @@ export default function CatalogPage() {
                           <span style={{ fontSize: 72 }}>🎁</span>
                         )}
 
+                        {gift.number !== null && (
+                          <span
+                            style={{
+                              position: 'absolute',
+                              right: 10,
+                              bottom: 10,
+                              background: '#00000080',
+                              border: '1px solid #ffffff30',
+                              borderRadius: 20,
+                              padding: '5px 9px',
+                              color: '#ffffff',
+                              fontSize: 9,
+                              fontWeight: 800,
+                            }}
+                          >
+                            #{gift.number}
+                          </span>
+                        )}
+
                         {gift.collection && (
                           <span
                             style={{
@@ -596,7 +639,7 @@ export default function CatalogPage() {
                               color: '#cccccc',
                               fontSize: 9,
                               fontWeight: 800,
-                              maxWidth: '80%',
+                              maxWidth: '65%',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
                               whiteSpace: 'nowrap',
@@ -625,7 +668,7 @@ export default function CatalogPage() {
                           style={{
                             color: mutedText,
                             fontSize: 11,
-                            marginBottom: 17,
+                            marginBottom: 9,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
@@ -633,6 +676,24 @@ export default function CatalogPage() {
                         >
                           {gift.model || 'Модель не указана'}
                         </div>
+
+                        {gift.modelRarity && (
+                          <div
+                            style={{
+                              display: 'inline-flex',
+                              padding: '5px 8px',
+                              marginBottom: 12,
+                              borderRadius: 20,
+                              background: '#202020',
+                              border: '1px solid #333333',
+                              color: '#cccccc',
+                              fontSize: 9,
+                              fontWeight: 800,
+                            }}
+                          >
+                            {gift.modelRarity}
+                          </div>
+                        )}
 
                         <div
                           style={{

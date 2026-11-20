@@ -18,9 +18,18 @@ export async function GET() {
           id: rumGifts.id,
           name: rumGifts.name,
           collection: rumGifts.collection,
+          number: rumGifts.number,
           model: rumGifts.model,
+          modelRarity: rumGifts.modelRarity,
+          modelRarityPerMille: rumGifts.modelRarityPerMille,
           backdrop: rumGifts.backdrop,
+          backdropCenterColor: rumGifts.backdropCenterColor,
+          backdropEdgeColor: rumGifts.backdropEdgeColor,
+          backdropSymbolColor: rumGifts.backdropSymbolColor,
+          backdropTextColor: rumGifts.backdropTextColor,
+          backdropRarityPerMille: rumGifts.backdropRarityPerMille,
           symbol: rumGifts.symbol,
+          symbolRarityPerMille: rumGifts.symbolRarityPerMille,
           imageUrl: rumGifts.imageUrl,
         },
         seller: {
@@ -90,7 +99,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Проверяем, что подарок всё ещё принадлежит пользователю в Telegram.
     const telegramGifts = await getTelegramNftGifts(session.telegramUserId)
 
     const [storedGift] = await db

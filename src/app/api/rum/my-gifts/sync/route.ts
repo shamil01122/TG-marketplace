@@ -59,6 +59,30 @@ export async function POST() {
       }
 
       for (const gift of gifts) {
+        const giftAttributes = {
+          name: gift.name,
+          collection: gift.baseName,
+          number: gift.number,
+
+          model: gift.model,
+          modelRarity: gift.modelRarity,
+          modelRarityPerMille: gift.modelRarityPerMille,
+
+          backdrop: gift.backdrop,
+          backdropCenterColor: gift.backdropCenterColor,
+          backdropEdgeColor: gift.backdropEdgeColor,
+          backdropSymbolColor: gift.backdropSymbolColor,
+          backdropTextColor: gift.backdropTextColor,
+          backdropRarityPerMille: gift.backdropRarityPerMille,
+
+          symbol: gift.symbol,
+          symbolRarityPerMille: gift.symbolRarityPerMille,
+
+          imageUrl: gift.imageUrl,
+          isBurned: gift.isBurned,
+          isFromBlockchain: gift.isFromBlockchain,
+        }
+
         const [existing] = await tx
           .select({
             id: rumGifts.id,
@@ -92,14 +116,7 @@ export async function POST() {
           await tx
             .update(rumGifts)
             .set({
-              name: gift.name,
-              collection: gift.baseName,
-              model: gift.model,
-              backdrop: gift.backdrop,
-              symbol: gift.symbol,
-              imageUrl: gift.imageUrl,
-              isBurned: gift.isBurned,
-              isFromBlockchain: gift.isFromBlockchain,
+              ...giftAttributes,
               ownerId: session.profileId,
               ...(mustCancelListing
                 ? { status: 'available' as const }
@@ -109,14 +126,7 @@ export async function POST() {
         } else {
           await tx.insert(rumGifts).values({
             telegramGiftId: gift.telegramGiftId,
-            name: gift.name,
-            collection: gift.baseName,
-            model: gift.model,
-            backdrop: gift.backdrop,
-            symbol: gift.symbol,
-            imageUrl: gift.imageUrl,
-            isBurned: gift.isBurned,
-            isFromBlockchain: gift.isFromBlockchain,
+            ...giftAttributes,
             ownerId: session.profileId,
           })
         }

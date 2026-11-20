@@ -15,9 +15,18 @@ type Listing = {
     id: string
     name: string
     collection: string
+    number: number | null
     model: string
+    modelRarity: string | null
+    modelRarityPerMille: number | null
     backdrop: string
+    backdropCenterColor: number | null
+    backdropEdgeColor: number | null
+    backdropSymbolColor: number | null
+    backdropTextColor: number | null
+    backdropRarityPerMille: number | null
     symbol: string
+    symbolRarityPerMille: number | null
     imageUrl: string
   }
   seller: {
@@ -31,6 +40,17 @@ const panelStyle = {
   border: '1px solid #292929',
   borderRadius: 19,
 } as const
+
+function colorHex(value: number | null) {
+  if (value === null || !Number.isFinite(value)) return null
+
+  return `#${(value >>> 0).toString(16).padStart(6, '0').slice(-6)}`
+}
+
+function rarityLabel(value: number | null) {
+  if (value === null) return 'Не указана'
+  return `${value}‰`
+}
 
 export default function RumGiftPage() {
   const { id } = useParams<{ id: string }>()
@@ -122,6 +142,41 @@ export default function RumGiftPage() {
 
     router.push('/rum-cart')
   }
+
+  const gift = listing?.gift
+
+  const centerColor = colorHex(gift?.backdropCenterColor ?? null)
+  const edgeColor = colorHex(gift?.backdropEdgeColor ?? null)
+  const symbolColor = colorHex(gift?.backdropSymbolColor ?? null)
+  const textColor = colorHex(gift?.backdropTextColor ?? null)
+
+  const giftBackground = centerColor && edgeColor
+    ? `radial-gradient(circle at 50% 42%, ${centerColor} 0%, ${edgeColor} 100%)`
+    : 'radial-gradient(circle, #292929 0%, #151515 62%, #080808 100%)'
+
+  const infoRow = (
+    label: string,
+    value: string | number | null | undefined,
+    last = false,
+  ) => (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 12,
+        fontSize: 12,
+        marginBottom: last ? 0 : 15,
+      }}
+    >
+      <span style={{ color: '#888888' }}>{label}</span>
+      <strong style={{ textAlign: 'right', color: '#eeeeee' }}>
+        {value === null || value === undefined || value === ''
+          ? 'Не указана'
+          : value}
+      </strong>
+    </div>
+  )
 
   return (
     <main
@@ -250,6 +305,7 @@ export default function RumGiftPage() {
             >
               <div
                 style={{
+                  position: 'relative',
                   height: 330,
                   maxHeight: '75vw',
                   minHeight: 230,
@@ -258,15 +314,28 @@ export default function RumGiftPage() {
                   justifyContent: 'center',
                   padding: 22,
                   boxSizing: 'border-box',
-                  background:
-                    'radial-gradient(circle, #292929 0%, #151515 62%, #080808 100%)',
+                  background: giftBackground,
+                  overflow: 'hidden',
                 }}
               >
+                {textColor && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      border: `1px solid ${textColor}33`,
+                      pointerEvents: 'none',
+                    }}
+                  />
+                )}
+
                 {listing.gift.imageUrl ? (
                   <img
                     src={listing.gift.imageUrl}
                     alt={listing.gift.name}
                     style={{
+                      position: 'relative',
+                      zIndex: 1,
                       display: 'block',
                       width: '100%',
                       height: '100%',
@@ -275,6 +344,25 @@ export default function RumGiftPage() {
                   />
                 ) : (
                   <span style={{ fontSize: 90 }}>🎁</span>
+                )}
+
+                {listing.gift.number !== null && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: 13,
+                      right: 15,
+                      zIndex: 2,
+                      color: textColor || '#ffffff',
+                      fontSize: 11,
+                      fontWeight: 900,
+                      background: '#00000055',
+                      padding: '6px 10px',
+                      borderRadius: 20,
+                    }}
+                  >
+                    #{listing.gift.number}
+                  </span>
                 )}
               </div>
 
@@ -393,6 +481,116 @@ export default function RumGiftPage() {
               style={{
                 ...panelStyle,
                 padding: 19,
+                marginBottom: 15,
+              }}
+            >
+              <div
+                style={{
+                  color: '#888888',
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: 1.5,
+                  marginBottom: 15,
+                }}
+              >
+                ХАРАКТЕРИСТИКИ NFT
+              </div>
+
+              {infoRow('Коллекция', listing.gift.collection)}
+              {infoRow('Номер подарка', `#${listing.gift.number ?? '—'}`)}
+              {infoRow('Модель', listing.gift.model)}
+              {infoRow('Редкость модели', listing.gift.modelRarity || 'Не указана')}
+              {infoRow('Редкость модели', rarityLabel(listing.gift.modelRarityPerMille))}
+              {infoRow('Символ', listing.gift.symbol)}
+              {infoRow('Редкость символа', rarityLabel(listing.gift.symbolRarityPerMille))}
+              {infoRow('Фон', listing.gift.backdrop)}
+              {infoRow('Редкость фона', rarityLabel(listing.gift.backdropRarityPerMille), true)}
+            </section>
+
+            <section
+              style={{
+                ...panelStyle,
+                padding: 19,
+                marginBottom: 17,
+              }}
+            >
+              <div
+                style={{
+                  color: '#888888',
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: 1.5,
+                  marginBottom: 16,
+                }}
+              >
+                ОРИГИНАЛЬНЫЕ ЦВЕТА TELEGRAM
+              </div>
+
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                  gap: 12,
+                }}
+              >
+                {[
+                  { name: 'Центральный', color: centerColor },
+                  { name: 'Край фона', color: edgeColor },
+                  { name: 'Цвет символа', color: symbolColor },
+                  { name: 'Цвет текста', color: textColor },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 9,
+                      padding: 10,
+                      background: '#191919',
+                      border: '1px solid #303030',
+                      borderRadius: 12,
+                      minWidth: 0,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 30,
+                        height: 30,
+                        flexShrink: 0,
+                        borderRadius: 9,
+                        background: item.color || '#333333',
+                        border: '1px solid #ffffff30',
+                      }}
+                    />
+                    <div style={{ minWidth: 0 }}>
+                      <div
+                        style={{
+                          fontSize: 10,
+                          color: '#aaaaaa',
+                          marginBottom: 4,
+                        }}
+                      >
+                        {item.name}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 800,
+                          color: '#ffffff',
+                        }}
+                      >
+                        {item.color || 'Нет данных'}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section
+              style={{
+                ...panelStyle,
+                padding: 19,
                 marginBottom: 17,
               }}
             >
@@ -405,55 +603,17 @@ export default function RumGiftPage() {
                   marginBottom: 15,
                 }}
               >
-                ИНФОРМАЦИЯ
+                ПРОДАВЕЦ
               </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: 12,
-                  fontSize: 12,
-                  marginBottom: 15,
-                }}
-              >
-                <span style={{ color: '#888888' }}>Коллекция</span>
-                <strong style={{ textAlign: 'right' }}>
-                  {listing.gift.collection || 'Не указана'}
-                </strong>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: 12,
-                  fontSize: 12,
-                  marginBottom: 15,
-                }}
-              >
-                <span style={{ color: '#888888' }}>Модель</span>
-                <strong style={{ textAlign: 'right' }}>
-                  {listing.gift.model || 'Не указана'}
-                </strong>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: 12,
-                  fontSize: 12,
-                }}
-              >
-                <span style={{ color: '#888888' }}>Продавец</span>
-                <strong style={{ textAlign: 'right' }}>
-                  {listing.seller.displayName ||
-                    (listing.seller.username
-                      ? `@${listing.seller.username}`
-                      : 'Не указан')}
-                </strong>
-              </div>
+              {infoRow(
+                'Имя',
+                listing.seller.displayName ||
+                  (listing.seller.username
+                    ? `@${listing.seller.username}`
+                    : 'Не указан'),
+                true,
+              )}
             </section>
 
             <section
