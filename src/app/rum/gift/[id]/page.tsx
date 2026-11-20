@@ -36,20 +36,18 @@ type Listing = {
 }
 
 const panelStyle = {
-  background: '#111111',
+  background: 'linear-gradient(145deg, #151515, #0c0c0c)',
   border: '1px solid #292929',
-  borderRadius: 19,
+  borderRadius: 20,
 } as const
 
 function colorHex(value: number | null) {
   if (value === null || !Number.isFinite(value)) return null
-
   return `#${(value >>> 0).toString(16).padStart(6, '0').slice(-6)}`
 }
 
 function rarityLabel(value: number | null) {
   if (value === null) return null
-
   return `${(value / 10).toLocaleString('ru-RU', {
     maximumFractionDigits: 1,
   })}%`
@@ -67,9 +65,7 @@ export default function RumGiftPage() {
   const toggleFavorite = useRumFavorites((state) => state.toggleFavorite)
   const addGift = useRumCart((state) => state.addGift)
 
-  const isFavorite = favorites.some(
-    (item) => item.listingId === id,
-  )
+  const isFavorite = favorites.some((item) => item.listingId === id)
 
   useEffect(() => {
     let cancelled = false
@@ -93,9 +89,7 @@ export default function RumGiftPage() {
           throw new Error('Сервер вернул неверный формат данных')
         }
 
-        const found = data.find(
-          (item: Listing) => item.id === id,
-        )
+        const found = data.find((item: Listing) => item.id === id)
 
         if (!cancelled) {
           if (found) {
@@ -107,15 +101,11 @@ export default function RumGiftPage() {
       } catch (err) {
         if (!cancelled) {
           setError(
-            err instanceof Error
-              ? err.message
-              : 'Ошибка загрузки подарка',
+            err instanceof Error ? err.message : 'Ошибка загрузки подарка',
           )
         }
       } finally {
-        if (!cancelled) {
-          setLoading(false)
-        }
+        if (!cancelled) setLoading(false)
       }
     }
 
@@ -147,7 +137,6 @@ export default function RumGiftPage() {
   }
 
   const gift = listing?.gift
-
   const centerColor = colorHex(gift?.backdropCenterColor ?? null)
   const edgeColor = colorHex(gift?.backdropEdgeColor ?? null)
   const textColor = colorHex(gift?.backdropTextColor ?? null)
@@ -161,9 +150,7 @@ export default function RumGiftPage() {
     value: string | number | null | undefined,
     last = false,
   ) => {
-    if (value === null || value === undefined || value === '') {
-      return null
-    }
+    if (value === null || value === undefined || value === '') return null
 
     return (
       <div
@@ -171,13 +158,14 @@ export default function RumGiftPage() {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          gap: 12,
+          gap: 14,
+          padding: '13px 0',
+          borderBottom: last ? 'none' : '1px solid #252525',
           fontSize: 12,
-          marginBottom: last ? 0 : 15,
         }}
       >
         <span style={{ color: '#888888' }}>{label}</span>
-        <strong style={{ textAlign: 'right', color: '#eeeeee' }}>
+        <strong style={{ textAlign: 'right', color: '#eeeeee', fontWeight: 750 }}>
           {value}
         </strong>
       </div>
@@ -188,21 +176,56 @@ export default function RumGiftPage() {
     <main
       style={{
         minHeight: '100vh',
-        background: '#000000',
+        background: '#050505',
         color: '#f5f5f5',
-        padding: '22px 17px 115px',
+        padding: '20px 16px 120px',
       }}
     >
+      <style jsx>{`
+        .action-button {
+          transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+        }
+        .action-button:active {
+          transform: scale(0.98);
+        }
+        .favorite-button {
+          transition: transform 160ms ease, background 160ms ease;
+        }
+        .favorite-button:active {
+          transform: scale(0.92);
+        }
+        .buy-button {
+          transition: opacity 160ms ease, transform 160ms ease;
+        }
+        .buy-button:active {
+          transform: scale(0.985);
+        }
+        @media (hover: hover) {
+          .action-button:hover {
+            background: #252525 !important;
+            border-color: #555 !important;
+          }
+          .favorite-button:hover {
+            transform: scale(1.06);
+            background: #303030 !important;
+          }
+          .buy-button:hover {
+            opacity: 0.88;
+          }
+        }
+      `}</style>
+
       <div style={{ maxWidth: 560, margin: '0 auto' }}>
         <header
           style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 27,
+            marginBottom: 24,
           }}
         >
           <button
+            className="action-button"
             onClick={() => router.back()}
             style={{
               border: '1px solid #303030',
@@ -232,6 +255,7 @@ export default function RumGiftPage() {
           </a>
 
           <button
+            className="action-button"
             onClick={() => router.push('/rum-cart')}
             style={{
               border: '1px solid #303030',
@@ -269,11 +293,9 @@ export default function RumGiftPage() {
             }}
           >
             <div style={{ fontSize: 38, marginBottom: 15 }}>⌕</div>
-
             <h1 style={{ fontSize: 19, margin: '0 0 10px' }}>
               Подарок не найден
             </h1>
-
             <p
               style={{
                 color: '#999999',
@@ -284,7 +306,6 @@ export default function RumGiftPage() {
             >
               {error || 'Объявление больше недоступно.'}
             </p>
-
             <button
               onClick={() => router.push('/catalog')}
               style={{
@@ -306,24 +327,37 @@ export default function RumGiftPage() {
               style={{
                 ...panelStyle,
                 overflow: 'hidden',
-                marginBottom: 22,
+                marginBottom: 23,
+                boxShadow: '0 18px 55px #00000080',
               }}
             >
               <div
                 style={{
                   position: 'relative',
-                  height: 330,
-                  maxHeight: '75vw',
-                  minHeight: 230,
+                  height: 350,
+                  maxHeight: '82vw',
+                  minHeight: 245,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: 22,
+                  padding: 28,
                   boxSizing: 'border-box',
                   background: giftBackground,
                   overflow: 'hidden',
                 }}
               >
+                <div
+                  style={{
+                    position: 'absolute',
+                    width: '75%',
+                    height: '75%',
+                    borderRadius: '50%',
+                    background: textColor || '#ffffff',
+                    opacity: 0.08,
+                    filter: 'blur(65px)',
+                  }}
+                />
+
                 {textColor && (
                   <div
                     style={{
@@ -343,9 +377,10 @@ export default function RumGiftPage() {
                       position: 'relative',
                       zIndex: 1,
                       display: 'block',
-                      width: '100%',
-                      height: '100%',
+                      width: '90%',
+                      height: '90%',
                       objectFit: 'contain',
+                      filter: 'drop-shadow(0 16px 22px #00000055)',
                     }}
                   />
                 ) : (
@@ -356,14 +391,15 @@ export default function RumGiftPage() {
                   <span
                     style={{
                       position: 'absolute',
-                      bottom: 13,
+                      bottom: 15,
                       right: 15,
                       zIndex: 2,
                       color: textColor || '#ffffff',
                       fontSize: 11,
                       fontWeight: 900,
-                      background: '#00000055',
-                      padding: '6px 10px',
+                      background: '#00000066',
+                      border: '1px solid #ffffff22',
+                      padding: '7px 11px',
                       borderRadius: 20,
                     }}
                   >
@@ -378,52 +414,60 @@ export default function RumGiftPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   gap: 10,
-                  padding: '15px 17px',
+                  padding: '13px 17px',
                   borderTop: '1px solid #292929',
                 }}
               >
-                <span
-                  style={{
-                    color: '#999999',
-                    fontSize: 10,
-                    fontWeight: 800,
-                    letterSpacing: 1.5,
-                  }}
-                >
-                  UNIQUE TELEGRAM GIFT
-                </span>
+                <div>
+                  <div
+                    style={{
+                      color: '#eeeeee',
+                      fontSize: 10,
+                      fontWeight: 900,
+                      letterSpacing: 1.5,
+                    }}
+                  >
+                    UNIQUE TELEGRAM GIFT
+                  </div>
+                  <div style={{ color: '#777777', fontSize: 10, marginTop: 4 }}>
+                    Коллекционный цифровой подарок
+                  </div>
+                </div>
 
                 <button
+                  className="favorite-button"
                   onClick={() => toggleFavorite(listing.id)}
                   style={{
-                    width: 39,
-                    height: 39,
+                    width: 42,
+                    height: 42,
                     borderRadius: 50,
                     border: '1px solid #383838',
                     background: '#202020',
-                    color: '#ffffff',
+                    color: isFavorite ? '#ffffff' : '#cccccc',
                     fontSize: 21,
                     cursor: 'pointer',
                   }}
-                  aria-label={
-                    isFavorite
-                      ? 'Убрать из избранного'
-                      : 'Добавить в избранное'
-                  }
+                  aria-label={isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
                 >
                   {isFavorite ? '♥' : '♡'}
                 </button>
               </div>
             </div>
 
-            <section style={{ marginBottom: 23 }}>
+            <section style={{ marginBottom: 22 }}>
               <div
                 style={{
-                  color: '#888888',
-                  fontSize: 10,
-                  fontWeight: 800,
-                  letterSpacing: 2,
-                  marginBottom: 10,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '7px 10px',
+                  border: '1px solid #303030',
+                  borderRadius: 30,
+                  color: '#aaaaaa',
+                  fontSize: 9,
+                  fontWeight: 850,
+                  letterSpacing: 1.3,
+                  marginBottom: 13,
+                  background: '#111111',
                 }}
               >
                 {listing.gift.collection || 'TELEGRAM COLLECTION'}
@@ -431,11 +475,11 @@ export default function RumGiftPage() {
 
               <h1
                 style={{
-                  fontSize: 30,
-                  lineHeight: 1.15,
+                  fontSize: 31,
+                  lineHeight: 1.12,
                   fontWeight: 950,
-                  letterSpacing: -1,
-                  margin: '0 0 10px',
+                  letterSpacing: -1.1,
+                  margin: '0 0 9px',
                 }}
               >
                 {listing.gift.name}
@@ -456,37 +500,54 @@ export default function RumGiftPage() {
             <section
               style={{
                 ...panelStyle,
-                padding: 19,
+                padding: 20,
                 marginBottom: 15,
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
               <div
                 style={{
+                  position: 'absolute',
+                  right: -30,
+                  top: -45,
+                  width: 130,
+                  height: 130,
+                  borderRadius: '50%',
+                  background: '#ffffff',
+                  opacity: 0.035,
+                  filter: 'blur(30px)',
+                }}
+              />
+              <div
+                style={{
                   color: '#888888',
                   fontSize: 10,
-                  fontWeight: 800,
+                  fontWeight: 850,
                   letterSpacing: 1.5,
-                  marginBottom: 9,
+                  marginBottom: 10,
                 }}
               >
                 ЦЕНА ПРОДАВЦА
               </div>
-
               <div
                 style={{
-                  fontSize: 30,
+                  fontSize: 34,
                   fontWeight: 950,
-                  letterSpacing: -0.7,
+                  letterSpacing: -1,
                 }}
               >
-                {formatPrice(listing.priceTon)} TON
+                {formatPrice(listing.priceTon)} <span style={{ fontSize: 19 }}>TON</span>
+              </div>
+              <div style={{ color: '#777777', fontSize: 10, marginTop: 7 }}>
+                Цена указана продавцом
               </div>
             </section>
 
             <section
               style={{
                 ...panelStyle,
-                padding: 19,
+                padding: '7px 18px',
                 marginBottom: 15,
               }}
             >
@@ -494,9 +555,9 @@ export default function RumGiftPage() {
                 style={{
                   color: '#888888',
                   fontSize: 10,
-                  fontWeight: 800,
+                  fontWeight: 850,
                   letterSpacing: 1.5,
-                  marginBottom: 15,
+                  padding: '13px 0 3px',
                 }}
               >
                 ХАРАКТЕРИСТИКИ NFT
@@ -515,17 +576,17 @@ export default function RumGiftPage() {
             <section
               style={{
                 ...panelStyle,
-                padding: 19,
-                marginBottom: 17,
+                padding: '7px 18px',
+                marginBottom: 15,
               }}
             >
               <div
                 style={{
                   color: '#888888',
                   fontSize: 10,
-                  fontWeight: 800,
+                  fontWeight: 850,
                   letterSpacing: 1.5,
-                  marginBottom: 15,
+                  padding: '13px 0 3px',
                 }}
               >
                 ПРОДАВЕЦ
@@ -534,9 +595,7 @@ export default function RumGiftPage() {
               {infoRow(
                 'Имя',
                 listing.seller.displayName ||
-                  (listing.seller.username
-                    ? `@${listing.seller.username}`
-                    : 'Не указан'),
+                  (listing.seller.username ? `@${listing.seller.username}` : 'Не указан'),
                 true,
               )}
             </section>
@@ -546,46 +605,47 @@ export default function RumGiftPage() {
                 ...panelStyle,
                 padding: 17,
                 marginBottom: 17,
+                borderColor: '#343434',
               }}
             >
               <div
                 style={{
-                  color: '#888888',
+                  color: '#bbbbbb',
                   fontSize: 10,
-                  fontWeight: 800,
+                  fontWeight: 850,
                   letterSpacing: 1.3,
                   marginBottom: 9,
                 }}
               >
-                ВАЖНО
+                ИНФОРМАЦИЯ О ПОКУПКЕ
               </div>
-
               <p
                 style={{
                   color: '#999999',
                   fontSize: 11,
-                  lineHeight: 1.7,
+                  lineHeight: 1.75,
                   margin: 0,
                 }}
               >
                 Добавление подарка в корзину пока не является покупкой.
-                Оплата и автоматическая передача Telegram-подарка ещё не
-                подключены.
+                Оплата и автоматическая передача Telegram-подарка ещё не подключены.
               </p>
             </section>
 
             <button
+              className="buy-button"
               onClick={handleAddToCart}
               style={{
                 width: '100%',
-                padding: 17,
-                border: 0,
+                padding: 18,
+                border: '1px solid #ffffff',
                 borderRadius: 15,
                 background: '#ffffff',
                 color: '#000000',
                 fontSize: 14,
                 fontWeight: 950,
                 cursor: 'pointer',
+                boxShadow: '0 8px 30px #ffffff12',
               }}
             >
               Добавить в корзину · {formatPrice(listing.priceTon)} TON
