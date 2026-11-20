@@ -49,32 +49,21 @@ export const rumGifts = pgTable('rum_gifts', {
   telegramGiftId: text('telegram_gift_id').notNull().unique(),
   name: text('name').notNull(),
   collection: text('collection').notNull().default(''),
-
-  // Номер уникального подарка
   number: integer('number'),
-
-  // Модель
   model: text('model').notNull().default(''),
   modelRarity: text('model_rarity'),
   modelRarityPerMille: integer('model_rarity_per_mille'),
-
-  // Фон
   backdrop: text('backdrop').notNull().default(''),
   backdropCenterColor: integer('backdrop_center_color'),
   backdropEdgeColor: integer('backdrop_edge_color'),
   backdropSymbolColor: integer('backdrop_symbol_color'),
   backdropTextColor: integer('backdrop_text_color'),
   backdropRarityPerMille: integer('backdrop_rarity_per_mille'),
-
-  // Символ
   symbol: text('symbol').notNull().default(''),
   symbolRarityPerMille: integer('symbol_rarity_per_mille'),
-
-  // Изображение и статус
   imageUrl: text('image_url').notNull().default(''),
   isBurned: boolean('is_burned').notNull().default(false),
   isFromBlockchain: boolean('is_from_blockchain').notNull().default(false),
-
   ownerId: uuid('owner_id').references(() => rumProfiles.id),
   status: giftStatusEnum('status').notNull().default('available'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
@@ -97,5 +86,8 @@ export const rumDeals = pgTable('rum_deals', {
   amountTon: numeric('amount_ton', { precision: 20, scale: 9 }).notNull(),
   status: dealStatusEnum('status').notNull().default('pending'),
   transactionHash: text('transaction_hash'),
+  expiresAt: timestamp('expires_at', { withTimezone: true }),
+  paidAt: timestamp('paid_at', { withTimezone: true }),
+  completedAt: timestamp('completed_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 })

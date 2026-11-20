@@ -29,6 +29,13 @@
       "when": 1795124348693,
       "tag": "0003_add-nft-attributes",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795209127086,
+      "tag": "0004_slimy_malcolm_colcord",
+      "breakpoints": true
     }
   ]
 }
