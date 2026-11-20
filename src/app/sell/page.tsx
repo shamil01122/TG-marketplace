@@ -135,34 +135,54 @@ export default function SellPage() {
 
   const selectedGiftData = gifts.find((gift) => gift.id === selectedGift)
 
+  const panelStyle: React.CSSProperties = {
+    background: 'linear-gradient(145deg, #191919, #101010)',
+    border: '1px solid #303030',
+    borderRadius: 22,
+    padding: 18,
+    marginBottom: 17,
+  }
+
+  const mutedText: React.CSSProperties = {
+    color: '#929292',
+    fontSize: 12,
+    lineHeight: 1.6,
+  }
+
   return (
     <main style={{
       minHeight: '100vh',
       background: '#080808',
-      color: '#f2f2f2',
-      padding: '22px 18px 105px',
+      color: '#f4f4f4',
+      padding: '20px 15px 110px',
     }}>
       <div style={{ maxWidth: 520, margin: '0 auto' }}>
+
         <header style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 30,
+          marginBottom: 25,
         }}>
           <Link href="/" style={{
-            color: '#f2f2f2',
+            color: '#fff',
             textDecoration: 'none',
             fontSize: 25,
-            fontWeight: 900,
+            fontWeight: 950,
             letterSpacing: 2,
           }}>
             RUM
           </Link>
 
           <Link href="/rum-cart" style={{
-            color: '#f2f2f2',
+            color: '#ddd',
             textDecoration: 'none',
             fontSize: 13,
+            fontWeight: 700,
+            background: '#191919',
+            border: '1px solid #333',
+            borderRadius: 12,
+            padding: '10px 13px',
           }}>
             🛒 Корзина
           </Link>
@@ -171,31 +191,34 @@ export default function SellPage() {
         <section style={{
           position: 'relative',
           overflow: 'hidden',
-          background: 'linear-gradient(145deg, #292929, #111111)',
+          background: 'radial-gradient(ellipse at 100% 0%, #383838 0%, transparent 55%), linear-gradient(145deg, #242424, #101010)',
           border: '1px solid #414141',
           borderRadius: 25,
-          padding: 25,
-          marginBottom: 24,
+          padding: '24px 21px',
+          marginBottom: 20,
         }}>
           <div style={{
             position: 'absolute',
-            right: -25,
-            top: -30,
-            fontSize: 130,
-            opacity: 0.08,
+            right: 8,
+            top: 12,
+            fontSize: 76,
+            opacity: 0.1,
+            pointerEvents: 'none',
           }}>
             💎
           </div>
 
           <div style={{
-            display: 'inline-block',
-            padding: '6px 11px',
-            background: '#383838',
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '6px 10px',
+            background: '#363636',
+            border: '1px solid #505050',
             borderRadius: 20,
-            color: '#d6d6d6',
-            fontSize: 10,
-            fontWeight: 800,
-            letterSpacing: 1,
+            color: '#ddd',
+            fontSize: 9,
+            fontWeight: 900,
+            letterSpacing: 1.3,
             marginBottom: 17,
           }}>
             RUM MARKETPLACE
@@ -203,63 +226,106 @@ export default function SellPage() {
 
           <h1 style={{
             position: 'relative',
-            fontSize: 30,
-            fontWeight: 900,
-            margin: '0 0 10px',
+            fontSize: 29,
+            fontWeight: 950,
+            letterSpacing: -0.8,
+            margin: '0 0 9px',
           }}>
-            Продай свой NFT
+            Мои подарки
           </h1>
 
           <p style={{
             position: 'relative',
-            color: '#bdbdbd',
-            fontSize: 14,
-            lineHeight: 1.6,
+            color: '#aaa',
+            fontSize: 13,
+            lineHeight: 1.65,
+            maxWidth: 310,
             margin: 0,
           }}>
-            Выбирай уникальные Telegram-подарки и создавай
-            объявления для покупателей RUM.
+            Твой NFT-инвентарь в RUM. Выбирай уникальные подарки и выставляй их на маркетплейс.
           </p>
+
+          <div style={{
+            display: 'flex',
+            gap: 9,
+            marginTop: 20,
+          }}>
+            <div style={{
+              background: '#292929',
+              border: '1px solid #444',
+              borderRadius: 12,
+              padding: '10px 13px',
+            }}>
+              <div style={{
+                fontSize: 21,
+                fontWeight: 900,
+                lineHeight: 1.2,
+              }}>
+                {gifts.length}
+              </div>
+              <div style={{
+                color: '#999',
+                fontSize: 10,
+                marginTop: 4,
+              }}>
+                ДОСТУПНО NFT
+              </div>
+            </div>
+
+            <div style={{
+              background: '#292929',
+              border: '1px solid #444',
+              borderRadius: 12,
+              padding: '10px 13px',
+            }}>
+              <div style={{
+                fontSize: 13,
+                fontWeight: 850,
+                lineHeight: 1.2,
+              }}>
+                TELEGRAM
+              </div>
+              <div style={{
+                color: '#999',
+                fontSize: 10,
+                marginTop: 5,
+              }}>
+                ТВОЙ ИНВЕНТАРЬ
+              </div>
+            </div>
+          </div>
         </section>
 
-        <section style={{
-          background: '#151515',
-          border: '1px solid #303030',
-          borderRadius: 22,
-          padding: 19,
-          marginBottom: 18,
-        }}>
+        <section style={panelStyle}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 16,
+            gap: 10,
+            marginBottom: 15,
           }}>
             <div>
               <h2 style={{
-                fontSize: 20,
+                fontSize: 19,
                 fontWeight: 900,
                 margin: 0,
+                letterSpacing: -0.3,
               }}>
-                Мои NFT
+                Твои NFT
               </h2>
-
-              <p style={{
-                color: '#858585',
-                fontSize: 12,
-                margin: '5px 0 0',
-              }}>
-                Выбери подарок для объявления
+              <p style={{ ...mutedText, margin: '5px 0 0' }}>
+                Выбери подарок для продажи
               </p>
             </div>
 
             <div style={{
               background: '#292929',
-              border: '1px solid #414141',
-              borderRadius: 12,
-              padding: '8px 12px',
-              fontSize: 13,
-              fontWeight: 800,
+              border: '1px solid #454545',
+              borderRadius: 11,
+              padding: '8px 11px',
+              fontSize: 12,
+              fontWeight: 900,
+              whiteSpace: 'nowrap',
             }}>
               {gifts.length} NFT
             </div>
@@ -271,235 +337,277 @@ export default function SellPage() {
             disabled={checkingTelegram}
             style={{
               width: '100%',
-              padding: 14,
-              marginBottom: 17,
-              border: '1px solid #454545',
+              padding: 13,
+              marginBottom: 16,
+              border: '1px solid #414141',
               borderRadius: 13,
-              background: '#252525',
-              color: '#fff',
+              background: checkingTelegram ? '#202020' : '#252525',
+              color: '#eee',
               fontWeight: 800,
-              cursor: 'pointer',
-              opacity: checkingTelegram ? 0.6 : 1,
+              fontSize: 12,
+              cursor: checkingTelegram ? 'wait' : 'pointer',
+              opacity: checkingTelegram ? 0.65 : 1,
             }}
           >
             {checkingTelegram
-              ? 'Проверяем Telegram...'
-              : '↻  Обновить мои NFT'}
+              ? '⏳ Проверяем Telegram...'
+              : '↻  Синхронизировать инвентарь'}
           </button>
 
           {telegramError && (
-            <p style={{
-              color: '#e18b7e',
-              fontSize: 13,
+            <div style={{
+              background: '#2b1919',
+              border: '1px solid #633a3a',
+              borderRadius: 12,
+              padding: 12,
+              color: '#e7a19a',
+              fontSize: 12,
               lineHeight: 1.5,
+              marginBottom: 14,
             }}>
               {telegramError}
-            </p>
+            </div>
           )}
 
           {loading && (
-            <p style={{ color: '#aaa', textAlign: 'center', padding: 20 }}>
-              Загружаем NFT...
-            </p>
+            <div style={{
+              textAlign: 'center',
+              padding: '35px 10px',
+              color: '#999',
+              fontSize: 13,
+            }}>
+              <div style={{ fontSize: 28, marginBottom: 10 }}>◌</div>
+              Загружаем твои NFT...
+            </div>
           )}
 
           {!loading && !error && gifts.length === 0 && (
             <div style={{
               textAlign: 'center',
-              padding: '30px 10px',
-              background: '#1d1d1d',
+              padding: '30px 17px',
+              background: 'linear-gradient(145deg, #202020, #171717)',
+              border: '1px solid #333',
               borderRadius: 17,
             }}>
-              <div style={{ fontSize: 48 }}>🎁</div>
+              <div style={{ fontSize: 43, marginBottom: 12 }}>🎁</div>
 
-              <h3 style={{ fontSize: 16, fontWeight: 800 }}>
-                Пока нет доступных NFT
+              <h3 style={{
+                fontSize: 16,
+                fontWeight: 900,
+                margin: '0 0 8px',
+              }}>
+                Пока здесь пусто
               </h3>
 
               <p style={{
-                color: '#999',
-                fontSize: 13,
-                lineHeight: 1.6,
+                ...mutedText,
+                margin: 0,
               }}>
-                Проверь свои подарки в Telegram. Доступные NFT
-                появятся здесь после синхронизации.
+                Уникальные подарки из Telegram появятся здесь после синхронизации инвентаря.
               </p>
             </div>
           )}
 
           {!loading && gifts.length > 0 && (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-              gap: 12,
-            }}>
-              {gifts.map((gift) => {
-                const isSelected = selectedGift === gift.id
-                const imageBroken = brokenImages.includes(gift.id)
+            <>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                gap: 11,
+              }}>
+                {gifts.map((gift) => {
+                  const isSelected = selectedGift === gift.id
+                  const imageBroken = brokenImages.includes(gift.id)
 
-                return (
-                  <button
-                    key={gift.id}
-                    type="button"
-                    onClick={() => setSelectedGift(gift.id)}
-                    style={{
-                      minWidth: 0,
-                      padding: 9,
-                      borderRadius: 17,
-                      border: isSelected
-                        ? '2px solid #dedede'
-                        : '1px solid #363636',
-                      background: isSelected ? '#292929' : '#1c1c1c',
-                      color: '#f2f2f2',
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <div style={{
-                      position: 'relative',
-                      width: '100%',
-                      aspectRatio: '1 / 1',
-                      borderRadius: 12,
-                      overflow: 'hidden',
-                      background: '#292929',
-                      display: 'grid',
-                      placeItems: 'center',
-                      marginBottom: 11,
-                    }}>
-                      {gift.imageUrl && !imageBroken ? (
-                        <img
-                          src={gift.imageUrl}
-                          alt={gift.name}
-                          onError={() => {
-                            setBrokenImages((current) =>
-                              current.includes(gift.id)
-                                ? current
-                                : [...current, gift.id],
-                            )
-                          }}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'contain',
-                          }}
-                        />
-                      ) : (
-                        <span style={{ fontSize: 48 }}>🎁</span>
-                      )}
+                  return (
+                    <button
+                      key={gift.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedGift(gift.id)
+                        setError('')
+                        setMessage('')
+                      }}
+                      style={{
+                        minWidth: 0,
+                        padding: 8,
+                        borderRadius: 16,
+                        border: isSelected
+                          ? '1px solid #dedede'
+                          : '1px solid #343434',
+                        background: isSelected
+                          ? 'linear-gradient(145deg, #303030, #202020)'
+                          : '#191919',
+                        color: '#f2f2f2',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div style={{
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '1 / 1',
+                        borderRadius: 11,
+                        overflow: 'hidden',
+                        background: 'radial-gradient(circle, #383838, #202020 75%)',
+                        display: 'grid',
+                        placeItems: 'center',
+                        marginBottom: 10,
+                      }}>
+                        {gift.imageUrl && !imageBroken ? (
+                          <img
+                            src={gift.imageUrl}
+                            alt={gift.name}
+                            onError={() => {
+                              setBrokenImages((current) =>
+                                current.includes(gift.id)
+                                  ? current
+                                  : [...current, gift.id],
+                              )
+                            }}
+                            style={{
+                              width: '88%',
+                              height: '88%',
+                              objectFit: 'contain',
+                            }}
+                          />
+                        ) : (
+                          <span style={{ fontSize: 43 }}>🎁</span>
+                        )}
 
-                      {isSelected && (
+                        {isSelected && (
+                          <span style={{
+                            position: 'absolute',
+                            top: 7,
+                            right: 7,
+                            width: 24,
+                            height: 24,
+                            display: 'grid',
+                            placeItems: 'center',
+                            borderRadius: '50%',
+                            background: '#eee',
+                            color: '#111',
+                            fontWeight: 950,
+                            fontSize: 13,
+                          }}>
+                            ✓
+                          </span>
+                        )}
+                      </div>
+
+                      <div style={{
+                        fontSize: 13,
+                        fontWeight: 900,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {gift.name}
+                      </div>
+
+                      <div style={{
+                        color: '#999',
+                        fontSize: 10,
+                        marginTop: 4,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {gift.collection || 'Telegram Gifts'}
+                      </div>
+
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        gap: 5,
+                        marginTop: 10,
+                        paddingTop: 8,
+                        borderTop: '1px solid #353535',
+                      }}>
                         <span style={{
-                          position: 'absolute',
-                          top: 8,
-                          right: 8,
-                          width: 25,
-                          height: 25,
-                          display: 'grid',
-                          placeItems: 'center',
-                          borderRadius: '50%',
-                          background: '#f2f2f2',
-                          color: '#111',
-                          fontWeight: 900,
-                          fontSize: 14,
+                          color: '#999',
+                          fontSize: 9,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
                         }}>
-                          ✓
+                          {gift.model || 'Уникальная модель'}
                         </span>
-                      )}
-                    </div>
 
-                    <div style={{
-                      fontSize: 14,
-                      fontWeight: 900,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      {gift.name}
-                    </div>
-
-                    <div style={{
-                      color: '#999',
-                      fontSize: 11,
-                      marginTop: 5,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      {gift.collection || 'Telegram Gifts'}
-                    </div>
-
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginTop: 12,
-                      paddingTop: 9,
-                      borderTop: '1px solid #363636',
-                    }}>
-                      <span style={{
-                        color: '#aaa',
-                        fontSize: 10,
-                      }}>
-                        {gift.model || 'Уникальная модель'}
-                      </span>
-
-                      <span style={{
-                        fontSize: 10,
-                        fontWeight: 800,
-                        color: isSelected ? '#fff' : '#999',
-                      }}>
-                        {isSelected ? 'ВЫБРАНО' : 'ВЫБРАТЬ'}
-                      </span>
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
+                        <span style={{
+                          color: isSelected ? '#fff' : '#999',
+                          fontSize: 9,
+                          fontWeight: 900,
+                          whiteSpace: 'nowrap',
+                        }}>
+                          {isSelected ? '✓ ВЫБРАН' : 'ВЫБРАТЬ'}
+                        </span>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </>
           )}
 
           {selectedGiftData && (
             <div style={{
-              marginTop: 20,
-              padding: 17,
-              background: '#202020',
-              border: '1px solid #444',
+              marginTop: 18,
+              padding: 16,
+              background: 'linear-gradient(145deg, #252525, #191919)',
+              border: '1px solid #484848',
               borderRadius: 17,
             }}>
               <div style={{
-                fontSize: 11,
-                color: '#999',
-                fontWeight: 800,
-                letterSpacing: 1,
-                marginBottom: 8,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                marginBottom: 13,
               }}>
-                ВЫСТАВЛЕНИЕ NFT
+                <span style={{ fontSize: 17 }}>✦</span>
+                <span style={{
+                  fontSize: 10,
+                  color: '#bbb',
+                  fontWeight: 900,
+                  letterSpacing: 1.2,
+                }}>
+                  НОВОЕ ОБЪЯВЛЕНИЕ
+                </span>
               </div>
 
               <div style={{
-                fontSize: 17,
+                fontSize: 16,
                 fontWeight: 900,
-                marginBottom: 15,
+                marginBottom: 5,
               }}>
                 {selectedGiftData.name}
               </div>
 
+              <div style={{
+                ...mutedText,
+                marginBottom: 16,
+              }}>
+                {selectedGiftData.collection || 'Telegram Gifts'}
+              </div>
+
               <label style={{
                 display: 'block',
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 800,
-                marginBottom: 9,
+                marginBottom: 8,
               }}>
-                Твоя цена
+                Укажи стоимость NFT
               </label>
 
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 10,
-                background: '#111',
-                border: '1px solid #444',
+                background: '#101010',
+                border: '1px solid #414141',
                 borderRadius: 13,
                 padding: '0 13px',
               }}>
@@ -523,8 +631,8 @@ export default function SellPage() {
                 />
 
                 <strong style={{
-                  color: '#d6d6d6',
-                  fontSize: 15,
+                  color: '#ddd',
+                  fontSize: 14,
                 }}>
                   TON
                 </strong>
@@ -536,86 +644,103 @@ export default function SellPage() {
                 onClick={createListing}
                 style={{
                   width: '100%',
-                  marginTop: 13,
-                  padding: 16,
-                  border: '1px solid #777',
+                  marginTop: 12,
+                  padding: 15,
+                  border: '1px solid #eee',
                   borderRadius: 13,
-                  background: '#dedede',
+                  background: '#e5e5e5',
                   color: '#111',
-                  fontWeight: 900,
-                  fontSize: 14,
+                  fontWeight: 950,
+                  fontSize: 13,
                   cursor: submitting ? 'wait' : 'pointer',
                   opacity: submitting ? 0.6 : 1,
                 }}
               >
-                {submitting ? 'Создаём объявление...' : 'Выставить на продажу →'}
+                {submitting
+                  ? 'Создаём объявление...'
+                  : 'Выставить на продажу →'}
               </button>
             </div>
           )}
 
           {error && (
-            <p style={{
-              color: '#e18b7e',
-              fontSize: 13,
+            <div style={{
+              color: '#e6a09a',
+              background: '#2b1919',
+              border: '1px solid #633a3a',
+              borderRadius: 12,
+              padding: 12,
+              fontSize: 12,
               lineHeight: 1.5,
-              marginTop: 15,
+              marginTop: 14,
             }}>
               {error}
-            </p>
+            </div>
           )}
 
           {message && (
-            <p style={{
-              color: '#bdbdbd',
-              fontSize: 13,
-              marginTop: 15,
+            <div style={{
+              color: '#c9c9c9',
+              background: '#202020',
+              border: '1px solid #414141',
+              borderRadius: 12,
+              padding: 12,
+              fontSize: 12,
+              marginTop: 14,
             }}>
               ✓ {message}
-            </p>
+            </div>
           )}
         </section>
 
-        <section style={{
-          background: '#151515',
-          border: '1px solid #303030',
-          borderRadius: 20,
-          padding: 20,
-        }}>
+        <section style={panelStyle}>
           <h2 style={{
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: 900,
-            margin: '0 0 10px',
+            margin: '0 0 7px',
           }}>
             Как это работает
           </h2>
 
+          <p style={{
+            ...mutedText,
+            margin: '0 0 12px',
+          }}>
+            Всего три шага до публикации объявления
+          </p>
+
           {[
-            ['01', 'Подключи Telegram', 'Войди через Telegram в RUM.'],
-            ['02', 'Выбери NFT', 'Выбери доступный подарок из своего инвентаря.'],
-            ['03', 'Укажи цену', 'Назначь стоимость в TON и создай объявление.'],
-          ].map(([number, title, description]) => (
+            ['01', 'Синхронизация', 'Подключись через Telegram и обнови свой инвентарь.'],
+            ['02', 'Выбор подарка', 'Выбери уникальный NFT, который хочешь выставить.'],
+            ['03', 'Цена и объявление', 'Укажи стоимость в TON и создай объявление.'],
+          ].map(([number, title, description], index) => (
             <div key={number} style={{
               display: 'flex',
-              gap: 14,
+              gap: 13,
               padding: '13px 0',
-              borderBottom: number === '03' ? 0 : '1px solid #333',
+              borderBottom: index === 2 ? 0 : '1px solid #303030',
             }}>
-              <span style={{
-                color: '#aaa',
-                fontSize: 13,
+              <div style={{
+                width: 31,
+                height: 31,
+                flexShrink: 0,
+                display: 'grid',
+                placeItems: 'center',
+                borderRadius: 10,
+                background: '#292929',
+                border: '1px solid #414141',
+                color: '#ddd',
+                fontSize: 11,
                 fontWeight: 900,
               }}>
                 {number}
-              </span>
+              </div>
 
               <div>
-                <strong style={{ fontSize: 14 }}>{title}</strong>
-
+                <strong style={{ fontSize: 13 }}>{title}</strong>
                 <p style={{
-                  color: '#999',
-                  fontSize: 12,
-                  lineHeight: 1.5,
-                  margin: '5px 0 0',
+                  ...mutedText,
+                  margin: '4px 0 0',
                 }}>
                   {description}
                 </p>
@@ -624,30 +749,35 @@ export default function SellPage() {
           ))}
         </section>
 
-        <p style={{
-          color: '#777',
+        <div style={{
+          background: '#151515',
+          border: '1px solid #303030',
+          borderRadius: 15,
+          padding: 14,
+          marginTop: 18,
+          color: '#858585',
           fontSize: 11,
+          lineHeight: 1.7,
           textAlign: 'center',
-          lineHeight: 1.6,
-          marginTop: 20,
         }}>
           Создание объявления пока не означает передачу подарка.
-          Передача NFT покупателю и оплата TON пока не реализованы.
-        </p>
+          Оплата TON и автоматическая передача NFT покупателю ещё не реализованы.
+        </div>
 
         <Link href="/catalog" style={{
           display: 'block',
           textAlign: 'center',
-          background: '#252525',
+          background: '#242424',
           border: '1px solid #414141',
           color: '#f2f2f2',
           borderRadius: 14,
           padding: 15,
-          marginTop: 18,
+          marginTop: 15,
           textDecoration: 'none',
-          fontWeight: 800,
+          fontWeight: 850,
+          fontSize: 13,
         }}>
-          Перейти в каталог
+          Перейти в каталог →
         </Link>
       </div>
 
