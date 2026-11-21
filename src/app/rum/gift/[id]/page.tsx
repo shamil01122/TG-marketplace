@@ -1,4 +1,3 @@
-
 'use client'
 
 import RumBottomNav from '@/components/rum/bottom-nav'
@@ -282,7 +281,7 @@ export default function RumGiftPage() {
 
     return (
       <div
-        className="flex items-center justify-between gap-4 py-3"
+        className="flex items-center justify-between gap-4 py-2"
         style={{
           borderBottom: last ? 'none' : '1px solid #29271F',
           fontSize: 12,
@@ -297,7 +296,7 @@ export default function RumGiftPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#080807] px-4 pb-52 pt-5 text-[#F2F0E9]">
+    <main className="min-h-screen bg-[#080807] px-4 pb-36 pt-3 text-[#F2F0E9]">
       <style jsx>{`
         .gold-button {
           transition: background 160ms ease, transform 160ms ease;
@@ -322,7 +321,7 @@ export default function RumGiftPage() {
       `}</style>
 
       <div className="mx-auto max-w-[560px]">
-        <header className="mb-6 flex items-center justify-between">
+        <header className="mb-4 flex items-center justify-between">
           <button
             onClick={() => router.back()}
             className="rounded-xl border border-[#39352A] bg-[#14130F] px-4 py-3 text-xs font-bold text-[#D8D1C1] transition hover:border-[#D8B45A]/50"
@@ -371,11 +370,11 @@ export default function RumGiftPage() {
         ) : (
           <>
             <div
-              className="mb-6 overflow-hidden rounded-2xl border border-[#393222] shadow-2xl"
+              className="mb-4 overflow-hidden rounded-2xl border border-[#393222] shadow-2xl"
               style={{ background: '#11110E' }}
             >
               <div
-                className="relative flex aspect-square max-h-[470px] min-h-[270px] items-center justify-center overflow-hidden p-7"
+                className="relative flex aspect-square max-h-[360px] min-h-[210px] items-center justify-center overflow-hidden p-5"
                 style={{ background: giftBackground }}
               >
                 <div
@@ -414,7 +413,7 @@ export default function RumGiftPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-3 border-t border-[#302D24] px-4 py-3">
+              <div className="flex items-center justify-between gap-3 border-t border-[#302D24] px-4 py-2">
                 <div>
                   <p className="text-[9px] font-black tracking-[0.17em] text-[#D8B45A]">
                     DIGITAL COLLECTIBLE
@@ -439,24 +438,24 @@ export default function RumGiftPage() {
               </div>
             </div>
 
-            <section className="mb-6">
-              <div className="mb-3 inline-flex max-w-full items-center rounded-lg border border-[#5A4824] bg-[#211C10] px-3 py-2 text-[9px] font-black tracking-[0.13em] text-[#D8B45A]">
+            <section className="mb-4">
+              <div className="mb-2 inline-flex max-w-full items-center rounded-lg border border-[#5A4824] bg-[#211C10] px-3 py-2 text-[9px] font-black tracking-[0.13em] text-[#D8B45A]">
                 <span className="truncate">
                   {listing.gift.collection || 'TELEGRAM COLLECTION'}
                 </span>
               </div>
 
-              <h1 className="text-[32px] font-black leading-[1.05] tracking-[-0.065em]">
+              <h1 className="text-[25px] font-black leading-[1.1] tracking-[-0.065em]">
                 {listing.gift.name}
                 <span style={{ color: GOLD }}>.</span>
               </h1>
 
-              <p className="mt-2 text-sm text-[#999589]">
+              <p className="mt-1 text-xs text-[#999589]">
                 {listing.gift.model || 'Модель не указана'}
               </p>
 
               {listing.gift.number !== null && (
-                <p className="mt-3 text-[10px] font-bold tracking-widest text-[#777267]">
+                <p className="mt-2 text-[9px] font-bold tracking-widest text-[#777267]">
                   UNIQUE NUMBER #{listing.gift.number}
                 </p>
               )}
@@ -464,7 +463,7 @@ export default function RumGiftPage() {
 
             <section
               style={panelStyle}
-              className="relative mb-4 overflow-hidden p-5"
+              className="relative mb-3 overflow-hidden p-4"
             >
               <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-[#D8B45A]/[0.07] blur-3xl" />
 
@@ -472,8 +471,8 @@ export default function RumGiftPage() {
                 ЦЕНА ПРОДАВЦА
               </p>
 
-              <div className="relative mt-2 flex items-baseline gap-2">
-                <span className="text-[36px] font-black tracking-[-0.06em] text-[#E7C875]">
+              <div className="relative mt-1 flex items-baseline gap-2">
+                <span className="text-[29px] font-black tracking-[-0.06em] text-[#E7C875]">
                   {formatPrice(listing.priceTon)}
                 </span>
                 <span className="text-lg font-bold text-[#D8B45A]">TON</span>
@@ -484,11 +483,8 @@ export default function RumGiftPage() {
               </p>
             </section>
 
-            <section
-              style={panelStyle}
-              className="mb-4 px-4 pb-2"
-            >
-              <div className="border-b border-[#302D24] py-4">
+            <section style={panelStyle} className="mb-3 px-4 pb-1">
+              <div className="border-b border-[#302D24] py-3">
                 <h2 className="text-[10px] font-black tracking-[0.18em] text-[#D8B45A]">
                   ХАРАКТЕРИСТИКИ NFT
                 </h2>
@@ -519,8 +515,8 @@ export default function RumGiftPage() {
               )}
             </section>
 
-            <section style={panelStyle} className="mb-4 px-4 pb-2">
-              <div className="border-b border-[#302D24] py-4">
+            <section style={panelStyle} className="mb-3 px-4 pb-1">
+              <div className="border-b border-[#302D24] py-3">
                 <h2 className="text-[10px] font-black tracking-[0.18em] text-[#D8B45A]">
                   ПРОДАВЕЦ
                 </h2>
@@ -536,9 +532,7 @@ export default function RumGiftPage() {
               )}
             </section>
 
-            <section
-              className="mb-5 rounded-2xl border border-[#5A4824]/70 bg-[#17140D] p-4"
-            >
+            <section className="mb-4 rounded-2xl border border-[#5A4824]/70 bg-[#17140D] p-3">
               <div className="mb-2 flex items-center gap-2">
                 <span className="text-[#D8B45A]">ⓘ</span>
                 <h2 className="text-[10px] font-black tracking-[0.14em] text-[#D8C58F]">
@@ -546,7 +540,7 @@ export default function RumGiftPage() {
                 </h2>
               </div>
 
-              <p className="text-[11px] leading-6 text-[#AAA18D]">
+              <p className="text-[10px] leading-5 text-[#AAA18D]">
                 Резервирование временно удерживает объявление за вами на 15
                 минут. TON-оплата и автоматическая передача Telegram-подарка
                 ещё не подключены. Не отправляйте продавцу оплату вне RUM.
@@ -565,7 +559,7 @@ export default function RumGiftPage() {
             {reservationDeal && (
               <section
                 style={panelStyle}
-                className="mb-5 border-[#6B5629] p-5 text-center"
+                className="mb-4 border-[#6B5629] p-4 text-center"
               >
                 <div className="mb-2 text-3xl text-[#D8B45A]">✓</div>
 
@@ -575,7 +569,7 @@ export default function RumGiftPage() {
 
                 {remainingSeconds !== null && remainingSeconds > 0 ? (
                   <>
-                    <div className="my-4 text-[42px] font-black tabular-nums tracking-widest text-[#E7C875]">
+                    <div className="my-3 text-[32px] font-black tabular-nums tracking-widest text-[#E7C875]">
                       {formatRemainingTime(remainingSeconds)}
                     </div>
                     <p className="text-[11px] leading-6 text-[#999589]">
@@ -593,7 +587,7 @@ export default function RumGiftPage() {
                 <button
                   onClick={handleCancelReservation}
                   disabled={cancelling || reserving}
-                  className="mt-5 w-full rounded-xl border border-red-900/70 bg-red-950/30 px-4 py-4 text-xs font-black text-red-200 transition hover:bg-red-950/60 disabled:opacity-50"
+                  className="mt-3 w-full rounded-xl border border-red-900/70 bg-red-950/30 px-4 py-3 text-[11px] font-black text-red-200 transition hover:bg-red-950/60 disabled:opacity-50"
                 >
                   {cancelling ? 'Отменяем резерв…' : 'Отменить резерв'}
                 </button>
@@ -604,7 +598,7 @@ export default function RumGiftPage() {
       </div>
 
       {!loading && listing && (
-        <div className="fixed bottom-[68px] left-1/2 z-40 w-full max-w-[560px] -translate-x-1/2 border-t border-[#393222] bg-[#0D0D0B]/[0.97] px-4 pb-3 pt-3 shadow-[0_-12px_35px_#00000066] backdrop-blur-xl">
+        <div className="fixed bottom-[60px] left-1/2 z-40 w-full max-w-[560px] -translate-x-1/2 border-t border-[#393222] bg-[#0D0D0B]/[0.97] px-3 pb-2 pt-2 shadow-[0_-12px_35px_#00000066] backdrop-blur-xl">
           <div className="mx-auto flex max-w-[560px] items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="text-[8px] font-bold tracking-[0.15em] text-[#898579]">
@@ -618,7 +612,7 @@ export default function RumGiftPage() {
 
             <button
               onClick={handleAddToCart}
-              className="rounded-xl border border-[#4A412C] bg-[#191710] px-4 py-4 text-[10px] font-black tracking-wider text-[#D8C58F] transition hover:border-[#D8B45A]"
+              className="rounded-lg border border-[#4A412C] bg-[#191710] px-3 py-3 text-[9px] font-black tracking-wider text-[#D8C58F] transition hover:border-[#D8B45A]"
             >
               В КОРЗИНУ
             </button>
@@ -627,14 +621,14 @@ export default function RumGiftPage() {
               <button
                 onClick={handleReserve}
                 disabled={reserving || cancelling}
-                className="gold-button min-w-0 flex-1 rounded-xl bg-[#D8B45A] px-3 py-4 text-[10px] font-black tracking-wider text-[#17140D] disabled:opacity-60"
+                className="gold-button min-w-0 flex-1 rounded-lg bg-[#D8B45A] px-3 py-3 text-[9px] font-black tracking-wider text-[#17140D] disabled:opacity-60"
               >
                 {reserving ? 'РЕЗЕРВ…' : 'РЕЗЕРВ 15 МИН'}
               </button>
             )}
 
             {reservationDeal && (
-              <div className="rounded-xl border border-[#6B5629] bg-[#211C10] px-4 py-4 text-center text-[10px] font-black text-[#E7C875]">
+              <div className="rounded-lg border border-[#6B5629] bg-[#211C10] px-3 py-3 text-center text-[9px] font-black text-[#E7C875]">
                 РЕЗЕРВ АКТИВЕН
               </div>
             )}
