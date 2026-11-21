@@ -68,6 +68,7 @@ export default function RumGiftPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [reserving, setReserving] = useState(false)
+  const [cancelling, setCancelling] = useState(false)
   const [reservationError, setReservationError] = useState('')
   const [reservationDeal, setReservationDeal] = useState<ReservationDeal | null>(null)
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
@@ -150,7 +151,7 @@ export default function RumGiftPage() {
     })
 
   const handleReserve = async () => {
-    if (!listing || reserving || reservationDeal) return
+    if (!listing || reserving || cancelling || reservationDeal) return
 
     try {
       setReserving(true)
@@ -185,6 +186,52 @@ export default function RumGiftPage() {
       )
     } finally {
       setReserving(false)
+    }
+  }
+
+  const handleCancelReservation = async () => {
+    if (!reservationDeal || cancelling || reserving) return
+
+    const confirmed = window.confirm(
+      'Отменить резерв? Подарок снова станет доступен другим покупателям.',
+    )
+
+    if (!confirmed) return
+
+    try {
+      setCancelling(true)
+      setReservationError('')
+
+      const response = await fetch('/api/rum/deals/cancel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dealId: reservationDeal.id,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'Не удалось отменить резерв')
+      }
+
+      setReservationDeal(null)
+      setRemainingSeconds(null)
+      setReservationError('')
+
+      router.push('/catalog')
+      router.refresh()
+    } catch (err) {
+      setReservationError(
+        err instanceof Error
+          ? err.message
+          : 'Произошла ошибка при отмене резерва',
+      )
+    } finally {
+      setCancelling(false)
     }
   }
 
@@ -765,15 +812,36 @@ export default function RumGiftPage() {
                   </>
                 ) : (
                   <p style={{ color: '#ffcc88', fontSize: 11, lineHeight: 1.6, margin: 0 }}>
-                    Время резерва истекло. Обновите страницу, чтобы проверить доступность объявления.
+                    Время резерва истекло. Вы можете отменить его или обновить страницу, чтобы проверить доступность объявления.
                   </p>
                 )}
+
+                <button
+                  className="reserve-button"
+                  onClick={handleCancelReservation}
+                  disabled={cancelling || reserving}
+                  style={{
+                    width: '100%',
+                    padding: 15,
+                    marginTop: 18,
+                    border: '1px solid #713838',
+                    borderRadius: 13,
+                    background: cancelling ? '#442222' : '#241010',
+                    color: '#ffaaaa',
+                    fontSize: 13,
+                    fontWeight: 900,
+                    cursor: cancelling ? 'wait' : 'pointer',
+                    opacity: cancelling ? 0.7 : 1,
+                  }}
+                >
+                  {cancelling ? 'Отменяем резерв…' : 'Отменить резерв'}
+                </button>
               </section>
             ) : (
               <button
                 className="reserve-button"
                 onClick={handleReserve}
-                disabled={reserving}
+                disabled={reserving || cancelling}
                 style={{
                   width: '100%',
                   padding: 18,
