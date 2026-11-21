@@ -1,3 +1,4 @@
+
 'use client'
 
 import RumBottomNav from '@/components/rum/bottom-nav'
@@ -623,7 +624,7 @@ export default function RumGiftPage() {
                 disabled={reserving || cancelling}
                 className="gold-button min-w-0 flex-1 rounded-lg bg-[#D8B45A] px-3 py-3 text-[9px] font-black tracking-wider text-[#17140D] disabled:opacity-60"
               >
-                {reserving ? 'РЕЗЕРВ…' : 'РЕЗЕРВ 15 МИН'}
+                {reserving ? 'ОФОРМЛЯЕМ…' : 'КУПИТЬ'}
               </button>
             )}
 
