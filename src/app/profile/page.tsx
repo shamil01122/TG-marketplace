@@ -24,6 +24,12 @@ const menuItems = [
     href: '/sell',
   },
   {
+    icon: '📋',
+    title: 'Мои сделки',
+    description: 'История покупок, продаж и резервов',
+    href: '/rum/deals',
+  },
+  {
     icon: '❤️',
     title: 'Избранное',
     description: 'Подарки, которые тебе понравились',
