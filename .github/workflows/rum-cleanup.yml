@@ -1,0 +1,26 @@
+
+name: RUM reservation cleanup
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release expired RUM reservations
+        env:
+          RUM_APP_URL: ${{ secrets.RUM_APP_URL }}
+          RUM_CLEANUP_SECRET: ${{ secrets.RUM_CLEANUP_SECRET }}
+        run: |
+          if [ -z "$RUM_APP_URL" ] || [ -z "$RUM_CLEANUP_SECRET" ]; then
+            echo "Required GitHub secrets are missing"
+            exit 1
+          fi
+
+          curl --fail-with-body --silent --show-error \
+            --request POST \
+            --header "Authorization: Bearer $RUM_CLEANUP_SECRET" \
+            "$RUM_APP_URL/api/rum/deals/cleanup"
