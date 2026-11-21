@@ -215,7 +215,7 @@ export default function CatalogPage() {
         style={{
           maxWidth: 560,
           margin: '0 auto',
-          padding: '18px 15px 35px',
+          padding: '12px 13px 30px',
         }}
       >
         <header
@@ -223,7 +223,8 @@ export default function CatalogPage() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 23,
+            marginBottom: 19,
+            padding: '5px 1px',
           }}
         >
           <a
@@ -231,9 +232,9 @@ export default function CatalogPage() {
             style={{
               color: '#F4E9CC',
               textDecoration: 'none',
-              fontSize: 25,
+              fontSize: 24,
               fontWeight: 950,
-              letterSpacing: 4,
+              letterSpacing: 3,
             }}
           >
             RUM<span style={{ color: gold }}>.</span>
@@ -250,125 +251,26 @@ export default function CatalogPage() {
               background: '#171611',
               border: '1px solid #393323',
               borderRadius: 30,
-              padding: '10px 14px',
+              padding: '9px 13px',
               textDecoration: 'none',
               fontWeight: 750,
             }}
           >
             <span>🛒</span>
             Корзина
-            <span
-              style={{
-                color: gold,
-                fontWeight: 900,
-              }}
-            >
+            <span style={{ color: gold, fontWeight: 900 }}>
               {cartCount}
             </span>
           </a>
         </header>
 
-        <section
-          style={{
-            ...panelStyle,
-            position: 'relative',
-            overflow: 'hidden',
-            padding: '24px 21px',
-            marginBottom: 27,
-            background:
-              'radial-gradient(ellipse at 100% 0%, #57451D55 0%, transparent 55%), linear-gradient(145deg, #1C1B16 0%, #11110E 58%, #0B0B09 100%)',
-            borderColor: '#393222',
-          }}
-        >
-          <div
-            style={{
-              color: gold,
-              fontSize: 9,
-              fontWeight: 850,
-              letterSpacing: 2.8,
-              marginBottom: 14,
-            }}
-          >
-            THE TELEGRAM GIFTS MARKET
-          </div>
-
-          <h1
-            style={{
-              fontSize: 'clamp(30px, 7vw, 42px)',
-              lineHeight: 1.06,
-              margin: '0 0 13px',
-              letterSpacing: -1.5,
-              fontWeight: 900,
-              maxWidth: 340,
-            }}
-          >
-            Найди подарок
-            <br />
-            <span style={{ color: gold }}>с характером.</span>
-          </h1>
-
-          <p
-            style={{
-              color: '#A6A194',
-              fontSize: 12,
-              margin: 0,
-              maxWidth: 330,
-              lineHeight: 1.7,
-            }}
-          >
-            Исследуй коллекционные Telegram-подарки и открывай редкие
-            экземпляры.
-          </p>
-
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              marginTop: 20,
-              padding: '8px 11px',
-              borderRadius: 30,
-              background: '#D8B45A12',
-              border: '1px solid #D8B45A45',
-              color: '#E4C879',
-              fontSize: 9,
-              fontWeight: 850,
-              letterSpacing: 1,
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: gold,
-                boxShadow: `0 0 9px ${gold}`,
-              }}
-            />
-            УНИКАЛЬНЫЕ ПОДАРКИ
-          </div>
-
-          <div
-            style={{
-              position: 'absolute',
-              right: -24,
-              bottom: -65,
-              width: 170,
-              height: 170,
-              borderRadius: '50%',
-              border: '1px solid #D8B45A18',
-              pointerEvents: 'none',
-            }}
-          />
-        </section>
-
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'end',
+            justifyContent: 'space-between',
             gap: 10,
-            marginBottom: 14,
+            marginBottom: 15,
           }}
         >
           <div>
@@ -377,27 +279,28 @@ export default function CatalogPage() {
                 color: gold,
                 fontSize: 9,
                 fontWeight: 850,
-                letterSpacing: 2.2,
+                letterSpacing: 2,
                 marginBottom: 5,
               }}
             >
-              DISCOVER
+              RUM MARKETPLACE
             </div>
-            <h2
+            <h1
               style={{
-                fontSize: 23,
+                fontSize: 27,
+                lineHeight: 1.1,
                 margin: 0,
-                letterSpacing: -0.7,
-                fontWeight: 850,
+                letterSpacing: -0.8,
+                fontWeight: 900,
               }}
             >
-              Маркетплейс
-            </h2>
+              Все подарки
+            </h1>
           </div>
 
           <span
             style={{
-              color: '#77746B',
+              color: '#85827A',
               fontSize: 10,
               whiteSpace: 'nowrap',
               paddingBottom: 3,
@@ -407,12 +310,12 @@ export default function CatalogPage() {
           </span>
         </div>
 
-        <div style={{ position: 'relative', marginBottom: 15 }}>
+        <div style={{ position: 'relative', marginBottom: 12 }}>
           <span
             style={{
               position: 'absolute',
-              left: 15,
-              top: 12,
+              left: 14,
+              top: 11,
               fontSize: 20,
               color: gold,
             }}
@@ -423,14 +326,14 @@ export default function CatalogPage() {
           <input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Поиск подарка, модели, коллекции..."
+            placeholder="Найти подарок или коллекцию..."
             aria-label="Поиск подарков"
             style={{
               width: '100%',
               boxSizing: 'border-box',
-              padding: '14px 15px 14px 44px',
+              padding: '13px 14px 13px 42px',
               border: '1px solid #302D24',
-              borderRadius: 12,
+              borderRadius: 11,
               background: '#12120F',
               color: '#F2F0E9',
               fontSize: 12,
@@ -442,10 +345,10 @@ export default function CatalogPage() {
         <div
           style={{
             display: 'flex',
-            gap: 8,
+            gap: 7,
             overflowX: 'auto',
-            paddingBottom: 8,
-            marginBottom: 13,
+            paddingBottom: 9,
+            marginBottom: 8,
             scrollbarWidth: 'none',
           }}
         >
@@ -457,12 +360,13 @@ export default function CatalogPage() {
                 key={item.id}
                 onClick={() => setCategory(item.id)}
                 style={{
+                  flexShrink: 0,
                   whiteSpace: 'nowrap',
                   border: '1px solid',
                   borderColor: active ? gold : '#302E27',
                   background: active ? gold : '#12120F',
                   color: active ? '#17140D' : '#AAA69B',
-                  padding: '9px 14px',
+                  padding: '9px 13px',
                   borderRadius: 8,
                   fontSize: 10,
                   fontWeight: 850,
@@ -479,7 +383,7 @@ export default function CatalogPage() {
           style={{
             display: 'flex',
             gap: 8,
-            marginBottom: 19,
+            marginBottom: 17,
           }}
         >
           <select
@@ -571,9 +475,10 @@ export default function CatalogPage() {
                   gift.modelRarityPerMille,
                 )
 
-                const giftBackground = centerColor && edgeColor
-                  ? `radial-gradient(circle at 50% 42%, ${centerColor} 0%, ${edgeColor} 100%)`
-                  : 'radial-gradient(circle, #29271F 0%, #171611 60%, #0D0D0B 100%)'
+                const giftBackground =
+                  centerColor && edgeColor
+                    ? `radial-gradient(circle at 50% 42%, ${centerColor} 0%, ${edgeColor} 100%)`
+                    : 'radial-gradient(circle, #29271F 0%, #171611 60%, #0D0D0B 100%)'
 
                 return (
                   <article
@@ -598,8 +503,8 @@ export default function CatalogPage() {
                         zIndex: 2,
                         right: 8,
                         top: 8,
-                        width: 31,
-                        height: 31,
+                        width: 32,
+                        height: 32,
                         borderRadius: 50,
                         border: '1px solid #FFFFFF38',
                         background: '#11110FCC',
@@ -628,13 +533,13 @@ export default function CatalogPage() {
                     >
                       <div
                         style={{
-                          height: 155,
+                          height: 174,
                           background: giftBackground,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           position: 'relative',
-                          padding: 10,
+                          padding: 9,
                           overflow: 'hidden',
                           boxShadow: centerColor
                             ? `inset 0 0 28px ${centerColor}25`
@@ -659,10 +564,10 @@ export default function CatalogPage() {
                             style={{
                               position: 'relative',
                               zIndex: 1,
-                              width: '88%',
-                              height: '88%',
+                              width: '90%',
+                              height: '90%',
                               objectFit: 'contain',
-                              filter: 'drop-shadow(0 6px 12px #00000055)',
+                              filter: 'drop-shadow(0 7px 13px #00000065)',
                             }}
                           />
                         ) : (
@@ -676,7 +581,7 @@ export default function CatalogPage() {
                               right: 7,
                               bottom: 7,
                               zIndex: 2,
-                              background: '#090908B8',
+                              background: '#090908D9',
                               border: '1px solid #FFFFFF35',
                               borderRadius: 6,
                               padding: '5px 7px',
@@ -696,7 +601,7 @@ export default function CatalogPage() {
                               left: 7,
                               bottom: 7,
                               zIndex: 2,
-                              background: '#090908C9',
+                              background: '#090908D9',
                               border: '1px solid #FFFFFF30',
                               borderRadius: 6,
                               padding: '5px 7px',
@@ -770,7 +675,12 @@ export default function CatalogPage() {
                               {gift.modelRarity || 'Редкая модель'}
                             </span>
                             {modelRarity && (
-                              <span style={{ color: '#F0D78F', flexShrink: 0 }}>
+                              <span
+                                style={{
+                                  color: '#F0D78F',
+                                  flexShrink: 0,
+                                }}
+                              >
                                 {modelRarity}
                               </span>
                             )}
@@ -798,7 +708,7 @@ export default function CatalogPage() {
                           </span>
                           <strong
                             style={{
-                              fontSize: 13,
+                              fontSize: 14,
                               color: gold,
                               whiteSpace: 'nowrap',
                             }}
