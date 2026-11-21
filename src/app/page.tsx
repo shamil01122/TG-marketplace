@@ -135,82 +135,123 @@ export default function HomePage() {
     <main className="mx-auto min-h-screen max-w-[560px] overflow-hidden bg-[#080807] pb-28 text-[#F2F0E9]">
       <TelegramAuth />
 
-      {/* Компактная шапка */}
-      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#25231D] bg-[#080807]/95 px-4 py-3 backdrop-blur-xl">
+      <style jsx>{`
+        .market-link {
+          transition: border-color 160ms ease, background 160ms ease,
+            transform 160ms ease;
+        }
+
+        .market-link:active {
+          transform: scale(0.985);
+        }
+
+        .gift-card {
+          transition: border-color 180ms ease, transform 180ms ease;
+        }
+
+        .gift-card:active {
+          transform: scale(0.985);
+        }
+
+        @media (hover: hover) {
+          .gift-card:hover {
+            border-color: #806832;
+            transform: translateY(-2px);
+          }
+
+          .gift-card:hover .gift-image {
+            transform: scale(1.045);
+          }
+        }
+
+        .gift-image {
+          transition: transform 300ms ease;
+        }
+      `}</style>
+
+      {/* Шапка */}
+      <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#29261E] bg-[#080807]/95 px-4 py-3 backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-2 no-underline">
-          <span className="text-[25px] font-black leading-none tracking-[-0.09em] text-[#F4E9CC]">
+          <span className="text-[27px] font-black leading-none tracking-[-0.09em] text-[#F4E9CC]">
             RUM<span className="text-[#D8B45A]">.</span>
           </span>
-          <span className="rounded border border-[#D8B45A]/30 px-1.5 py-1 text-[7px] font-black tracking-widest text-[#D8B45A]">
+
+          <span className="rounded border border-[#665329]/70 bg-[#211C10] px-1.5 py-1 text-[7px] font-black tracking-widest text-[#D8B45A]">
             MARKET
           </span>
         </Link>
 
-        <div className="flex items-center gap-2 rounded-lg border border-[#393323] bg-[#14130F] px-3 py-2">
-          <span className="text-[9px] text-[#898579]">Баланс</span>
+        <Link
+          href="/profile"
+          className="market-link flex items-center gap-3 rounded-xl border border-[#393323] bg-[#14130F] px-3 py-2 no-underline"
+        >
+          <span className="text-[9px] text-[#918B7D]">Баланс</span>
           <span className="text-xs font-black text-[#E7C875]">— TON</span>
-        </div>
+          <span className="text-[#777267]">›</span>
+        </Link>
       </header>
 
       {/* Поиск */}
       <section className="px-3 pt-4">
         <Link
           href="/catalog"
-          className="flex items-center gap-3 rounded-xl border border-[#39352A] bg-[#151511] px-4 py-3.5 no-underline transition hover:border-[#D8B45A]/60"
+          className="market-link flex items-center gap-3 rounded-xl border border-[#39352A] bg-[#151511] px-4 py-4 no-underline"
         >
           <span className="text-xl text-[#D8B45A]">⌕</span>
+
           <span className="flex-1 text-xs text-[#918B7D]">
             Поиск подарков и коллекций
           </span>
+
           <span className="text-lg text-[#D8B45A]">→</span>
         </Link>
       </section>
 
-      {/* Быстрая навигация */}
+      {/* Категории */}
       <section className="flex gap-2 overflow-x-auto px-3 pb-1 pt-3">
         <Link
           href="/catalog"
-          className="shrink-0 rounded-lg border border-[#D8B45A] bg-[#D8B45A] px-4 py-2.5 text-[10px] font-black text-[#17140D] no-underline"
+          className="shrink-0 rounded-lg border border-[#D8B45A] bg-[#D8B45A] px-4 py-3 text-[10px] font-black text-[#17140D] no-underline"
         >
           ◈ Все подарки
         </Link>
 
         <Link
           href="/catalog"
-          className="shrink-0 rounded-lg border border-[#302D24] bg-[#151511] px-4 py-2.5 text-[10px] font-bold text-[#C0B69F] no-underline transition hover:border-[#D8B45A]/50"
+          className="market-link shrink-0 rounded-lg border border-[#302D24] bg-[#151511] px-4 py-3 text-[10px] font-bold text-[#C0B69F] no-underline"
         >
           Коллекции
         </Link>
 
         <Link
           href="/favorites"
-          className="shrink-0 rounded-lg border border-[#302D24] bg-[#151511] px-4 py-2.5 text-[10px] font-bold text-[#C0B69F] no-underline transition hover:border-[#D8B45A]/50"
+          className="market-link shrink-0 rounded-lg border border-[#302D24] bg-[#151511] px-4 py-3 text-[10px] font-bold text-[#C0B69F] no-underline"
         >
           ♡ Избранное
         </Link>
 
         <Link
           href="/sell"
-          className="shrink-0 rounded-lg border border-[#302D24] bg-[#151511] px-4 py-2.5 text-[10px] font-bold text-[#C0B69F] no-underline transition hover:border-[#D8B45A]/50"
+          className="market-link shrink-0 rounded-lg border border-[#302D24] bg-[#151511] px-4 py-3 text-[10px] font-bold text-[#C0B69F] no-underline"
         >
           + Продать
         </Link>
       </section>
 
-      {/* Витрина подарков */}
-      <section className="px-3 pt-6">
+      {/* Витрина */}
+      <section className="px-3 pt-7">
         <div className="mb-4 flex items-end justify-between">
           <div>
-            <div className="mb-1.5 flex items-center gap-2 text-[8px] font-black tracking-[0.2em] text-[#B99A50]">
+            <div className="mb-2 flex items-center gap-2 text-[8px] font-black tracking-[0.22em] text-[#B99A50]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#D8B45A]" />
               RUM MARKETPLACE
             </div>
 
-            <h1 className="text-[25px] font-black tracking-[-0.065em]">
+            <h1 className="text-[29px] font-black leading-none tracking-[-0.075em]">
               Подарки<span className="text-[#D8B45A]">.</span>
             </h1>
 
-            <p className="mt-1 text-[10px] text-[#858176]">
+            <p className="mt-2 text-[10px] text-[#858176]">
               Уникальные Telegram-подарки
             </p>
           </div>
@@ -223,6 +264,18 @@ export default function HomePage() {
           </Link>
         </div>
 
+        {!loading && !error && listings.length > 0 && (
+          <div className="mb-3 flex items-center justify-between border-y border-[#24221C] py-2.5">
+            <span className="text-[9px] font-bold tracking-[0.13em] text-[#858176]">
+              ДОСТУПНЫЕ ПРЕДЛОЖЕНИЯ
+            </span>
+
+            <span className="text-[10px] font-black tabular-nums text-[#D8B45A]">
+              {listings.length}
+            </span>
+          </div>
+        )}
+
         {/* Загрузка */}
         {loading && (
           <div className="grid grid-cols-2 gap-3">
@@ -232,9 +285,11 @@ export default function HomePage() {
                 className="animate-pulse overflow-hidden rounded-xl border border-[#302D24] bg-[#151511]"
               >
                 <div className="aspect-square bg-white/[0.05]" />
+
                 <div className="space-y-3 p-3">
                   <div className="h-3 w-3/4 rounded bg-white/[0.07]" />
                   <div className="h-3 w-1/2 rounded bg-white/[0.05]" />
+                  <div className="h-9 rounded-lg bg-white/[0.05]" />
                 </div>
               </div>
             ))}
@@ -245,6 +300,7 @@ export default function HomePage() {
         {!loading && error && (
           <div className="rounded-xl border border-[#393222] bg-[#151511] p-7 text-center">
             <div className="mb-3 text-3xl">⚠️</div>
+
             <p className="text-xs text-[#D0C9B8]">{error}</p>
 
             <button
@@ -278,7 +334,7 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Карточки */}
+        {/* Карточки подарков */}
         {!loading && !error && listings.length > 0 && (
           <div className="grid grid-cols-2 gap-3">
             {listings.slice(0, 8).map((listing) => {
@@ -292,19 +348,27 @@ export default function HomePage() {
                 '#0D0D0B',
               )
 
+              const sellerName =
+                listing.seller.displayName ||
+                (listing.seller.username
+                  ? '@' + listing.seller.username
+                  : 'RUM seller')
+
               return (
                 <Link
                   href={`/rum/gift/${listing.id}`}
                   key={listing.id}
-                  className="group min-w-0 overflow-hidden rounded-xl border border-[#302D24] bg-[#151511] no-underline transition hover:border-[#D8B45A]/60"
+                  className="gift-card group min-w-0 overflow-hidden rounded-xl border border-[#302D24] bg-[#13130F] no-underline"
                 >
                   {/* Изображение */}
                   <div
                     className="relative flex aspect-square items-center justify-center overflow-hidden p-3"
                     style={{
-                      backgroundImage: `linear-gradient(135deg, ${centerColor}, ${edgeColor})`,
+                      backgroundImage: `linear-gradient(145deg, ${centerColor}, ${edgeColor})`,
                     }}
                   >
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-white/[0.04]" />
+
                     {listing.gift.imageUrl &&
                     !brokenImages.includes(listing.id) ? (
                       <img
@@ -318,14 +382,18 @@ export default function HomePage() {
                               : [...prev, listing.id],
                           )
                         }
-                        className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
+                        className="gift-image relative z-10 h-full w-full object-contain drop-shadow-xl"
                       />
                     ) : (
-                      <span className="text-6xl">🎁</span>
+                      <span className="relative z-10 text-6xl">🎁</span>
                     )}
 
+                    <span className="absolute left-2 top-2 z-20 rounded-md border border-white/15 bg-black/45 px-2 py-1 text-[7px] font-black tracking-wider text-white/85">
+                      UNIQUE
+                    </span>
+
                     {listing.gift.collection && (
-                      <span className="absolute bottom-2 left-2 max-w-[85%] truncate rounded-md border border-white/15 bg-black/60 px-2 py-1 text-[8px] font-bold text-white">
+                      <span className="absolute bottom-2 left-2 z-20 max-w-[85%] truncate rounded-md border border-white/15 bg-black/65 px-2 py-1 text-[8px] font-bold text-white">
                         {listing.gift.collection}
                       </span>
                     )}
@@ -333,32 +401,39 @@ export default function HomePage() {
 
                   {/* Информация */}
                   <div className="p-3">
-                    <h2 className="truncate text-xs font-bold text-[#F2F0E9]">
+                    <h2 className="truncate text-[12px] font-black tracking-[-0.02em] text-[#F2F0E9]">
                       {listing.gift.name}
                     </h2>
 
-                    {listing.gift.model && (
-                      <p className="mt-1 truncate text-[9px] text-[#85827A]">
-                        {listing.gift.model}
+                    <p className="mt-1 min-h-[13px] truncate text-[9px] text-[#85827A]">
+                      {listing.gift.model || 'Telegram collectible'}
+                    </p>
+
+                    <div className="mt-3 rounded-lg border border-[#393323] bg-[#211F18] px-2.5 py-2.5">
+                      <p className="mb-1 text-[7px] font-bold tracking-[0.15em] text-[#898579]">
+                        ЦЕНА
                       </p>
-                    )}
 
-                    <div className="mt-3 flex items-center justify-between gap-1 rounded-lg bg-[#24221C] px-2.5 py-2.5">
-                      <span className="text-[8px] text-[#A9A18F]">◆</span>
+                      <div className="flex items-baseline justify-between gap-1">
+                        <span className="truncate text-[14px] font-black tracking-[-0.04em] text-[#E7C875]">
+                          {formatPrice(listing.priceTon)}
+                        </span>
 
-                      <span className="truncate text-xs font-black text-[#E7C875]">
-                        {formatPrice(listing.priceTon)} TON
-                      </span>
-
-                      <span className="text-xs text-[#D8B45A]">↗</span>
+                        <span className="shrink-0 text-[9px] font-black text-[#D8B45A]">
+                          TON
+                        </span>
+                      </div>
                     </div>
 
-                    <p className="mt-2 truncate text-[8px] text-[#777267]">
-                      {listing.seller.displayName ||
-                        (listing.seller.username
-                          ? '@' + listing.seller.username
-                          : 'RUM seller')}
-                    </p>
+                    <div className="mt-2 flex items-center justify-between gap-2">
+                      <span className="truncate text-[8px] text-[#777267]">
+                        {sellerName}
+                      </span>
+
+                      <span className="shrink-0 text-[10px] text-[#D8B45A]">
+                        ↗
+                      </span>
+                    </div>
                   </div>
                 </Link>
               )
@@ -366,11 +441,11 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Все объявления */}
+        {/* Весь каталог */}
         {!loading && !error && listings.length > 0 && (
           <Link
             href="/catalog"
-            className="mt-5 flex items-center justify-center gap-3 rounded-xl border border-[#4B4027] bg-[#17150F] px-4 py-4 text-[10px] font-black tracking-widest text-[#D8B45A] no-underline transition hover:bg-[#211D12]"
+            className="market-link mt-5 flex items-center justify-center gap-3 rounded-xl border border-[#554526] bg-[#19160F] px-4 py-4 text-[10px] font-black tracking-[0.15em] text-[#D8B45A] no-underline"
           >
             ОТКРЫТЬ ВЕСЬ КАТАЛОГ
             <span className="text-base">→</span>
