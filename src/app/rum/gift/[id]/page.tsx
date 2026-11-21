@@ -35,6 +35,13 @@ type Listing = {
   }
 }
 
+type ReservationDeal = {
+  id: string
+  amountTon: string
+  status: string
+  expiresAt: string
+}
+
 const panelStyle = {
   background: 'linear-gradient(145deg, #151515, #0c0c0c)',
   border: '1px solid #292929',
@@ -60,6 +67,10 @@ export default function RumGiftPage() {
   const [listing, setListing] = useState<Listing | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [reserving, setReserving] = useState(false)
+  const [reservationError, setReservationError] = useState('')
+  const [reservationDeal, setReservationDeal] = useState<ReservationDeal | null>(null)
+  const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
 
   const favorites = useRumFavorites((state) => state.items)
   const toggleFavorite = useRumFavorites((state) => state.toggleFavorite)
@@ -116,10 +127,66 @@ export default function RumGiftPage() {
     }
   }, [id])
 
+  useEffect(() => {
+    if (!reservationDeal?.expiresAt) {
+      setRemainingSeconds(null)
+      return
+    }
+
+    const updateTimer = () => {
+      const difference = new Date(reservationDeal.expiresAt).getTime() - Date.now()
+      setRemainingSeconds(Math.max(0, Math.ceil(difference / 1000)))
+    }
+
+    updateTimer()
+    const timer = setInterval(updateTimer, 1000)
+
+    return () => clearInterval(timer)
+  }, [reservationDeal])
+
   const formatPrice = (price: string) =>
     Number(price).toLocaleString('ru-RU', {
       maximumFractionDigits: 4,
     })
+
+  const handleReserve = async () => {
+    if (!listing || reserving || reservationDeal) return
+
+    try {
+      setReserving(true)
+      setReservationError('')
+
+      const response = await fetch('/api/rum/deals/reserve', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          listingId: listing.id,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'Не удалось зарезервировать подарок')
+      }
+
+      if (!data?.deal?.id || !data?.deal?.expiresAt) {
+        throw new Error('Сервер вернул некорректный ответ')
+      }
+
+      setReservationDeal(data.deal)
+    } catch (err) {
+      setReservationError(
+        err instanceof Error
+          ? err.message
+          : 'Произошла ошибка при резервировании',
+      )
+    } finally {
+      setReserving(false)
+    }
+  }
 
   const handleAddToCart = () => {
     if (!listing) return
@@ -144,6 +211,13 @@ export default function RumGiftPage() {
   const giftBackground = centerColor && edgeColor
     ? `radial-gradient(circle at 50% 42%, ${centerColor} 0%, ${edgeColor} 100%)`
     : 'radial-gradient(circle, #292929 0%, #151515 62%, #080808 100%)'
+
+  const formatRemainingTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    const remaining = seconds % 60
+
+    return `${String(minutes).padStart(2, '0')}:${String(remaining).padStart(2, '0')}`
+  }
 
   const infoRow = (
     label: string,
@@ -200,6 +274,12 @@ export default function RumGiftPage() {
         .buy-button:active {
           transform: scale(0.985);
         }
+        .reserve-button {
+          transition: opacity 160ms ease, transform 160ms ease;
+        }
+        .reserve-button:active {
+          transform: scale(0.985);
+        }
         @media (hover: hover) {
           .action-button:hover {
             background: #252525 !important;
@@ -209,7 +289,8 @@ export default function RumGiftPage() {
             transform: scale(1.06);
             background: #303030 !important;
           }
-          .buy-button:hover {
+          .buy-button:hover,
+          .reserve-button:hover {
             opacity: 0.88;
           }
         }
@@ -627,10 +708,90 @@ export default function RumGiftPage() {
                   margin: 0,
                 }}
               >
-                Добавление подарка в корзину пока не является покупкой.
-                Оплата и автоматическая передача Telegram-подарка ещё не подключены.
+                Резервирование временно удерживает объявление за вами на 15 минут.
+                TON-оплата и автоматическая передача Telegram-подарка ещё не подключены.
+                Не отправляйте продавцу оплату вне RUM.
               </p>
             </section>
+
+            {reservationError && (
+              <div
+                role="alert"
+                style={{
+                  padding: 14,
+                  marginBottom: 13,
+                  border: '1px solid #713838',
+                  borderRadius: 12,
+                  background: '#241010',
+                  color: '#ffaaaa',
+                  fontSize: 12,
+                  lineHeight: 1.6,
+                }}
+              >
+                {reservationError}
+              </div>
+            )}
+
+            {reservationDeal ? (
+              <section
+                style={{
+                  ...panelStyle,
+                  padding: 20,
+                  marginBottom: 15,
+                  borderColor: '#555555',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{ fontSize: 25, marginBottom: 10 }}>✓</div>
+                <h2 style={{ fontSize: 17, margin: '0 0 8px' }}>
+                  Подарок зарезервирован
+                </h2>
+                {remainingSeconds !== null && remainingSeconds > 0 ? (
+                  <>
+                    <div
+                      style={{
+                        fontSize: 34,
+                        fontWeight: 950,
+                        letterSpacing: 2,
+                        margin: '12px 0',
+                        fontVariantNumeric: 'tabular-nums',
+                      }}
+                    >
+                      {formatRemainingTime(remainingSeconds)}
+                    </div>
+                    <p style={{ color: '#999999', fontSize: 11, lineHeight: 1.6, margin: 0 }}>
+                      Осталось времени резерва. Оплата и передача NFT пока не подключены.
+                    </p>
+                  </>
+                ) : (
+                  <p style={{ color: '#ffcc88', fontSize: 11, lineHeight: 1.6, margin: 0 }}>
+                    Время резерва истекло. Обновите страницу, чтобы проверить доступность объявления.
+                  </p>
+                )}
+              </section>
+            ) : (
+              <button
+                className="reserve-button"
+                onClick={handleReserve}
+                disabled={reserving}
+                style={{
+                  width: '100%',
+                  padding: 18,
+                  marginBottom: 12,
+                  border: '1px solid #ffffff',
+                  borderRadius: 15,
+                  background: reserving ? '#777777' : '#ffffff',
+                  color: '#000000',
+                  fontSize: 14,
+                  fontWeight: 950,
+                  cursor: reserving ? 'wait' : 'pointer',
+                  opacity: reserving ? 0.7 : 1,
+                  boxShadow: '0 8px 30px #ffffff12',
+                }}
+              >
+                {reserving ? 'Резервируем…' : 'Зарезервировать на 15 минут'}
+              </button>
+            )}
 
             <button
               className="buy-button"
@@ -638,14 +799,13 @@ export default function RumGiftPage() {
               style={{
                 width: '100%',
                 padding: 18,
-                border: '1px solid #ffffff',
+                border: '1px solid #383838',
                 borderRadius: 15,
-                background: '#ffffff',
-                color: '#000000',
-                fontSize: 14,
-                fontWeight: 950,
+                background: '#151515',
+                color: '#ffffff',
+                fontSize: 13,
+                fontWeight: 850,
                 cursor: 'pointer',
-                boxShadow: '0 8px 30px #ffffff12',
               }}
             >
               Добавить в корзину · {formatPrice(listing.priceTon)} TON
