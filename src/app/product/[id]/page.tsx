@@ -1,4 +1,6 @@
+
 'use client'
+
 import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import type { InferSelectModel } from 'drizzle-orm'
@@ -6,55 +8,241 @@ import type { products } from '@/lib/db/schema'
 import { useCartStore } from '@/lib/cart'
 
 type Product = InferSelectModel<typeof products>
-const EMOJI: Record<string, string> = { preroll: '🌿', gummy: '🍬', oil: '💧', other: '📦' }
+
+const EMOJI: Record<string, string> = {
+  preroll: '🌿',
+  gummy: '🍬',
+  oil: '💧',
+  other: '📦',
+}
+
+const CATEGORY_NAMES: Record<string, string> = {
+  preroll: 'Преролл',
+  gummy: 'Жевательные конфеты',
+  oil: 'Масло',
+  other: 'Другое',
+}
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
+
   const [product, setProduct] = useState<Product | null>(null)
   const [qty, setQty] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
   const addItem = useCartStore((s) => s.addItem)
 
   useEffect(() => {
+    let cancelled = false
+
+    setLoading(true)
+    setError('')
+
     fetch('/api/products')
-      .then((r) => r.json())
-      .then((ps: Product[]) => setProduct(ps.find((p) => p.id === id) ?? null))
-      .catch(() => setProduct(null))
+      .then((response) => {
+        if (!response.ok) throw new Error('Не удалось загрузить товары')
+        return response.json()
+      })
+      .then((products: Product[]) => {
+        if (cancelled) return
+
+        const found = products.find((item) => item.id === id) ?? null
+        setProduct(found)
+
+        if (!found) setError('Этот товар не найден.')
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setError('Не удалось загрузить товар. Проверь подключение и попробуй ещё раз.')
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
   }, [id])
 
-  if (!product) return (
-    <div className="flex items-center justify-center min-h-screen text-[var(--text-2)]">Cargando...</div>
-  )
-
   const handleAdd = () => {
-    for (let i = 0; i < qty; i++) addItem(product)
+    if (!product) return
+
+    for (let i = 0; i < qty; i++) {
+      addItem(product)
+    }
+
     router.back()
   }
 
+  if (loading) {
+    return (
+      <main className="flex min-h-[100svh] items-center justify-center bg-[#080807] text-sm text-[#a18b58]">
+        Загружаем товар...
+      </main>
+    )
+  }
+
+  if (!product) {
+    return (
+      <main className="flex min-h-[100svh] flex-col items-center justify-center gap-5 bg-[#080807] px-6 text-center text-[#f2eee4]">
+        <div className="text-5xl">📦</div>
+
+        <h1 className="text-xl font-black">
+          Товар недоступен
+        </h1>
+
+        <p className="max-w-xs text-sm leading-6 text-[#918b7d]">
+          {error || 'Не удалось найти этот товар.'}
+        </p>
+
+        <button
+          type="button"
+          onClick={() => router.push('/catalog')}
+          className="rounded-xl bg-[#d8b45a] px-6 py-3 text-xs font-black text-[#17130a]"
+        >
+          Вернуться в каталог
+        </button>
+
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-xs font-semibold text-[#a18b58]"
+        >
+          Назад
+        </button>
+      </main>
+    )
+  }
+
+  const category = CATEGORY_NAMES[product.category] ?? product.category
+
   return (
-    <div className="px-4 py-4 flex flex-col gap-4 min-h-screen">
-      <button onClick={() => router.back()} className="text-[var(--text-2)] text-sm self-start">← Volver</button>
-      <div className="bg-[var(--surface)] rounded-xl h-44 flex items-center justify-center text-7xl">
-        {product.image_url
-          ? <img src={product.image_url} alt={product.name} className="h-full w-full object-cover rounded-xl" />
-          : EMOJI[product.category]}
-      </div>
-      <h1 className="text-white text-xl font-bold">{product.name}</h1>
-      <div className="flex gap-2">
-        <span className="bg-[var(--surface)] text-[var(--text-2)] text-xs px-3 py-1 rounded-full">{product.category}</span>
-      </div>
-      <p className="text-[var(--text-2)] text-sm leading-relaxed">{product.description}</p>
-      <div className="mt-auto flex items-center justify-between border-t border-[var(--border)] pt-4">
-        <span className="text-[var(--accent)] text-2xl font-bold">${Number(product.price_usd).toFixed(2)}</span>
-        <div className="flex items-center gap-3">
-          <button onClick={() => setQty(Math.max(1, qty - 1))} className="bg-[var(--surface)] text-white w-8 h-8 rounded-lg text-lg font-bold">−</button>
-          <span className="text-white w-4 text-center">{qty}</span>
-          <button onClick={() => setQty(qty + 1)} className="bg-[var(--accent)] text-[var(--accent-fg)] w-8 h-8 rounded-lg text-lg font-bold">+</button>
+    <main className="flex min-h-[100svh] flex-col bg-[#080807] text-[#f2eee4]">
+      <header className="flex items-center justify-between border-b border-[#302d24] bg-[#11110e] px-4 py-4">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="text-xl text-[#c0b69f]"
+          aria-label="Назад"
+        >
+          ←
+        </button>
+
+        <span className="text-lg font-black tracking-[4px]">
+          RUM
+        </span>
+
+        <button
+          type="button"
+          onClick={() => router.push('/cart')}
+          className="text-xs font-semibold text-[#d8b45a]"
+        >
+          Корзина
+        </button>
+      </header>
+
+      <div className="mx-auto flex w-full max-w-[560px] flex-1 flex-col px-4 pb-6">
+        <div className="pb-4 pt-6">
+          <div className="text-[9px] font-black tracking-[2px] text-[#a18b58]">
+            RUM MARKET
+          </div>
+
+          <h1 className="mt-2 text-2xl font-black leading-tight">
+            {product.name}
+          </h1>
+        </div>
+
+        <div className="relative flex aspect-square max-h-[390px] w-full items-center justify-center overflow-hidden rounded-2xl border border-[#302d24] bg-[#151511]">
+          {product.image_url ? (
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-8xl">
+              {EMOJI[product.category] ?? '📦'}
+            </span>
+          )}
+        </div>
+
+        <div className="mt-5 flex items-center justify-between">
+          <span className="rounded-full border border-[#51452c] bg-[#211d13] px-3 py-1.5 text-[10px] font-bold text-[#d8b45a]">
+            {category}
+          </span>
+
+          <span className="text-[10px] font-semibold tracking-wide text-[#77736b]">
+            RUM COLLECTION
+          </span>
+        </div>
+
+        <section className="mt-5">
+          <h2 className="text-[10px] font-black tracking-[2px] text-[#a18b58]">
+            О ТОВАРЕ
+          </h2>
+
+          <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-[#c0b69f]">
+            {product.description || 'Описание товара пока не добавлено.'}
+          </p>
+        </section>
+
+        <div className="mt-auto pt-8">
+          <div className="flex items-center justify-between border-t border-[#302d24] py-5">
+            <div>
+              <div className="text-[9px] font-bold tracking-[1.5px] text-[#918b7d]">
+                ЦЕНА
+              </div>
+
+              <div className="mt-1 text-2xl font-black text-[#d8b45a]">
+                ${Number(product.price_usd).toFixed(2)}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-2 text-right text-[9px] font-bold tracking-[1.5px] text-[#918b7d]">
+                КОЛИЧЕСТВО
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setQty(Math.max(1, qty - 1))}
+                  disabled={qty <= 1}
+                  className="h-9 w-9 rounded-xl border border-[#393326] bg-[#151511] text-lg font-bold text-[#f2eee4] disabled:opacity-40"
+                  aria-label="Уменьшить количество"
+                >
+                  −
+                </button>
+
+                <span className="w-5 text-center text-sm font-bold">
+                  {qty}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => setQty(qty + 1)}
+                  className="h-9 w-9 rounded-xl bg-[#d8b45a] text-lg font-bold text-[#17130a]"
+                  aria-label="Увеличить количество"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleAdd}
+            className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-[#d8b45a] text-xs font-black tracking-wide text-[#17130a]"
+          >
+            ДОБАВИТЬ В КОРЗИНУ · ${(Number(product.price_usd) * qty).toFixed(2)}
+            <span>🛒</span>
+          </button>
         </div>
       </div>
-      <button onClick={handleAdd} className="w-full bg-[var(--accent)] text-[var(--accent-fg)] font-bold rounded-[var(--radius)] py-3">
-        Agregar al carrito 🛒
-      </button>
-    </div>
+    </main>
   )
 }

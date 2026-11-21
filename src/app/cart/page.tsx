@@ -1,5 +1,8 @@
+
 'use client'
+
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useCartStore } from '@/lib/cart'
 import { CartItemRow } from '@/components/cart-item'
 
@@ -9,89 +12,142 @@ export default function CartPage() {
   const router = useRouter()
   const { items, total } = useCartStore()
 
-  if (items.length === 0) return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      minHeight: '100svh', gap: 16, padding: '0 24px', textAlign: 'center',
-    }}>
-      <span style={{ fontSize: 48 }}>🛒</span>
-      <p style={{ color: 'var(--text-2)', fontSize: 13 }}>Tu carrito está vacío</p>
-      <button
-        onClick={() => router.push('/catalog')}
-        style={{
-          background: 'var(--text)', color: 'var(--surface)',
-          border: 'none', cursor: 'pointer',
-          fontSize: 11, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase',
-          padding: '12px 24px', borderRadius: 'var(--radius)',
-        }}
-      >
-        Ver catálogo
-      </button>
-    </div>
-  )
+  if (items.length === 0) {
+    return (
+      <main className="flex min-h-[100svh] flex-col items-center justify-center gap-5 bg-[#080807] px-6 text-center text-[#f2eee4]">
+        <Link
+          href="/"
+          className="absolute left-5 top-6 text-xl font-black tracking-[4px] text-[#f2eee4] no-underline"
+        >
+          RUM
+        </Link>
+
+        <div className="grid h-20 w-20 place-items-center rounded-3xl border border-[#51452c] bg-[#211d13] text-4xl">
+          🛒
+        </div>
+
+        <div>
+          <h1 className="text-xl font-black">Корзина пуста</h1>
+          <p className="mt-2 text-sm text-[#918b7d]">
+            Добавь товары, чтобы оформить заказ.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => router.push('/catalog')}
+          className="rounded-xl bg-[#d8b45a] px-6 py-3.5 text-xs font-black text-[#17130a]"
+        >
+          Перейти в каталог
+        </button>
+
+        <button
+          type="button"
+          onClick={() => router.push('/')}
+          className="text-xs font-semibold text-[#a18b58]"
+        >
+          На главную
+        </button>
+      </main>
+    )
+  }
 
   const subtotal = total()
   const grandTotal = subtotal + DELIVERY_FEE
 
   return (
-    <div style={{ minHeight: '100svh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
-
-      {/* Header */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '14px 16px',
-        borderBottom: '1px solid var(--border)',
-        background: 'var(--surface)',
-      }}>
-        <button onClick={() => router.back()} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: 'var(--text)' }}>←</button>
-        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.16em', textTransform: 'uppercase', color: 'var(--text)' }}>
-          Tu pedido
-        </span>
-        <span style={{ fontSize: 11, color: 'var(--text-3)' }}>{items.length} productos</span>
-      </div>
-
-      {/* Items */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'var(--border)' }}>
-        {items.map((i) => <CartItemRow key={i.product_id} item={i} />)}
-      </div>
-
-      {/* Summary */}
-      <div style={{ background: 'var(--surface)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8, marginTop: 1 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-2)' }}>
-          <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-2)' }}>
-          <span>Envío</span><span>${DELIVERY_FEE.toFixed(2)}</span>
-        </div>
-        <div style={{
-          display: 'flex', justifyContent: 'space-between',
-          fontSize: 14, fontWeight: 700,
-          borderTop: '1px solid var(--border)', paddingTop: 8, marginTop: 4,
-        }}>
-          <span style={{ color: 'var(--text)' }}>Total</span>
-          <span style={{ color: 'var(--accent-dark)' }}>${grandTotal.toFixed(2)}</span>
-        </div>
-      </div>
-
-      <div style={{ flex: 1 }} />
-
-      {/* Footer CTA */}
-      <div style={{ padding: '12px 16px', background: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
+    <main className="flex min-h-[100svh] flex-col bg-[#080807] text-[#f2eee4]">
+      <header className="flex items-center justify-between border-b border-[#302d24] bg-[#11110e] px-4 py-4">
         <button
-          onClick={() => router.push('/checkout')}
-          style={{
-            width: '100%', height: 46,
-            background: 'var(--text)', color: 'var(--surface)',
-            border: 'none', cursor: 'pointer',
-            fontSize: 11, fontWeight: 700, letterSpacing: '.16em', textTransform: 'uppercase',
-            borderRadius: 'var(--radius)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-          }}
+          type="button"
+          onClick={() => router.back()}
+          className="text-xl text-[#c0b69f]"
+          aria-label="Назад"
         >
-          IR A PAGAR ·{' '}
-          <span style={{ color: 'var(--accent)', fontWeight: 700 }}>${grandTotal.toFixed(2)}</span>
+          ←
         </button>
+
+        <Link
+          href="/"
+          className="text-xl font-black tracking-[4px] text-[#f2eee4] no-underline"
+        >
+          RUM
+        </Link>
+
+        <span className="text-[10px] font-semibold text-[#918b7d]">
+          {items.length} шт.
+        </span>
+      </header>
+
+      <div className="mx-auto w-full max-w-[560px] flex-1">
+        <section className="px-4 pb-5 pt-6">
+          <div className="text-[9px] font-black tracking-[2px] text-[#a18b58]">
+            YOUR ORDER
+          </div>
+
+          <h1 className="mt-2 text-2xl font-black">
+            Корзина
+          </h1>
+
+          <p className="mt-1 text-xs text-[#918b7d]">
+            Проверь товары перед оформлением заказа.
+          </p>
+        </section>
+
+        <section className="mx-4 overflow-hidden rounded-2xl border border-[#302d24] bg-[#151511]">
+          {items.map((item, index) => (
+            <div
+              key={item.product_id}
+              className={
+                index !== items.length - 1
+                  ? 'border-b border-[#302d24]'
+                  : ''
+              }
+            >
+              <CartItemRow item={item} />
+            </div>
+          ))}
+        </section>
+
+        <section className="mx-4 mt-4 rounded-2xl border border-[#302d24] bg-[#151511] p-4">
+          <div className="mb-4 text-[10px] font-black tracking-[2px] text-[#a18b58]">
+            СТОИМОСТЬ ЗАКАЗА
+          </div>
+
+          <div className="flex justify-between gap-3 text-xs text-[#a49b88]">
+            <span>Товары</span>
+            <span>${subtotal.toFixed(2)}</span>
+          </div>
+
+          <div className="mt-3 flex justify-between gap-3 text-xs text-[#a49b88]">
+            <span>Доставка</span>
+            <span>${DELIVERY_FEE.toFixed(2)}</span>
+          </div>
+
+          <div className="mt-4 flex justify-between gap-3 border-t border-[#393326] pt-4">
+            <span className="text-sm font-bold">Итого</span>
+            <span className="text-lg font-black text-[#d8b45a]">
+              ${grandTotal.toFixed(2)}
+            </span>
+          </div>
+        </section>
+
+        <div className="mx-4 mt-4 rounded-xl border border-[#51452c] bg-[#211d13] p-3 text-[10px] leading-5 text-[#b9a77e]">
+          Стоимость указана в долларах. Это корзина старого магазина, отдельно от каталога Telegram-подарков RUM.
+        </div>
       </div>
-    </div>
+
+      <footer className="sticky bottom-0 border-t border-[#302d24] bg-[#11110e] p-4">
+        <div className="mx-auto max-w-[560px]">
+          <button
+            type="button"
+            onClick={() => router.push('/checkout')}
+            className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-[#d8b45a] text-xs font-black tracking-wide text-[#17130a]"
+          >
+            ПЕРЕЙТИ К ОФОРМЛЕНИЮ · ${grandTotal.toFixed(2)}
+          </button>
+        </div>
+      </footer>
+    </main>
   )
 }

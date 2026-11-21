@@ -1,23 +1,75 @@
+
 @import "tailwindcss";
 
 :root {
-  --bg:           #080808;
-  --surface:      #1b1b1b;
-  --border:       #333333;
-  --border-strong:#555555;
-  --text:         #f2f2f2;
-  --text-2:       #bdbdbd;
-  --text-3:       #888888;
-  --accent:       #bdbdbd;
-  --accent-dark:  #888888;
-  --radius:       2px;
+  color-scheme: dark;
+
+  --bg: #080807;
+  --surface: #151511;
+  --surface-raised: #1c1a14;
+  --border: #302d24;
+  --border-strong: #51452c;
+
+  --text: #f2eee4;
+  --text-2: #c0b69f;
+  --text-3: #918b7d;
+
+  --accent: #d8b45a;
+  --accent-dark: #a18b58;
+
+  --radius: 14px;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg);
 }
 
 body {
+  min-height: 100vh;
+  margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(216, 180, 90, 0.28);
+  color: #fff8e8;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+}

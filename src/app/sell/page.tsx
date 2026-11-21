@@ -82,7 +82,7 @@ export default function SellPage() {
   }
 
   useEffect(() => {
-    loadGifts()
+    void loadGifts()
   }, [])
 
   async function createListing() {
@@ -135,198 +135,109 @@ export default function SellPage() {
 
   const selectedGiftData = gifts.find((gift) => gift.id === selectedGift)
 
-  const panelStyle: React.CSSProperties = {
-    background: 'linear-gradient(145deg, #191919, #101010)',
-    border: '1px solid #303030',
-    borderRadius: 22,
-    padding: 18,
-    marginBottom: 17,
-  }
-
-  const mutedText: React.CSSProperties = {
-    color: '#929292',
-    fontSize: 12,
-    lineHeight: 1.6,
-  }
-
   return (
-    <main style={{
-      minHeight: '100vh',
-      background: '#080808',
-      color: '#f4f4f4',
-      padding: '20px 15px 110px',
-    }}>
-      <div style={{ maxWidth: 520, margin: '0 auto' }}>
+    <main className="min-h-screen bg-[#080807] px-4 pb-32 pt-6 text-[#f2eee4]">
+      <style jsx>{`
+        .luxury-panel {
+          background: linear-gradient(145deg, #171710, #11110e);
+          border: 1px solid #302d24;
+          border-radius: 20px;
+        }
 
-        <header style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 25,
-        }}>
-          <Link href="/" style={{
-            color: '#fff',
-            textDecoration: 'none',
-            fontSize: 25,
-            fontWeight: 950,
-            letterSpacing: 2,
-          }}>
+        .gift-card {
+          transition:
+            border-color 160ms ease,
+            background 160ms ease,
+            transform 160ms ease;
+        }
+
+        .gift-card:active {
+          transform: scale(0.98);
+        }
+
+        .gold-button {
+          transition: background 160ms ease, opacity 160ms ease;
+        }
+
+        @media (hover: hover) {
+          .gift-card:hover {
+            border-color: #756039 !important;
+          }
+
+          .gold-button:hover:not(:disabled) {
+            background: #e5c576 !important;
+          }
+        }
+      `}</style>
+
+      <div className="mx-auto max-w-[560px]">
+        <header className="mb-7 flex items-center justify-between">
+          <Link
+            href="/"
+            className="text-2xl font-black tracking-[5px] text-[#f3eee2] no-underline"
+          >
             RUM
           </Link>
 
-          <Link href="/rum-cart" style={{
-            color: '#ddd',
-            textDecoration: 'none',
-            fontSize: 13,
-            fontWeight: 700,
-            background: '#191919',
-            border: '1px solid #333',
-            borderRadius: 12,
-            padding: '10px 13px',
-          }}>
+          <Link
+            href="/rum-cart"
+            className="rounded-xl border border-[#393326] bg-[#171610] px-3 py-2.5 text-xs font-bold text-[#c0b69f] no-underline"
+          >
             🛒 Корзина
           </Link>
         </header>
 
-        <section style={{
-          position: 'relative',
-          overflow: 'hidden',
-          background: 'radial-gradient(ellipse at 100% 0%, #383838 0%, transparent 55%), linear-gradient(145deg, #242424, #101010)',
-          border: '1px solid #414141',
-          borderRadius: 25,
-          padding: '24px 21px',
-          marginBottom: 20,
-        }}>
-          <div style={{
-            position: 'absolute',
-            right: 8,
-            top: 12,
-            fontSize: 76,
-            opacity: 0.1,
-            pointerEvents: 'none',
-          }}>
+        <section className="relative mb-5 overflow-hidden rounded-[24px] border border-[#51452c] bg-[radial-gradient(ellipse_at_100%_0%,#514329_0%,transparent_55%),linear-gradient(145deg,#242015,#11110e)] p-5">
+          <div className="pointer-events-none absolute right-3 top-3 text-[76px] opacity-[0.12]">
             💎
           </div>
 
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            padding: '6px 10px',
-            background: '#363636',
-            border: '1px solid #505050',
-            borderRadius: 20,
-            color: '#ddd',
-            fontSize: 9,
-            fontWeight: 900,
-            letterSpacing: 1.3,
-            marginBottom: 17,
-          }}>
+          <div className="relative mb-4 inline-flex rounded-full border border-[#756039] bg-[#302819] px-3 py-1.5 text-[9px] font-black tracking-[2px] text-[#d8b45a]">
             RUM MARKETPLACE
           </div>
 
-          <h1 style={{
-            position: 'relative',
-            fontSize: 29,
-            fontWeight: 950,
-            letterSpacing: -0.8,
-            margin: '0 0 9px',
-          }}>
+          <h1 className="relative text-3xl font-black tracking-tight">
             Мои подарки
           </h1>
 
-          <p style={{
-            position: 'relative',
-            color: '#aaa',
-            fontSize: 13,
-            lineHeight: 1.65,
-            maxWidth: 310,
-            margin: 0,
-          }}>
+          <p className="relative mt-2 max-w-[310px] text-sm leading-6 text-[#aaa18e]">
             Твой NFT-инвентарь в RUM. Выбирай уникальные подарки и выставляй их на маркетплейс.
           </p>
 
-          <div style={{
-            display: 'flex',
-            gap: 9,
-            marginTop: 20,
-          }}>
-            <div style={{
-              background: '#292929',
-              border: '1px solid #444',
-              borderRadius: 12,
-              padding: '10px 13px',
-            }}>
-              <div style={{
-                fontSize: 21,
-                fontWeight: 900,
-                lineHeight: 1.2,
-              }}>
+          <div className="relative mt-5 flex gap-2">
+            <div className="rounded-xl border border-[#51452c] bg-[#211d13] px-4 py-3">
+              <div className="text-2xl font-black text-[#d8b45a]">
                 {gifts.length}
               </div>
-              <div style={{
-                color: '#999',
-                fontSize: 10,
-                marginTop: 4,
-              }}>
+              <div className="mt-1 text-[9px] font-bold tracking-wider text-[#a99a77]">
                 ДОСТУПНО NFT
               </div>
             </div>
 
-            <div style={{
-              background: '#292929',
-              border: '1px solid #444',
-              borderRadius: 12,
-              padding: '10px 13px',
-            }}>
-              <div style={{
-                fontSize: 13,
-                fontWeight: 850,
-                lineHeight: 1.2,
-              }}>
+            <div className="rounded-xl border border-[#51452c] bg-[#211d13] px-4 py-3">
+              <div className="text-sm font-black tracking-wider text-[#e4d9bd]">
                 TELEGRAM
               </div>
-              <div style={{
-                color: '#999',
-                fontSize: 10,
-                marginTop: 5,
-              }}>
+              <div className="mt-2 text-[9px] font-bold tracking-wider text-[#a99a77]">
                 ТВОЙ ИНВЕНТАРЬ
               </div>
             </div>
           </div>
         </section>
 
-        <section style={panelStyle}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: 10,
-            marginBottom: 15,
-          }}>
+        <section className="luxury-panel mb-5 p-4">
+          <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <h2 style={{
-                fontSize: 19,
-                fontWeight: 900,
-                margin: 0,
-                letterSpacing: -0.3,
-              }}>
-                Твои NFT
-              </h2>
-              <p style={{ ...mutedText, margin: '5px 0 0' }}>
+              <div className="text-[9px] font-black tracking-[2px] text-[#a18b58]">
+                YOUR COLLECTION
+              </div>
+              <h2 className="mt-1 text-lg font-black">Твои NFT</h2>
+              <p className="mt-1 text-xs text-[#918b7d]">
                 Выбери подарок для продажи
               </p>
             </div>
 
-            <div style={{
-              background: '#292929',
-              border: '1px solid #454545',
-              borderRadius: 11,
-              padding: '8px 11px',
-              fontSize: 12,
-              fontWeight: 900,
-              whiteSpace: 'nowrap',
-            }}>
+            <div className="rounded-xl border border-[#51452c] bg-[#211d13] px-3 py-2 text-xs font-black text-[#d8b45a]">
               {gifts.length} NFT
             </div>
           </div>
@@ -335,19 +246,7 @@ export default function SellPage() {
             type="button"
             onClick={checkTelegramGifts}
             disabled={checkingTelegram}
-            style={{
-              width: '100%',
-              padding: 13,
-              marginBottom: 16,
-              border: '1px solid #414141',
-              borderRadius: 13,
-              background: checkingTelegram ? '#202020' : '#252525',
-              color: '#eee',
-              fontWeight: 800,
-              fontSize: 12,
-              cursor: checkingTelegram ? 'wait' : 'pointer',
-              opacity: checkingTelegram ? 0.65 : 1,
-            }}
+            className="mb-4 w-full rounded-xl border border-[#65532e] bg-[#211d13] px-4 py-3.5 text-xs font-extrabold text-[#d8b45a] disabled:cursor-wait disabled:opacity-50"
           >
             {checkingTelegram
               ? '⏳ Проверяем Telegram...'
@@ -355,285 +254,140 @@ export default function SellPage() {
           </button>
 
           {telegramError && (
-            <div style={{
-              background: '#2b1919',
-              border: '1px solid #633a3a',
-              borderRadius: 12,
-              padding: 12,
-              color: '#e7a19a',
-              fontSize: 12,
-              lineHeight: 1.5,
-              marginBottom: 14,
-            }}>
+            <div className="mb-4 rounded-xl border border-[#68403a] bg-[#251513] p-3 text-xs leading-5 text-[#e2a39a]">
               {telegramError}
             </div>
           )}
 
           {loading && (
-            <div style={{
-              textAlign: 'center',
-              padding: '35px 10px',
-              color: '#999',
-              fontSize: 13,
-            }}>
-              <div style={{ fontSize: 28, marginBottom: 10 }}>◌</div>
-              Загружаем твои NFT...
+            <div className="py-12 text-center">
+              <div className="mb-3 text-3xl text-[#d8b45a]">◌</div>
+              <div className="text-sm font-semibold text-[#c0b69f]">
+                Загружаем твои NFT...
+              </div>
             </div>
           )}
 
           {!loading && !error && gifts.length === 0 && (
-            <div style={{
-              textAlign: 'center',
-              padding: '30px 17px',
-              background: 'linear-gradient(145deg, #202020, #171717)',
-              border: '1px solid #333',
-              borderRadius: 17,
-            }}>
-              <div style={{ fontSize: 43, marginBottom: 12 }}>🎁</div>
-
-              <h3 style={{
-                fontSize: 16,
-                fontWeight: 900,
-                margin: '0 0 8px',
-              }}>
+            <div className="rounded-2xl border border-[#302d24] bg-[#11110e] px-5 py-9 text-center">
+              <div className="text-4xl">🎁</div>
+              <h3 className="mt-4 text-base font-black">
                 Пока здесь пусто
               </h3>
-
-              <p style={{
-                ...mutedText,
-                margin: 0,
-              }}>
+              <p className="mx-auto mt-2 max-w-[270px] text-xs leading-5 text-[#918b7d]">
                 Уникальные подарки из Telegram появятся здесь после синхронизации инвентаря.
               </p>
             </div>
           )}
 
           {!loading && gifts.length > 0 && (
-            <>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                gap: 11,
-              }}>
-                {gifts.map((gift) => {
-                  const isSelected = selectedGift === gift.id
-                  const imageBroken = brokenImages.includes(gift.id)
+            <div className="grid grid-cols-2 gap-3">
+              {gifts.map((gift) => {
+                const isSelected = selectedGift === gift.id
+                const imageBroken = brokenImages.includes(gift.id)
 
-                  return (
-                    <button
-                      key={gift.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedGift(gift.id)
-                        setError('')
-                        setMessage('')
-                      }}
-                      style={{
-                        minWidth: 0,
-                        padding: 8,
-                        borderRadius: 16,
-                        border: isSelected
-                          ? '1px solid #dedede'
-                          : '1px solid #343434',
-                        background: isSelected
-                          ? 'linear-gradient(145deg, #303030, #202020)'
-                          : '#191919',
-                        color: '#f2f2f2',
-                        textAlign: 'left',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      <div style={{
-                        position: 'relative',
-                        width: '100%',
-                        aspectRatio: '1 / 1',
-                        borderRadius: 11,
-                        overflow: 'hidden',
-                        background: 'radial-gradient(circle, #383838, #202020 75%)',
-                        display: 'grid',
-                        placeItems: 'center',
-                        marginBottom: 10,
-                      }}>
-                        {gift.imageUrl && !imageBroken ? (
-                          <img
-                            src={gift.imageUrl}
-                            alt={gift.name}
-                            onError={() => {
-                              setBrokenImages((current) =>
-                                current.includes(gift.id)
-                                  ? current
-                                  : [...current, gift.id],
-                              )
-                            }}
-                            style={{
-                              width: '88%',
-                              height: '88%',
-                              objectFit: 'contain',
-                            }}
-                          />
-                        ) : (
-                          <span style={{ fontSize: 43 }}>🎁</span>
-                        )}
+                return (
+                  <button
+                    key={gift.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedGift(gift.id)
+                      setError('')
+                      setMessage('')
+                    }}
+                    className="gift-card min-w-0 overflow-hidden rounded-2xl border p-2 text-left"
+                    style={{
+                      borderColor: isSelected ? '#d8b45a' : '#393326',
+                      background: isSelected
+                        ? 'linear-gradient(145deg,#292316,#1b1912)'
+                        : '#171610',
+                    }}
+                  >
+                    <div className="relative mb-2 grid aspect-square place-items-center overflow-hidden rounded-xl bg-[radial-gradient(circle,#383124,#1b1a14_75%)]">
+                      {gift.imageUrl && !imageBroken ? (
+                        <img
+                          src={gift.imageUrl}
+                          alt={gift.name}
+                          onError={() => {
+                            setBrokenImages((current) =>
+                              current.includes(gift.id)
+                                ? current
+                                : [...current, gift.id],
+                            )
+                          }}
+                          className="h-[88%] w-[88%] object-contain"
+                        />
+                      ) : (
+                        <span className="text-4xl">🎁</span>
+                      )}
 
-                        {isSelected && (
-                          <span style={{
-                            position: 'absolute',
-                            top: 7,
-                            right: 7,
-                            width: 24,
-                            height: 24,
-                            display: 'grid',
-                            placeItems: 'center',
-                            borderRadius: '50%',
-                            background: '#eee',
-                            color: '#111',
-                            fontWeight: 950,
-                            fontSize: 13,
-                          }}>
-                            ✓
-                          </span>
-                        )}
-                      </div>
-
-                      <div style={{
-                        fontSize: 13,
-                        fontWeight: 900,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}>
-                        {gift.name}
-                      </div>
-
-                      <div style={{
-                        color: '#999',
-                        fontSize: 10,
-                        marginTop: 4,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}>
-                        {gift.collection || 'Telegram Gifts'}
-                      </div>
-
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        gap: 5,
-                        marginTop: 10,
-                        paddingTop: 8,
-                        borderTop: '1px solid #353535',
-                      }}>
-                        <span style={{
-                          color: '#999',
-                          fontSize: 9,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}>
-                          {gift.model || 'Уникальная модель'}
+                      {isSelected && (
+                        <span className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-full bg-[#d8b45a] text-xs font-black text-[#17130a]">
+                          ✓
                         </span>
+                      )}
+                    </div>
 
-                        <span style={{
-                          color: isSelected ? '#fff' : '#999',
-                          fontSize: 9,
-                          fontWeight: 900,
-                          whiteSpace: 'nowrap',
-                        }}>
-                          {isSelected ? '✓ ВЫБРАН' : 'ВЫБРАТЬ'}
-                        </span>
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
-            </>
+                    <div className="truncate text-[13px] font-black text-[#f2eee4]">
+                      {gift.name}
+                    </div>
+
+                    <div className="mt-1 truncate text-[10px] text-[#918b7d]">
+                      {gift.collection || 'Telegram Gifts'}
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-between gap-1 border-t border-[#393326] pt-2">
+                      <span className="truncate text-[9px] text-[#918b7d]">
+                        {gift.model || 'Уникальная модель'}
+                      </span>
+
+                      <span className="shrink-0 text-[9px] font-black text-[#d8b45a]">
+                        {isSelected ? '✓ ВЫБРАН' : 'ВЫБРАТЬ'}
+                      </span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
           )}
 
           {selectedGiftData && (
-            <div style={{
-              marginTop: 18,
-              padding: 16,
-              background: 'linear-gradient(145deg, #252525, #191919)',
-              border: '1px solid #484848',
-              borderRadius: 17,
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                marginBottom: 13,
-              }}>
-                <span style={{ fontSize: 17 }}>✦</span>
-                <span style={{
-                  fontSize: 10,
-                  color: '#bbb',
-                  fontWeight: 900,
-                  letterSpacing: 1.2,
-                }}>
+            <div className="mt-5 rounded-2xl border border-[#65532e] bg-[linear-gradient(145deg,#211d13,#171610)] p-4">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="text-lg text-[#d8b45a]">✦</span>
+                <span className="text-[10px] font-black tracking-[2px] text-[#d8b45a]">
                   НОВОЕ ОБЪЯВЛЕНИЕ
                 </span>
               </div>
 
-              <div style={{
-                fontSize: 16,
-                fontWeight: 900,
-                marginBottom: 5,
-              }}>
+              <div className="text-base font-black">
                 {selectedGiftData.name}
               </div>
 
-              <div style={{
-                ...mutedText,
-                marginBottom: 16,
-              }}>
+              <div className="mt-1 text-xs text-[#918b7d]">
                 {selectedGiftData.collection || 'Telegram Gifts'}
               </div>
 
-              <label style={{
-                display: 'block',
-                fontSize: 12,
-                fontWeight: 800,
-                marginBottom: 8,
-              }}>
+              <label
+                htmlFor="listing-price"
+                className="mb-2 mt-5 block text-xs font-bold text-[#c0b69f]"
+              >
                 Укажи стоимость NFT
               </label>
 
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                background: '#101010',
-                border: '1px solid #414141',
-                borderRadius: 13,
-                padding: '0 13px',
-              }}>
+              <div className="flex items-center gap-3 rounded-xl border border-[#51452c] bg-[#0d0d0b] px-3">
                 <input
+                  id="listing-price"
                   type="number"
                   min="0.000000001"
                   step="0.000000001"
                   value={price}
                   onChange={(event) => setPrice(event.target.value)}
                   placeholder="Например, 10"
-                  style={{
-                    width: '100%',
-                    minWidth: 0,
-                    padding: '15px 0',
-                    background: 'transparent',
-                    border: 0,
-                    outline: 'none',
-                    color: '#fff',
-                    fontSize: 17,
-                  }}
+                  className="w-full min-w-0 bg-transparent py-4 text-lg font-bold text-[#f2eee4] outline-none placeholder:text-[#716c60]"
                 />
 
-                <strong style={{
-                  color: '#ddd',
-                  fontSize: 14,
-                }}>
+                <strong className="text-sm font-black text-[#d8b45a]">
                   TON
                 </strong>
               </div>
@@ -642,19 +396,7 @@ export default function SellPage() {
                 type="button"
                 disabled={submitting}
                 onClick={createListing}
-                style={{
-                  width: '100%',
-                  marginTop: 12,
-                  padding: 15,
-                  border: '1px solid #eee',
-                  borderRadius: 13,
-                  background: '#e5e5e5',
-                  color: '#111',
-                  fontWeight: 950,
-                  fontSize: 13,
-                  cursor: submitting ? 'wait' : 'pointer',
-                  opacity: submitting ? 0.6 : 1,
-                }}
+                className="gold-button mt-3 w-full rounded-xl bg-[#d8b45a] px-4 py-4 text-sm font-black text-[#17130a] disabled:cursor-wait disabled:opacity-50"
               >
                 {submitting
                   ? 'Создаём объявление...'
@@ -664,48 +406,28 @@ export default function SellPage() {
           )}
 
           {error && (
-            <div style={{
-              color: '#e6a09a',
-              background: '#2b1919',
-              border: '1px solid #633a3a',
-              borderRadius: 12,
-              padding: 12,
-              fontSize: 12,
-              lineHeight: 1.5,
-              marginTop: 14,
-            }}>
+            <div className="mt-4 rounded-xl border border-[#68403a] bg-[#251513] p-3 text-xs leading-5 text-[#e2a39a]">
               {error}
             </div>
           )}
 
           {message && (
-            <div style={{
-              color: '#c9c9c9',
-              background: '#202020',
-              border: '1px solid #414141',
-              borderRadius: 12,
-              padding: 12,
-              fontSize: 12,
-              marginTop: 14,
-            }}>
+            <div className="mt-4 rounded-xl border border-[#65532e] bg-[#211d13] p-3 text-xs text-[#d8c28e]">
               ✓ {message}
             </div>
           )}
         </section>
 
-        <section style={panelStyle}>
-          <h2 style={{
-            fontSize: 17,
-            fontWeight: 900,
-            margin: '0 0 7px',
-          }}>
+        <section className="luxury-panel p-4">
+          <div className="text-[9px] font-black tracking-[2px] text-[#a18b58]">
+            SELLING GUIDE
+          </div>
+
+          <h2 className="mt-1 text-lg font-black">
             Как это работает
           </h2>
 
-          <p style={{
-            ...mutedText,
-            margin: '0 0 12px',
-          }}>
+          <p className="mt-1 text-xs text-[#918b7d]">
             Всего три шага до публикации объявления
           </p>
 
@@ -714,34 +436,19 @@ export default function SellPage() {
             ['02', 'Выбор подарка', 'Выбери уникальный NFT, который хочешь выставить.'],
             ['03', 'Цена и объявление', 'Укажи стоимость в TON и создай объявление.'],
           ].map(([number, title, description], index) => (
-            <div key={number} style={{
-              display: 'flex',
-              gap: 13,
-              padding: '13px 0',
-              borderBottom: index === 2 ? 0 : '1px solid #303030',
-            }}>
-              <div style={{
-                width: 31,
-                height: 31,
-                flexShrink: 0,
-                display: 'grid',
-                placeItems: 'center',
-                borderRadius: 10,
-                background: '#292929',
-                border: '1px solid #414141',
-                color: '#ddd',
-                fontSize: 11,
-                fontWeight: 900,
-              }}>
+            <div
+              key={number}
+              className={`flex gap-3 py-4 ${
+                index !== 2 ? 'border-b border-[#302d24]' : ''
+              }`}
+            >
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[#51452c] bg-[#211d13] text-[11px] font-black text-[#d8b45a]">
                 {number}
               </div>
 
               <div>
-                <strong style={{ fontSize: 13 }}>{title}</strong>
-                <p style={{
-                  ...mutedText,
-                  margin: '4px 0 0',
-                }}>
+                <strong className="text-sm font-bold">{title}</strong>
+                <p className="mt-1 text-xs leading-5 text-[#918b7d]">
                   {description}
                 </p>
               </div>
@@ -749,34 +456,15 @@ export default function SellPage() {
           ))}
         </section>
 
-        <div style={{
-          background: '#151515',
-          border: '1px solid #303030',
-          borderRadius: 15,
-          padding: 14,
-          marginTop: 18,
-          color: '#858585',
-          fontSize: 11,
-          lineHeight: 1.7,
-          textAlign: 'center',
-        }}>
+        <div className="mt-4 rounded-2xl border border-[#302d24] bg-[#11110e] p-4 text-center text-[10px] leading-5 text-[#817b6d]">
           Создание объявления пока не означает передачу подарка.
           Оплата TON и автоматическая передача NFT покупателю ещё не реализованы.
         </div>
 
-        <Link href="/catalog" style={{
-          display: 'block',
-          textAlign: 'center',
-          background: '#242424',
-          border: '1px solid #414141',
-          color: '#f2f2f2',
-          borderRadius: 14,
-          padding: 15,
-          marginTop: 15,
-          textDecoration: 'none',
-          fontWeight: 850,
-          fontSize: 13,
-        }}>
+        <Link
+          href="/catalog"
+          className="mt-4 block rounded-xl border border-[#51452c] bg-[#211d13] p-4 text-center text-sm font-extrabold text-[#d8b45a] no-underline"
+        >
           Перейти в каталог →
         </Link>
       </div>
