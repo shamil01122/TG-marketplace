@@ -13,10 +13,19 @@ type Listing = {
   gift: {
     name: string
     collection: string
+    number: number | null
     model: string
+    modelRarity: string | null
+    modelRarityPerMille: number | null
+    symbol: string
+    symbolRarityPerMille: number | null
     imageUrl: string
+    modelThumbnailFileId: string | null
+    symbolThumbnailFileId: string | null
     backdropCenterColor: number | string | null
     backdropEdgeColor: number | string | null
+    backdropSymbolColor: number | string | null
+    backdropTextColor: number | string | null
   }
   seller: {
     username: string
@@ -49,6 +58,11 @@ function getSafeColor(
   }
 
   return fallback
+}
+
+function getTelegramFileUrl(fileId: string | null | undefined) {
+  if (!fileId) return ''
+  return `/api/rum/telegram-file?file_id=${encodeURIComponent(fileId)}`
 }
 
 export default function HomePage() {
@@ -141,16 +155,13 @@ export default function HomePage() {
             transform 160ms ease;
         }
 
-        .market-link:active {
+        .market-link:active,
+        .gift-card:active {
           transform: scale(0.985);
         }
 
         .gift-card {
           transition: border-color 180ms ease, transform 180ms ease;
-        }
-
-        .gift-card:active {
-          transform: scale(0.985);
         }
 
         @media (hover: hover) {
@@ -167,9 +178,21 @@ export default function HomePage() {
         .gift-image {
           transition: transform 300ms ease;
         }
+
+        .gift-pattern {
+          background-repeat: repeat;
+          background-size: 48px 48px;
+          background-position: center;
+          mask-image: linear-gradient(
+            to bottom,
+            transparent,
+            black 15%,
+            black 85%,
+            transparent
+          );
+        }
       `}</style>
 
-      {/* Шапка */}
       <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#29261E] bg-[#080807]/95 px-4 py-3 backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-2 no-underline">
           <span className="text-[27px] font-black leading-none tracking-[-0.09em] text-[#F4E9CC]">
@@ -191,23 +214,19 @@ export default function HomePage() {
         </Link>
       </header>
 
-      {/* Поиск */}
       <section className="px-3 pt-4">
         <Link
           href="/catalog"
           className="market-link flex items-center gap-3 rounded-xl border border-[#39352A] bg-[#151511] px-4 py-4 no-underline"
         >
           <span className="text-xl text-[#D8B45A]">⌕</span>
-
           <span className="flex-1 text-xs text-[#918B7D]">
             Поиск подарков и коллекций
           </span>
-
           <span className="text-lg text-[#D8B45A]">→</span>
         </Link>
       </section>
 
-      {/* Категории */}
       <section className="flex gap-2 overflow-x-auto px-3 pb-1 pt-3">
         <Link
           href="/catalog"
@@ -238,7 +257,6 @@ export default function HomePage() {
         </Link>
       </section>
 
-      {/* Витрина */}
       <section className="px-3 pt-7">
         <div className="mb-4 flex items-end justify-between">
           <div>
@@ -276,7 +294,6 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Загрузка */}
         {loading && (
           <div className="grid grid-cols-2 gap-3">
             {[1, 2, 3, 4].map((item) => (
@@ -285,7 +302,6 @@ export default function HomePage() {
                 className="animate-pulse overflow-hidden rounded-xl border border-[#302D24] bg-[#151511]"
               >
                 <div className="aspect-square bg-white/[0.05]" />
-
                 <div className="space-y-3 p-3">
                   <div className="h-3 w-3/4 rounded bg-white/[0.07]" />
                   <div className="h-3 w-1/2 rounded bg-white/[0.05]" />
@@ -296,11 +312,9 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Ошибка */}
         {!loading && error && (
           <div className="rounded-xl border border-[#393222] bg-[#151511] p-7 text-center">
             <div className="mb-3 text-3xl">⚠️</div>
-
             <p className="text-xs text-[#D0C9B8]">{error}</p>
 
             <button
@@ -312,7 +326,6 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Пустой каталог */}
         {!loading && !error && listings.length === 0 && (
           <div className="rounded-xl border border-[#302D24] bg-[#151511] p-8 text-center">
             <div className="mb-4 text-5xl">🎁</div>
@@ -334,18 +347,37 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Карточки подарков */}
         {!loading && !error && listings.length > 0 && (
           <div className="grid grid-cols-2 gap-3">
             {listings.slice(0, 8).map((listing) => {
+              const gift = listing.gift
+
               const centerColor = getSafeColor(
-                listing.gift.backdropCenterColor,
+                gift.backdropCenterColor,
                 '#29271F',
               )
 
               const edgeColor = getSafeColor(
-                listing.gift.backdropEdgeColor,
+                gift.backdropEdgeColor,
                 '#0D0D0B',
+              )
+
+              const symbolColor = getSafeColor(
+                gift.backdropSymbolColor,
+                '#FFFFFF',
+              )
+
+              const textColor = getSafeColor(
+                gift.backdropTextColor,
+                '#FFFFFF',
+              )
+
+              const modelUrl =
+                getTelegramFileUrl(gift.modelThumbnailFileId) ||
+                gift.imageUrl
+
+              const symbolUrl = getTelegramFileUrl(
+                gift.symbolThumbnailFileId,
               )
 
               const sellerName =
@@ -360,20 +392,35 @@ export default function HomePage() {
                   key={listing.id}
                   className="gift-card group min-w-0 overflow-hidden rounded-xl border border-[#302D24] bg-[#13130F] no-underline"
                 >
-                  {/* Изображение */}
                   <div
                     className="relative flex aspect-square items-center justify-center overflow-hidden p-3"
                     style={{
                       backgroundImage: `linear-gradient(145deg, ${centerColor}, ${edgeColor})`,
                     }}
                   >
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-white/[0.04]" />
+                    {symbolUrl && (
+                      <div
+                        aria-hidden="true"
+                        className="gift-pattern pointer-events-none absolute inset-0 opacity-[0.22]"
+                        style={{
+                          backgroundImage: `url("${symbolUrl}")`,
+                        }}
+                      />
+                    )}
 
-                    {listing.gift.imageUrl &&
-                    !brokenImages.includes(listing.id) ? (
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/[0.08]" />
+
+                    <div
+                      className="pointer-events-none absolute inset-3 rounded-xl border"
+                      style={{
+                        borderColor: `${textColor}35`,
+                      }}
+                    />
+
+                    {modelUrl && !brokenImages.includes(listing.id) ? (
                       <img
-                        src={listing.gift.imageUrl}
-                        alt={listing.gift.name}
+                        src={modelUrl}
+                        alt={gift.name}
                         loading="lazy"
                         onError={() =>
                           setBrokenImages((prev) =>
@@ -382,32 +429,49 @@ export default function HomePage() {
                               : [...prev, listing.id],
                           )
                         }
-                        className="gift-image relative z-10 h-full w-full object-contain drop-shadow-xl"
+                        className="gift-image relative z-10 h-full w-full object-contain drop-shadow-2xl"
                       />
                     ) : (
                       <span className="relative z-10 text-6xl">🎁</span>
                     )}
 
-                    <span className="absolute left-2 top-2 z-20 rounded-md border border-white/15 bg-black/45 px-2 py-1 text-[7px] font-black tracking-wider text-white/85">
+                    <span className="absolute left-2 top-2 z-20 rounded-md border border-white/20 bg-black/45 px-2 py-1 text-[7px] font-black tracking-wider text-white/90">
                       UNIQUE
                     </span>
 
-                    {listing.gift.collection && (
+                    {gift.number != null && (
+                      <span className="absolute right-2 top-2 z-20 rounded-md border border-white/20 bg-black/45 px-2 py-1 text-[8px] font-bold text-white">
+                        #{gift.number}
+                      </span>
+                    )}
+
+                    {gift.collection && (
                       <span className="absolute bottom-2 left-2 z-20 max-w-[85%] truncate rounded-md border border-white/15 bg-black/65 px-2 py-1 text-[8px] font-bold text-white">
-                        {listing.gift.collection}
+                        {gift.collection}
                       </span>
                     )}
                   </div>
 
-                  {/* Информация */}
                   <div className="p-3">
                     <h2 className="truncate text-[12px] font-black tracking-[-0.02em] text-[#F2F0E9]">
-                      {listing.gift.name}
+                      {gift.name}
                     </h2>
 
                     <p className="mt-1 min-h-[13px] truncate text-[9px] text-[#85827A]">
-                      {listing.gift.model || 'Telegram collectible'}
+                      {gift.model || 'Telegram collectible'}
                     </p>
+
+                    {gift.symbol && (
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <span
+                          className="h-2 w-2 shrink-0 rounded-full"
+                          style={{ backgroundColor: symbolColor }}
+                        />
+                        <span className="truncate text-[8px] text-[#B9AD91]">
+                          {gift.symbol}
+                        </span>
+                      </div>
+                    )}
 
                     <div className="mt-3 rounded-lg border border-[#393323] bg-[#211F18] px-2.5 py-2.5">
                       <p className="mb-1 text-[7px] font-bold tracking-[0.15em] text-[#898579]">
@@ -441,7 +505,6 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Весь каталог */}
         {!loading && !error && listings.length > 0 && (
           <Link
             href="/catalog"

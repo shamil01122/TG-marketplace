@@ -31,6 +31,10 @@ export async function GET() {
           symbol: rumGifts.symbol,
           symbolRarityPerMille: rumGifts.symbolRarityPerMille,
           imageUrl: rumGifts.imageUrl,
+          modelStickerFileId: rumGifts.modelStickerFileId,
+          modelThumbnailFileId: rumGifts.modelThumbnailFileId,
+          symbolStickerFileId: rumGifts.symbolStickerFileId,
+          symbolThumbnailFileId: rumGifts.symbolThumbnailFileId,
         },
         seller: {
           username: rumProfiles.username,

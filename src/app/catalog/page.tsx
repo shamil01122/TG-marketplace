@@ -1,8 +1,8 @@
 
 'use client'
 
+import Link from 'next/link'
 import RumBottomNav from '@/components/rum/bottom-nav'
-import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { useRumCart } from '@/lib/rum/cart'
 import { useRumFavorites } from '@/lib/rum/favorites'
@@ -58,8 +58,6 @@ function formatRarity(value: number | null) {
 }
 
 export default function CatalogPage() {
-  const router = useRouter()
-
   const [listings, setListings] = useState<Listing[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -206,6 +204,9 @@ export default function CatalogPage() {
     <main
       style={{
         minHeight: '100vh',
+        width: '100%',
+        boxSizing: 'border-box',
+        overflowX: 'hidden',
         background: '#080807',
         color: '#F2F0E9',
         paddingBottom: 105,
@@ -213,7 +214,9 @@ export default function CatalogPage() {
     >
       <div
         style={{
+          width: '100%',
           maxWidth: 560,
+          boxSizing: 'border-box',
           margin: '0 auto',
           padding: '12px 13px 30px',
         }}
@@ -461,6 +464,8 @@ export default function CatalogPage() {
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
                 gap: 10,
+                width: '100%',
+                minWidth: 0,
               }}
             >
               {filtered.map((listing) => {
@@ -485,10 +490,14 @@ export default function CatalogPage() {
                     key={listing.id}
                     style={{
                       ...panelStyle,
+                      width: '100%',
+                      minWidth: 0,
+                      boxSizing: 'border-box',
                       overflow: 'hidden',
                       position: 'relative',
                       background: '#11110F',
                       borderColor: '#302D24',
+                      transform: 'none',
                     }}
                   >
                     <button
@@ -512,23 +521,31 @@ export default function CatalogPage() {
                         color: isFavorite ? gold : '#E4E0D5',
                         fontSize: 17,
                         cursor: 'pointer',
+                        WebkitTapHighlightColor: 'transparent',
                       }}
                     >
                       {isFavorite ? '♥' : '♡'}
                     </button>
 
-                    <button
-                      onClick={() =>
-                        router.push(`/rum/gift/${listing.id}`)
-                      }
+                    <Link
+                      href={`/rum/gift/${listing.id}`}
                       style={{
+                        display: 'block',
                         width: '100%',
+                        minWidth: 0,
+                        boxSizing: 'border-box',
                         border: 0,
                         padding: 0,
+                        margin: 0,
                         background: 'transparent',
                         textAlign: 'left',
+                        textDecoration: 'none',
                         cursor: 'pointer',
                         color: 'inherit',
+                        transform: 'none',
+                        touchAction: 'manipulation',
+                        WebkitTapHighlightColor: 'transparent',
+                        outline: 'none',
                       }}
                     >
                       <div
@@ -717,7 +734,7 @@ export default function CatalogPage() {
                           </strong>
                         </div>
                       </div>
-                    </button>
+                    </Link>
                   </article>
                 )
               })}

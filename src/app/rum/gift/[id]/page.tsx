@@ -282,14 +282,14 @@ export default function RumGiftPage() {
 
     return (
       <div
-        className="flex items-center justify-between gap-4 py-2"
+        className="flex min-w-0 items-center justify-between gap-4 py-2"
         style={{
           borderBottom: last ? 'none' : '1px solid #29271F',
           fontSize: 12,
         }}
       >
-        <span className="text-[#898579]">{label}</span>
-        <strong className="text-right font-semibold text-[#EAE5D9]">
+        <span className="min-w-0 text-[#898579]">{label}</span>
+        <strong className="min-w-0 break-words text-right font-semibold text-[#EAE5D9]">
           {value}
         </strong>
       </div>
@@ -297,7 +297,10 @@ export default function RumGiftPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#080807] px-4 pb-36 pt-3 text-[#F2F0E9]">
+    <main
+      className="min-h-screen w-full overflow-x-clip bg-[#080807] pb-36 pt-3 text-[#F2F0E9]"
+      style={{ paddingLeft: 16, paddingRight: 16, boxSizing: 'border-box' }}
+    >
       <style jsx>{`
         .gold-button {
           transition: background 160ms ease, transform 160ms ease;
@@ -321,25 +324,25 @@ export default function RumGiftPage() {
         }
       `}</style>
 
-      <div className="mx-auto max-w-[560px]">
-        <header className="mb-4 flex items-center justify-between">
+      <div className="mx-auto w-full max-w-[560px] min-w-0">
+        <header className="mb-4 flex min-w-0 items-center justify-between gap-2">
           <button
             onClick={() => router.back()}
-            className="rounded-xl border border-[#39352A] bg-[#14130F] px-4 py-3 text-xs font-bold text-[#D8D1C1] transition hover:border-[#D8B45A]/50"
+            className="shrink-0 rounded-xl border border-[#39352A] bg-[#14130F] px-4 py-3 text-xs font-bold text-[#D8D1C1] transition hover:border-[#D8B45A]/50"
           >
             ← Назад
           </button>
 
           <a
             href="/"
-            className="text-[27px] font-black tracking-[-0.08em] text-[#F4E9CC] no-underline"
+            className="shrink-0 text-[27px] font-black tracking-[-0.08em] text-[#F4E9CC] no-underline"
           >
             RUM<span style={{ color: GOLD }}>.</span>
           </a>
 
           <button
             onClick={() => router.push('/rum-cart')}
-            className="rounded-xl border border-[#39352A] bg-[#14130F] px-3 py-3 text-xs font-bold text-[#D8D1C1] transition hover:border-[#D8B45A]/50"
+            className="shrink-0 rounded-xl border border-[#39352A] bg-[#14130F] px-3 py-3 text-xs font-bold text-[#D8D1C1] transition hover:border-[#D8B45A]/50"
           >
             🛒 Корзина
           </button>
@@ -371,7 +374,7 @@ export default function RumGiftPage() {
         ) : (
           <>
             <div
-              className="mb-4 overflow-hidden rounded-2xl border border-[#393222] shadow-2xl"
+              className="mb-4 w-full min-w-0 overflow-hidden rounded-2xl border border-[#393222] shadow-2xl"
               style={{ background: '#11110E' }}
             >
               <div
@@ -414,8 +417,8 @@ export default function RumGiftPage() {
                 </span>
               </div>
 
-              <div className="flex items-center justify-between gap-3 border-t border-[#302D24] px-4 py-2">
-                <div>
+              <div className="flex min-w-0 items-center justify-between gap-3 border-t border-[#302D24] px-4 py-2">
+                <div className="min-w-0">
                   <p className="text-[9px] font-black tracking-[0.17em] text-[#D8B45A]">
                     DIGITAL COLLECTIBLE
                   </p>
@@ -425,7 +428,7 @@ export default function RumGiftPage() {
                 </div>
 
                 <button
-                  className="favorite-button flex h-11 w-11 items-center justify-center rounded-full border border-[#403A2B] bg-[#1A1914] text-2xl"
+                  className="favorite-button flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#403A2B] bg-[#1A1914] text-2xl"
                   onClick={() => toggleFavorite(listing.id)}
                   style={{ color: isFavorite ? GOLD : '#AAA69B' }}
                   aria-label={
@@ -439,19 +442,19 @@ export default function RumGiftPage() {
               </div>
             </div>
 
-            <section className="mb-4">
+            <section className="mb-4 min-w-0">
               <div className="mb-2 inline-flex max-w-full items-center rounded-lg border border-[#5A4824] bg-[#211C10] px-3 py-2 text-[9px] font-black tracking-[0.13em] text-[#D8B45A]">
                 <span className="truncate">
                   {listing.gift.collection || 'TELEGRAM COLLECTION'}
                 </span>
               </div>
 
-              <h1 className="text-[25px] font-black leading-[1.1] tracking-[-0.065em]">
+              <h1 className="break-words text-[25px] font-black leading-[1.1] tracking-[-0.065em]">
                 {listing.gift.name}
                 <span style={{ color: GOLD }}>.</span>
               </h1>
 
-              <p className="mt-1 text-xs text-[#999589]">
+              <p className="mt-1 break-words text-xs text-[#999589]">
                 {listing.gift.model || 'Модель не указана'}
               </p>
 
@@ -464,7 +467,7 @@ export default function RumGiftPage() {
 
             <section
               style={panelStyle}
-              className="relative mb-3 overflow-hidden p-4"
+              className="relative mb-3 min-w-0 overflow-hidden p-4"
             >
               <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-[#D8B45A]/[0.07] blur-3xl" />
 
@@ -484,7 +487,7 @@ export default function RumGiftPage() {
               </p>
             </section>
 
-            <section style={panelStyle} className="mb-3 px-4 pb-1">
+            <section style={panelStyle} className="mb-3 min-w-0 px-4 pb-1">
               <div className="border-b border-[#302D24] py-3">
                 <h2 className="text-[10px] font-black tracking-[0.18em] text-[#D8B45A]">
                   ХАРАКТЕРИСТИКИ NFT
@@ -516,7 +519,7 @@ export default function RumGiftPage() {
               )}
             </section>
 
-            <section style={panelStyle} className="mb-3 px-4 pb-1">
+            <section style={panelStyle} className="mb-3 min-w-0 px-4 pb-1">
               <div className="border-b border-[#302D24] py-3">
                 <h2 className="text-[10px] font-black tracking-[0.18em] text-[#D8B45A]">
                   ПРОДАВЕЦ
@@ -533,7 +536,7 @@ export default function RumGiftPage() {
               )}
             </section>
 
-            <section className="mb-4 rounded-2xl border border-[#5A4824]/70 bg-[#17140D] p-3">
+            <section className="mb-4 min-w-0 rounded-2xl border border-[#5A4824]/70 bg-[#17140D] p-3">
               <div className="mb-2 flex items-center gap-2">
                 <span className="text-[#D8B45A]">ⓘ</span>
                 <h2 className="text-[10px] font-black tracking-[0.14em] text-[#D8C58F]">
@@ -599,8 +602,19 @@ export default function RumGiftPage() {
       </div>
 
       {!loading && listing && (
-        <div className="fixed bottom-[60px] left-1/2 z-40 w-full max-w-[560px] -translate-x-1/2 border-t border-[#393222] bg-[#0D0D0B]/[0.97] px-3 pb-2 pt-2 shadow-[0_-12px_35px_#00000066] backdrop-blur-xl">
-          <div className="mx-auto flex max-w-[560px] items-center gap-3">
+        <div
+          className="fixed bottom-[60px] z-40 border-t border-[#393222] bg-[#0D0D0B]/[0.97] px-3 pb-2 pt-2 shadow-[0_-12px_35px_#00000066] backdrop-blur-xl"
+          style={{
+            left: 0,
+            right: 0,
+            width: '100%',
+            maxWidth: 560,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div className="mx-auto flex w-full max-w-[560px] min-w-0 items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="text-[8px] font-bold tracking-[0.15em] text-[#898579]">
                 ЦЕНА
@@ -613,7 +627,7 @@ export default function RumGiftPage() {
 
             <button
               onClick={handleAddToCart}
-              className="rounded-lg border border-[#4A412C] bg-[#191710] px-3 py-3 text-[9px] font-black tracking-wider text-[#D8C58F] transition hover:border-[#D8B45A]"
+              className="shrink-0 rounded-lg border border-[#4A412C] bg-[#191710] px-3 py-3 text-[9px] font-black tracking-wider text-[#D8C58F] transition hover:border-[#D8B45A]"
             >
               В КОРЗИНУ
             </button>
@@ -629,7 +643,7 @@ export default function RumGiftPage() {
             )}
 
             {reservationDeal && (
-              <div className="rounded-lg border border-[#6B5629] bg-[#211C10] px-3 py-3 text-center text-[9px] font-black text-[#E7C875]">
+              <div className="shrink-0 rounded-lg border border-[#6B5629] bg-[#211C10] px-3 py-3 text-center text-[9px] font-black text-[#E7C875]">
                 РЕЗЕРВ АКТИВЕН
               </div>
             )}
