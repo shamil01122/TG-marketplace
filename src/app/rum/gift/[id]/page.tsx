@@ -378,7 +378,7 @@ export default function RumGiftPage() {
               style={{ background: '#11110E' }}
             >
               <div
-                className="relative flex aspect-square max-h-[360px] min-h-[210px] items-center justify-center overflow-hidden p-5"
+                className="relative flex aspect-square max-h-[360px] min-h-[210px] w-full items-center justify-center overflow-hidden"
                 style={{ background: giftBackground }}
               >
                 <div
